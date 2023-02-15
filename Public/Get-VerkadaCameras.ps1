@@ -28,7 +28,7 @@ function Get-VerkadaCameras
 		$propertyName = 'cameras'
 		if (!($org_id)){Write-Warning 'Missing org_id which is required'; return}
 		if (!($x_api_key)){Write-Warning 'Missing API token which is required'; return}
-	}
+	} #end begin
 	
 	Process {
 		Invoke-VerkadaRestMethod $uri $org_id $x_api_key -pagination -page_size $page_size -propertyName $propertyName

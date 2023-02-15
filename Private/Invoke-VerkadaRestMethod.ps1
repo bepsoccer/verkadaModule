@@ -40,11 +40,13 @@ function Invoke-VerkadaRestMethod
 	)
 
 	Process {
-		$body = @{}
-		$body.org_id = $org_id
+		$body = @{
+			'org_id' = $org_id
+		}
 		if ($body_params){$body += $body_params}
-		$headers=@{}
-		$headers."x-api-key" = $x_api_key
+		$headers=@{
+			'x-api-key' = $x_api_key
+		}
 
 		if ($pagination){
 			$body.page_size = $page_size
