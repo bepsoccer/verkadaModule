@@ -41,7 +41,7 @@ function Set-VerkadaCloudBackupSettings
 		if (!($org_id)){Write-Warning 'missing org_id'; return}
 		if (!($x_api_key)){Write-Warning 'missing API token'; return}
 		Write-Warning "Have you backed up your configs first? If not, consider halting and running Get-VerkadaCloudBackupSettings -backup" -WarningAction Inquire
-	}
+	} #end begin
 
 	Process {
 		$body_params = @{
@@ -55,9 +55,9 @@ function Set-VerkadaCloudBackupSettings
 		}
 
 		$response += Invoke-VerkadaRestMethod $uri $org_id $x_api_key $body_params -method post
-	}
+	} #end process
 
 	End {
 		return $response
-	}
-}
+	} #end end
+} #end function

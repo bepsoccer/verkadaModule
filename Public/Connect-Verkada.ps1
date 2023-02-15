@@ -33,11 +33,14 @@ function Connect-Verkada
 			}
 
 			try {
-				$body = @{}
-				$body.org_id = $Global:verkadaConnection.org_id
-				$body.page_size = "1"
-				$headers=@{}
-				$headers."x-api-key" = $Global:verkadaConnection.token
+				$body = @{
+					'org_id' = $Global:verkadaConnection.org_id
+					'page_size' = "1"
+				}
+				$headers=@{
+					'x-api-key' = $Global:verkadaConnection.token
+				}
+				
 				$response = Invoke-RestMethod -Uri 'https://api.verkada.com/cameras/v1/devices' -Body $body -Headers $headers -StatusCodeVariable responseCode
 				Write-Host -ForegroundColor green "$responseCode - Successfully connected to Verkada Command"
 				return

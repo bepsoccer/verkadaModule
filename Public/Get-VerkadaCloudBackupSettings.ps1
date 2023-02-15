@@ -30,15 +30,15 @@ function Get-VerkadaCloudBackupSettings
 		$response = @()
 		if (!($org_id)){Write-Warning 'missing org_id'; return}
 		if (!($x_api_key)){Write-Warning 'missing API token'; return}
-		#Write-Warning "Have you backed up your configs first? If not, consider halting and running Get-VerkadaCloudBackupSettings -backup" -WarningAction Inquire
-	}
+	} #end beging
 	
 	Process {
-		$body_params = @{}
-		$body_params.camera_id = $camera_id
+		$body_params = @{
+			'camera_id' = $camera_id
+		}
 
 		$response += Invoke-VerkadaRestMethod $uri $org_id $x_api_key $body_params
-	}
+	} #end process
 
 	End {
 		if ($backup){
@@ -50,5 +50,5 @@ function Get-VerkadaCloudBackupSettings
 			}
 		}
 		return $response
-	}
+	} #end end
 } #end function
