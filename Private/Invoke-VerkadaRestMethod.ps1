@@ -17,7 +17,7 @@ function Invoke-VerkadaRestMethod
 	Param(
 		[Parameter(Mandatory = $true, Position = 0, ParameterSetName = 'Default')]
 		[Parameter(Mandatory = $true, Position = 0, ParameterSetName = 'Pagination')]
-		[String]$uri,
+		[String]$url,
 		[Parameter(Mandatory = $true, Position = 1, ParameterSetName = 'Default')]
 		[Parameter(Mandatory = $true, Position = 1, ParameterSetName = 'Pagination')]
 		[String]$org_id,
@@ -26,6 +26,9 @@ function Invoke-VerkadaRestMethod
 		[String]$x_api_key,
 		[Parameter(Position = 3, ParameterSetName = 'Default')]
 		[Parameter(Position = 3, ParameterSetName = 'Pagination')]
+		[Object]$query_params,
+		[Parameter(Position = 4, ParameterSetName = 'Default')]
+		[Parameter(Position = 4, ParameterSetName = 'Pagination')]
 		[Object]$body_params,
 		[Parameter(ParameterSetName = 'Default')]
 		[Parameter(ParameterSetName = 'Pagination')]
@@ -40,26 +43,39 @@ function Invoke-VerkadaRestMethod
 	)
 
 	Process {
-		$body = @{
-			'org_id' = $org_id
+		$query = [System.Web.HttpUtility]::ParseQueryString([String]::Empty)
+		$query.add('org_id',$org_id)
+		if($query_params){
+			foreach ($qp in $query_params.GetEnumerator()) {$query.add("$($qp.name)", "$($qp.value)")}
 		}
-		if ($body_params){$body += $body_params}
+
+		$body = @{}
+		if ($body_params){
+			$body += $body_params
+			$body = $body | ConvertTo-Json
+		}
 		$headers=@{
 			'x-api-key' = $x_api_key
 		}
 
 		if ($pagination){
-			$body.page_size = $page_size
-			$body.page_token = "1"
+			$query.add('page_size', $page_size)
+			$query.add('page_token', '1')
+			$uri = [System.UriBuilder]"$url"
+			$uri.Query = $query.ToString()
+			$uri = $uri.Uri.OriginalString
 			$records = @()
 			Do {
-				$response = Invoke-RestMethod -Uri $uri -Body $body -Headers $headers
+				$response = Invoke-RestMethod -Uri $uri -Body $body -Headers $headers -ContentType 'application/json'
 				$records += $response.($propertyName)
 				$body.page_token = $response.next_page_token
 			} While ($body.page_token)
 			return $records
 		} else {
-			$response = Invoke-RestMethod -Uri $uri -Body $body -Headers $headers -Method $method
+			$uri = [System.UriBuilder]"$url"
+			$uri.Query = $query.ToString()
+			$uri = $uri.Uri.OriginalString
+			$response = Invoke-RestMethod -Uri $uri -Body $body -Headers $headers -Method $method -ContentType 'application/json'
 			return $response
 		}
 		
