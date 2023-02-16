@@ -23,7 +23,7 @@ function Get-VerkadaCameras
 	)
 
 	Begin {
-		$uri = "https://api.verkada.com/cameras/v1/devices"
+		$url = "https://api.verkada.com/cameras/v1/devices"
 		$page_size = 100
 		$propertyName = 'cameras'
 		if (!($org_id)){Write-Warning 'Missing org_id which is required'; return}
@@ -31,6 +31,6 @@ function Get-VerkadaCameras
 	} #end begin
 	
 	Process {
-		Invoke-VerkadaRestMethod $uri $org_id $x_api_key -pagination -page_size $page_size -propertyName $propertyName
+		Invoke-VerkadaRestMethod $url $org_id $x_api_key -pagination -page_size $page_size -propertyName $propertyName
 	} #end process
 } #end function

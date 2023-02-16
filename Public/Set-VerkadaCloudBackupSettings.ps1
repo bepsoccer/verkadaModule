@@ -36,8 +36,8 @@ function Set-VerkadaCloudBackupSettings
 	)
 
 	Begin {
-		$uri = "https://api.verkada.com/cameras/v1/cloud_backup/settings"
-		$response = @()
+		$url = "https://api.verkada.com/cameras/v1/cloud_backup/settings"
+		$result = @()
 		if (!($org_id)){Write-Warning 'missing org_id'; return}
 		if (!($x_api_key)){Write-Warning 'missing API token'; return}
 		Write-Warning "Have you backed up your configs first? If not, consider halting and running Get-VerkadaCloudBackupSettings -backup" -WarningAction Inquire
@@ -46,6 +46,7 @@ function Set-VerkadaCloudBackupSettings
 	Process {
 		$body_params = @{
 			'camera_id'					= $camera_id
+			'org_id'						= $org_id
 			'days_to_preserve'	= $days_to_preserve
 			'enabled'						= $enabled
 			'time_to_preserve'	= $time_to_preserve
@@ -54,10 +55,15 @@ function Set-VerkadaCloudBackupSettings
 			'video_to_upload'		= $video_to_upload
 		}
 
-		$response += Invoke-VerkadaRestMethod $uri $org_id $x_api_key $body_params -method post
+		$query_params = @{
+			'camera_id'					= $camera_id
+		}
+
+		Invoke-VerkadaRestMethod $url $org_id $x_api_key $query_params -body_params $body_params -method post
+		$result += ($body_params | ConvertTo-Json | ConvertFrom-Json)
 	} #end process
 
 	End {
-		return $response
+		return $result
 	} #end end
 } #end function

@@ -26,18 +26,18 @@ function Get-VerkadaCloudBackupSettings
 	)
 
 	Begin {
-		$uri = "https://api.verkada.com/cameras/v1/cloud_backup/settings"
+		$url = "https://api.verkada.com/cameras/v1/cloud_backup/settings"
 		$response = @()
 		if (!($org_id)){Write-Warning 'missing org_id'; return}
 		if (!($x_api_key)){Write-Warning 'missing API token'; return}
 	} #end beging
 	
 	Process {
-		$body_params = @{
+		$query_params = @{
 			'camera_id' = $camera_id
 		}
 
-		$response += Invoke-VerkadaRestMethod $uri $org_id $x_api_key $body_params
+		$response += Invoke-VerkadaRestMethod $url $org_id $x_api_key $query_params
 	} #end process
 
 	End {
