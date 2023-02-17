@@ -17,14 +17,23 @@ function Connect-Verkada
 	Param(
 		# Parameter help description
 		[Parameter(ParameterSetName = 'apiToken', Mandatory = $true, Position = 0)]
+		[Parameter(ParameterSetName = 'UnPwd', Mandatory = $true, Position = 0)]
 		[ValidateNotNullOrEmpty()]
 		[String]$org_id,
 		[Parameter(ParameterSetName = 'apiToken', Mandatory = $true, Position = 1)]
 		[ValidateNotNullOrEmpty()]
-		[String]$Token
+		[String]$Token,
+		[Parameter(ParameterSetName = 'UnPwd', Mandatory = $true)]
+		[ValidateNotNullOrEmpty()]
+		[String]$userName,
+		[Parameter(ParameterSetName = 'UnPwd', Mandatory = $true)]
+		[ValidateNotNullOrEmpty()]
+		[switch]$Password
 	)
 
 	Process {
+		Disconnect-Verkada
+
 		if($Token) {
 			$Global:verkadaConnection = @{
 				token			= $Token
@@ -50,6 +59,33 @@ function Connect-Verkada
 				return
 			}
 
+		} elseif ($Password) {
+			$MyPwd = Read-Host -AsSecureString 'Please enter your password'
+			$credential = New-Object System.Net.NetworkCredential($userName, $MyPwd, "Domain")
+
+			$Global:verkadaConnection = @{
+				org_id		= $org_id
+				authType	= 'UnPwd'
+			}
+
+			try {
+				$body = @{
+					"email"			= $userName
+					"password"	= $credential.Password
+					"org_id"		= $Global:verkadaConnection.org_id
+				}
+
+				$body = $body | ConvertTo-Json
+				$response = Invoke-RestMethod -Uri 'https://vprovision.command.verkada.com/user/login' -Body $body -StatusCodeVariable responseCode -Method Post -ContentType 'application/json'
+				$Global:verkadaConnection.userToken = $response.userToken
+				$Global:verkadaConnection.csrfToken = $response.csrfToken
+				Write-Host -ForegroundColor green "$responseCode - Successfully connected to Verkada Command"
+				return
+			} catch [Microsoft.PowerShell.Commands.HttpResponseException] {
+				Disconnect-Verkada
+				Write-Host -ForegroundColor Red $_.Exception.Message
+				return
+			}
 		}
 	} #end process
 } #end function
