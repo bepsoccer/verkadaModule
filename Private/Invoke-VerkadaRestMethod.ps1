@@ -43,6 +43,10 @@ function Invoke-VerkadaRestMethod
 		[String]$page_size,
 		[Parameter(Mandatory = $true, ParameterSetName = 'Pagination')]
 		[String]$propertyName,
+		[Parameter(Mandatory = $true,ParameterSetName = 'UnPwd')]
+		[string]$x_verkada_token = $Global:verkadaConnection.csrfToken,
+		[Parameter(Mandatory = $true,ParameterSetName = 'UnPwd')]
+		[string]$x_verkada_auth = $Global:verkadaConnection.userToken,
 		[Parameter(ParameterSetName = 'UnPwd')]
 		[Switch]$UnPwd
 
@@ -62,8 +66,8 @@ function Invoke-VerkadaRestMethod
 		}
 		if ($UnPwd){
 			$headers=@{
-				'x-verkada-token'		= $Global:verkadaConnection.csrfToken
-				'X-Verkada-Auth'		=	$Global:verkadaConnection.userToken
+				'x-verkada-token'		= $x_verkada_token
+				'X-Verkada-Auth'		=	$x_verkada_auth
 			}
 		} else {
 			$headers=@{
@@ -71,7 +75,7 @@ function Invoke-VerkadaRestMethod
 			}
 		}
 
-		if ($pagination){
+		if ($pagination.IsPresent){
 			$query.add('page_size', $page_size)
 			$query.add('page_token', '1')
 			$uri = [System.UriBuilder]"$url"
@@ -85,7 +89,7 @@ function Invoke-VerkadaRestMethod
 			} While ($body.page_token)
 			return $records
 		} else {
-			if ($UnPwd) {
+			if ($UnPwd.IsPresent) {
 				$uri = $url
 			} else {
 				$uri = [System.UriBuilder]"$url"
