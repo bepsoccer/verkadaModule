@@ -22,13 +22,17 @@ function Invoke-VerkadaFormCall
 		[Parameter(Mandatory = $true,Position = 3)]
 		[Object]$form_params,
 		[Parameter()]
-		[String]$method = 'POST'
+		[String]$method = 'POST',
+		[Parameter()]
+		[string]$x_verkada_token = $Global:verkadaConnection.csrfToken,
+		[Parameter()]
+		[string]$x_verkada_auth = $Global:verkadaConnection.userToken
 
 	)
 
 	Begin {
-		if (!($Global:verkadaConnection)){Write-Warning 'Missing auth token which is required'; return}
-		if ($Global:verkadaConnection.authType -ne 'UnPwd'){Write-Warning 'Un/Pwd auth is required'; return}
+		#if (!($Global:verkadaConnection)){Write-Warning 'Missing auth token which is required'; return}
+		#if ($Global:verkadaConnection.authType -ne 'UnPwd'){Write-Warning 'Un/Pwd auth is required'; return}
 	}
 
 	Process {
@@ -36,16 +40,13 @@ function Invoke-VerkadaFormCall
 		#$form_params.psobject.properties | Foreach { $form[$_.Name] = $_.Value }
 		
 		$headers=@{
-			'x-verkada-token'		= $Global:verkadaConnection.csrfToken
-			'X-Verkada-Auth'		=	$Global:verkadaConnection.userToken
+			'x-verkada-token'		= $x_verkada_token
+			'X-Verkada-Auth'		=	$x_verkada_auth
 		}
 		
 		$uri = $url
-		$form_params
-		$headers
-		$uri
 			
-		$response = Invoke-RestMethod -Uri $uri -Form $form_params -Headers $headers -Method $method -ContentType 'multipart/form-data'
+		$response = Invoke-RestMethod -Uri $uri -Form $form_params -Headers $headers -Method $method -ContentType 'multipart/form-data' -MaximumRetryCount 3 -RetryIntervalSec 5
 		return $response
 		
 	} #end process
