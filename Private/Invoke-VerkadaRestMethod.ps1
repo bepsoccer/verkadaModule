@@ -83,7 +83,7 @@ function Invoke-VerkadaRestMethod
 			$uri = $uri.Uri.OriginalString
 			$records = @()
 			Do {
-				$response = Invoke-RestMethod -Uri $uri -Body $body -Headers $headers -ContentType 'application/json'
+				$response = Invoke-RestMethod -Uri $uri -Body $body -Headers $headers -ContentType 'application/json' -MaximumRetryCount 3 -TimeoutSec 30 -RetryIntervalSec 5
 				$records += $response.($propertyName)
 				$body.page_token = $response.next_page_token
 			} While ($body.page_token)
@@ -97,7 +97,7 @@ function Invoke-VerkadaRestMethod
 				$uri = $uri.Uri.OriginalString
 			}
 			
-			$response = Invoke-RestMethod -Uri $uri -Body $body -Headers $headers -Method $method -ContentType 'application/json'
+			$response = Invoke-RestMethod -Uri $uri -Body $body -Headers $headers -Method $method -ContentType 'application/json' -MaximumRetryCount 3 -TimeoutSec 30 -RetryIntervalSec 5
 			return $response
 		}
 		
