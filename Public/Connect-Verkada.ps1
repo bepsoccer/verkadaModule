@@ -79,8 +79,9 @@ function Connect-Verkada
 				$response = Invoke-RestMethod -Uri 'https://vprovision.command.verkada.com/user/login' -Body $body -StatusCodeVariable responseCode -Method Post -ContentType 'application/json'
 				$Global:verkadaConnection.userToken = $response.userToken
 				$Global:verkadaConnection.csrfToken = $response.csrfToken
+				$Global:verkadaConnection.usr = $response.userId
 				Write-Host -ForegroundColor green "$responseCode - Successfully connected to Verkada Command"
-				return
+				return $response
 			} catch [Microsoft.PowerShell.Commands.HttpResponseException] {
 				Disconnect-Verkada
 				Write-Host -ForegroundColor Red $_.Exception.Message
