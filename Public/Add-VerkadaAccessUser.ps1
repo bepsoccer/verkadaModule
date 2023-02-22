@@ -35,7 +35,9 @@ function Add-VerkadaAccessUser
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[datetime]$expiration,
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
-		[bool]$sendInviteEmail=$false
+		[bool]$sendInviteEmail=$false,
+		[Parameter()]
+		[int]$threads=$null
 
 	)
 
@@ -43,6 +45,9 @@ function Add-VerkadaAccessUser
 		if (!($org_id)){Write-Warning 'Missing org_id which is required'; return}
 		if (!($Global:verkadaConnection)){Write-Warning 'Missing auth token which is required'; return}
 		if ($Global:verkadaConnection.authType -ne 'UnPwd'){Write-Warning 'Un/Pwd auth is required'; return}
+		
+		$x_verkada_token = $Global:verkadaConnection.csrfToken
+		$x_verkada_auth = $Global:verkadaConnection.userToken
 
 
 		$url = "https://vcerberus.command.verkada.com/users/create"
@@ -61,6 +66,26 @@ function Add-VerkadaAccessUser
 		if (!([string]::IsNullOrEmpty($expiration))){$form_params.expiration = $expiration}
 		if (!([string]::IsNullOrEmpty($sendInviteEmail))){$form_params.sendInviteEmail = $sendInviteEmail.ToString().ToLower()}
 
-		Invoke-VerkadaFormCall $url $org_id $form_params
+		if ($threads){
+			do {
+				$job = (Get-Job -State Running | measure).Count
+			} until ($job -le $threads)
+
+			Start-Job -Name $email -InitializationScript {Import-Module verkadaModule.psm1} -ScriptBlock {
+				Invoke-VerkadaFormCall $using:url $using:org_id $using:form_params -x_verkada_token $using:x_verkada_token -x_verkada_auth $using:x_verkada_auth
+			} | Out-Null
+			Get-Job -State Completed | Receive-Job -AutoRemoveJob -Wait
+		} else {
+			Invoke-VerkadaFormCall $url $org_id $form_params -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth
+		}
+
 	} #end process
+
+	End {
+		if ($threads){
+			Wait-Job -State Running  | Out-Null
+			Get-Job -State Completed | Receive-Job -AutoRemoveJob -Wait
+			Get-Job | Receive-Job -AutoRemoveJob -Wait
+		}
+	}
 } #end function
