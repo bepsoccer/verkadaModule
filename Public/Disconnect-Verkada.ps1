@@ -21,6 +21,6 @@ function Disconnect-Verkada
 	)
 
 	Process {
-		Remove-Variable -Name verkadaConnection -Scope Global
+		Remove-Variable -Name verkadaConnection -Scope Global -ErrorAction SilentlyContinue
 	} #end process
 } #end function
