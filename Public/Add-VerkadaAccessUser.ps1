@@ -82,7 +82,7 @@ function Add-VerkadaAccessUser
 
 		if ($threads){
 			do {
-				$job = (Get-Job -State Running | measure).Count
+				$job = (Get-Job -State Running | Measure-Object).Count
 			} until ($job -le $threads)
 
 			Start-Job -Name $email -InitializationScript {Import-Module verkadaModule.psm1} -ScriptBlock {
