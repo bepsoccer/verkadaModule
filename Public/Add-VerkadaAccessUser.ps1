@@ -88,7 +88,7 @@ function Add-VerkadaAccessUser
 			Start-Job -Name $email -InitializationScript {Import-Module verkadaModule.psm1} -ScriptBlock {
 				$output = Invoke-VerkadaFormCall $using:url $using:org_id $using:form_params -x_verkada_token $using:x_verkada_token -x_verkada_auth $using:x_verkada_auth
 				$res = @{}
-				$res.created = (Get-Date -Date "01-01-1970") + ([System.TimeSpan]::FromSeconds(($output.users.created)))
+				$res.created = ((Get-Date -Date "01-01-1970") + ([System.TimeSpan]::FromSeconds(($output.users.created)))).ToLocalTime()
 				$res.userId = $output.users.userId
 				$res.firstName = $output.users.firstName
 				$res.lastName = $output.users.lastName
@@ -119,7 +119,7 @@ function Add-VerkadaAccessUser
 		} else {
 			$output = Invoke-VerkadaFormCall $url $org_id $form_params -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth
 			$res = @{}
-			$res.created = (Get-Date -Date "01-01-1970") + ([System.TimeSpan]::FromSeconds(($output.users.created)))
+			$res.created = ((Get-Date -Date "01-01-1970") + ([System.TimeSpan]::FromSeconds(($output.users.created)))).ToLocalTime()
 			$res.userId = $output.users.userId
 			$res.firstName = $output.users.firstName
 			$res.lastName = $output.users.lastName
