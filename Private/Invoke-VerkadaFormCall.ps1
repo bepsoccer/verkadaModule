@@ -46,7 +46,7 @@ function Invoke-VerkadaFormCall
 		
 		$uri = $url
 			
-		$response = Invoke-RestMethod -Uri $uri -Form $form_params -Headers $headers -Method $method -ContentType 'multipart/form-data' -MaximumRetryCount 3 -TimeoutSec 30 -RetryIntervalSec 5
+		$response = Invoke-RestMethod -Uri $uri -Form $form_params -Headers $headers -Method $method -ContentType 'multipart/form-data' -MaximumRetryCount 3 -TimeoutSec 120 -RetryIntervalSec 5
 		return $response
 		
 	} #end process

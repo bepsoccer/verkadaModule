@@ -44,6 +44,10 @@ function Add-VerkadaAccessUser
 		[String]$cardNumberHex,
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[String]$facilityCode,
+		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		[String[]]$groupId,
+		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		[String[]]$groupName,
 		[Parameter()]
 		[Switch]$includeBadge,
 		[Parameter()]
@@ -78,7 +82,7 @@ function Add-VerkadaAccessUser
 
 		if ($threads){
 			do {
-				$job = (Get-Job -State Running | measure).Count
+				$job = (Get-Job -State Running | Measure-Object).Count
 			} until ($job -le $threads)
 
 			Start-Job -Name $email -InitializationScript {Import-Module verkadaModule.psm1} -ScriptBlock {
@@ -100,6 +104,12 @@ function Add-VerkadaAccessUser
 	
 					$output2 = invoke-expression $eval
 					$res.accessCards = $output2.accessCards
+				}
+
+				if ($using:groupId){
+					$response | Add-VerkadaAccessUserToGroup -groupId $using:groupId -org_id $using:org_id -x_verkada_token $using:x_verkada_token -x_verkada_auth $using:x_verkada_auth | Out-Null
+				} elseif ($using:groupName) {
+					<# Action when this condition is true #>
 				}
 
 				$response = $res | ConvertTo-Json -Depth 100 | ConvertFrom-Json
@@ -126,6 +136,13 @@ function Add-VerkadaAccessUser
 				$output2 = invoke-expression $eval
 				$res.accessCards = $output2.accessCards
 			}
+
+			if ($groupId){
+				$response | Add-VerkadaAccessUserToGroup -groupId $groupId
+			} elseif ($groupName) {
+				<# Action when this condition is true #>
+			}
+
 			$response = $res | ConvertTo-Json -Depth 100 | ConvertFrom-Json
 			$response
 
