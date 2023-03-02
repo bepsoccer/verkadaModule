@@ -20,7 +20,9 @@ function Get-VerkadaCameras
 		[Parameter(Position = 1)]
 		[String]$x_api_key = $Global:verkadaConnection.token,
 		[Parameter(ValueFromPipelineByPropertyName = $true, Position = 2)]
-		[String]$serial
+		[String]$serial,
+		[Parameter()]
+		[switch]$refresh
 
 	)
 
@@ -33,7 +35,7 @@ function Get-VerkadaCameras
 
 		$response = @()
 
-		if (!([string]::IsNullOrEmpty($global:verkadaCameras))) { 
+		if ((!([string]::IsNullOrEmpty($global:verkadaCameras))) -and (!($refresh.IsPresent))) { 
 			$cameras = $Global:verkadaCameras
 		} else {
 			$cameras = Invoke-VerkadaRestMethod $url $org_id $x_api_key -pagination -page_size $page_size -propertyName $propertyName
