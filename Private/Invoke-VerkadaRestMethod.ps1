@@ -49,7 +49,6 @@ function Invoke-VerkadaRestMethod
 		[string]$x_verkada_auth = $Global:verkadaConnection.userToken,
 		[Parameter(ParameterSetName = 'UnPwd')]
 		[Switch]$UnPwd
-
 	)
 
 	Process {
@@ -100,6 +99,5 @@ function Invoke-VerkadaRestMethod
 			$response = Invoke-RestMethod -Uri $uri -Body $body -Headers $headers -Method $method -ContentType 'application/json' -MaximumRetryCount 3 -TimeoutSec 120 -RetryIntervalSec 5
 			return $response
 		}
-		
 	} #end process
 } #end function
