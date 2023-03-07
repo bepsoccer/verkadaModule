@@ -33,14 +33,9 @@ function Add-VerkadaAccessUserToGroup
 		[string]$x_verkada_auth = $Global:verkadaConnection.userToken,
 		[Parameter()]
 		[int]$threads=$null
-
 	)
 
 	Begin {
-		#if (!($org_id)){Write-Warning 'Missing org_id which is required'; return}
-		#if (!($Global:verkadaConnection)){Write-Warning 'Missing auth token which is required'; return}
-		#if ($Global:verkadaConnection.authType -ne 'UnPwd'){Write-Warning 'Un/Pwd auth is required'; return}
-
 		$url = "https://vcerberus.command.verkada.com/user_groups/bulk_add_users"
 	} #end begin
 	
@@ -52,7 +47,6 @@ function Add-VerkadaAccessUserToGroup
 		}
 
 		Invoke-VerkadaRestMethod $url $org_id $body_params -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -Method 'POST' -UnPwd
-
 	} #end process
 
 	End {

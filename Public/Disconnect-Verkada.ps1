@@ -2,7 +2,7 @@ function Disconnect-Verkada
 {
 	<#
 		.SYNOPSIS
-		Removes cached credentials for Verkada's Public API
+		Removes cached credentials for Verkada's API Enpoints
 		.DESCRIPTION
 
 		.NOTES

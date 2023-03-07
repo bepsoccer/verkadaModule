@@ -23,7 +23,6 @@ function Get-VerkadaCameras
 		[String]$serial,
 		[Parameter()]
 		[switch]$refresh
-
 	)
 
 	Begin {
