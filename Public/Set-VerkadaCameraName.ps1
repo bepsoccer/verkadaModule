@@ -13,14 +13,17 @@ function Set-VerkadaCameraName
 
 	#>
 
-	[CmdletBinding(PositionalBinding = $true, DefaultParameterSetName = 'email')]
+	[CmdletBinding(PositionalBinding = $true)]
 	Param(
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
 		[String]$org_id = $Global:verkadaConnection.org_id,
-		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
+		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'cameraId')]
 		[Alias("cameraId")]
 		[String]$camera_id,
+		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'serial')]
+		[Parameter(ValueFromPipelineByPropertyName = $true, ParameterSetName = 'cameraId')]
+		[String]$serial,
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
 		[Alias("name")]
 		[String]$camera_name,
@@ -29,7 +32,10 @@ function Set-VerkadaCameraName
 		[string]$x_verkada_token = $Global:verkadaConnection.csrfToken,
 		[Parameter()]
 		[ValidateNotNullOrEmpty()]
-		[string]$x_verkada_auth = $Global:verkadaConnection.userToken
+		[string]$x_verkada_auth = $Global:verkadaConnection.userToken,
+		[Parameter(ParameterSetName = 'serial')]
+		[ValidateNotNullOrEmpty()]
+		[String]$x_api_key = $Global:verkadaConnection.token
 	)
 
 	Begin {
@@ -38,6 +44,10 @@ function Set-VerkadaCameraName
 	} #end begin
 	
 	Process {
+		if ($PSCmdlet.ParameterSetName -eq 'serial'){
+			$camera_id = Get-VerkadaCameras -serial $_.serial | Select-Object -ExpandProperty camera_id
+		}
+
 		$body_params = @{
 			"cameraId"				= $camera_id
 			"name"						= $camera_name
