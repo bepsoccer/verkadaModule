@@ -33,10 +33,6 @@ function Set-VerkadaCameraName
 	)
 
 	Begin {
-		#if (!($org_id)){Write-Warning 'Missing org_id which is required'; return}
-		#if (!($Global:verkadaConnection)){Write-Warning 'Missing auth token which is required'; return}
-		#if ($Global:verkadaConnection.authType -ne 'UnPwd'){Write-Warning 'Un/Pwd auth is required'; return}
-
 		$url = "https://vprovision.command.verkada.com/camera/name/set"
 		$response = @()
 	} #end begin
@@ -49,7 +45,6 @@ function Set-VerkadaCameraName
 		
 		$res = Invoke-VerkadaRestMethod $url $org_id $body_params -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -Method 'POST' -UnPwd
 		$response += $res.cameras
-
 	} #end process
 
 	End {

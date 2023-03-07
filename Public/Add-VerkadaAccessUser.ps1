@@ -16,6 +16,7 @@ function Add-VerkadaAccessUser
 	[CmdletBinding(PositionalBinding = $true, DefaultParameterSetName = 'email')]
 	Param(
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		[ValidateNotNullOrEmpty()]
 		[String]$org_id = $Global:verkadaConnection.org_id,
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'email')]
 		[Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'name')]
@@ -26,6 +27,12 @@ function Add-VerkadaAccessUser
 		[Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'email')]
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'name')]
 		[String]$lastName,
+		[Parameter()]
+		[ValidateNotNullOrEmpty()]
+		[string]$x_verkada_token = $Global:verkadaConnection.csrfToken,
+		[Parameter()]
+		[ValidateNotNullOrEmpty()]
+		[string]$x_verkada_auth = $Global:verkadaConnection.userToken,
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[String]$phone,
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
@@ -52,18 +59,9 @@ function Add-VerkadaAccessUser
 		[Switch]$includeBadge,
 		[Parameter()]
 		[int]$threads=$null
-
 	)
 
 	Begin {
-		if (!($org_id)){Write-Warning 'Missing org_id which is required'; return}
-		if (!($Global:verkadaConnection)){Write-Warning 'Missing auth token which is required'; return}
-		if ($Global:verkadaConnection.authType -ne 'UnPwd'){Write-Warning 'Un/Pwd auth is required'; return}
-		
-		$x_verkada_token = $Global:verkadaConnection.csrfToken
-		$x_verkada_auth = $Global:verkadaConnection.userToken
-
-
 		$url = "https://vcerberus.command.verkada.com/users/create"
 	} #end begin
 	
@@ -145,9 +143,7 @@ function Add-VerkadaAccessUser
 
 			$response = $res | ConvertTo-Json -Depth 100 | ConvertFrom-Json
 			$response
-
 		}
-
 	} #end process
 
 	End {

@@ -22,14 +22,20 @@ function Read-VerkadaCommandUsers
 		[Parameter(Position = 2)]
 		[Object]$variables,
 		[Parameter()]
-		[switch]$withGroups
-
+		[switch]$withGroups,
+		[Parameter()]
+		[ValidateNotNullOrEmpty()]
+		[string]$x_verkada_token = $Global:verkadaConnection.csrfToken,
+		[Parameter()]
+		[ValidateNotNullOrEmpty()]
+		[string]$x_verkada_auth = $Global:verkadaConnection.userToken,
+		[Parameter()]
+		[ValidateNotNullOrEmpty()]
+		[string]$usr_id = $Global:verkadaConnection.usr
 	)
 
 	Begin {
 		$url = "https://vgateway.command.verkada.com/graphql"
-		if (!($Global:verkadaConnection)){Write-Warning 'Missing auth token which is required'; return}
-		if ($Global:verkadaConnection.authType -ne 'UnPwd'){Write-Warning 'Un/Pwd auth is required'; return}
 
 		if ([string]::IsNullOrEmpty($query)){
 			$queryBase = 'query GetCommandUsers($filter: UsersFilter!, $pagination: PageOptions) {
@@ -90,11 +96,10 @@ function Read-VerkadaCommandUsers
 			}" | ConvertFrom-Json
 		}
 		$variables.filter.organizationId = $org_id
-
 	} #end begin
 	
 	Process {	
-		$response = Invoke-VerkadaGraphqlCall $url -query $query -qlVariables $variables -method 'Post' -propertyName 'users'
+		$response = Invoke-VerkadaGraphqlCall $url -query $query -qlVariables $variables -org_id $org_id -method 'Post' -propertyName 'users' -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr_id $usr_id
 		return $response
 	} #end process
 } #end function

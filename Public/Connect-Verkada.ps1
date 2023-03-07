@@ -2,7 +2,7 @@ function Connect-Verkada
 {
 	<#
 		.SYNOPSIS
-		Gathers needed credentials for Verkada's Public API
+		Gathers needed credentials for Verkada's API Endpoints
 		.DESCRIPTION
 
 		.NOTES
@@ -21,6 +21,7 @@ function Connect-Verkada
 		[ValidateNotNullOrEmpty()]
 		[String]$org_id,
 		[Parameter(ParameterSetName = 'apiToken', Mandatory = $true, Position = 1)]
+		[Parameter(ParameterSetName = 'UnPwd', Position = 1)]
 		[ValidateNotNullOrEmpty()]
 		[String]$Token,
 		[Parameter(ParameterSetName = 'UnPwd', Mandatory = $true)]
@@ -32,14 +33,15 @@ function Connect-Verkada
 	)
 
 	Process {
-		Disconnect-Verkada
-
-		if($Token) {
+		#Disconnect-Verkada
+		If (!($Global:verkadaConnection)){
 			$Global:verkadaConnection = @{
-				token			= $Token
 				org_id		= $org_id
-				authType	= 'Token'
 			}
+		}
+		
+		if($Token) {
+			$Global:verkadaConnection.token = $Token
 
 			try {
 				$body = @{
@@ -51,22 +53,18 @@ function Connect-Verkada
 				}
 				
 				$response = Invoke-RestMethod -Uri 'https://api.verkada.com/cameras/v1/devices' -Body $body -Headers $headers -StatusCodeVariable responseCode
-				Write-Host -ForegroundColor green "$responseCode - Successfully connected to Verkada Command"
-				return
+				Write-Host -ForegroundColor green "$responseCode - Successfully connected to Verkada Command with API Token"
+				#return
 			} catch [Microsoft.PowerShell.Commands.HttpResponseException] {
 				Disconnect-Verkada
 				Write-Host -ForegroundColor Red $_.Exception.Message
 				return
 			}
 
-		} elseif ($Password) {
+		}
+		if ($Password) {
 			$MyPwd = Read-Host -AsSecureString 'Please enter your password'
 			$credential = New-Object System.Net.NetworkCredential($userName, $MyPwd, "Domain")
-
-			$Global:verkadaConnection = @{
-				org_id		= $org_id
-				authType	= 'UnPwd'
-			}
 
 			try {
 				$body = @{
@@ -80,7 +78,7 @@ function Connect-Verkada
 				$Global:verkadaConnection.userToken = $response.userToken
 				$Global:verkadaConnection.csrfToken = $response.csrfToken
 				$Global:verkadaConnection.usr = $response.userId
-				Write-Host -ForegroundColor green "$responseCode - Successfully connected to Verkada Command"
+				Write-Host -ForegroundColor green "$responseCode - Successfully connected to Verkada Command with Un/Pass"
 				return $response
 			} catch [Microsoft.PowerShell.Commands.HttpResponseException] {
 				Disconnect-Verkada

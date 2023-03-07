@@ -28,14 +28,18 @@ function Invoke-VerkadaGraphqlCall
 		[Parameter(Mandatory = $true, Position = 1, ParameterSetName = 'query')]
 		[object]$query,
 		[Parameter(Mandatory = $true, Position = 2, ParameterSetName = 'query')]
-		[object]$qlVariables
-
+		[object]$qlVariables,
+		[Parameter(Mandatory = $true)]
+		[String]$org_id,
+		[Parameter(Mandatory = $true)]
+		[string]$usr_id,
+		[Parameter(Mandatory = $true)]
+		[string]$x_verkada_token,
+		[Parameter(Mandatory = $true)]
+		[string]$x_verkada_auth
 	)
 
 	Process {
-		if (!($Global:verkadaConnection)){Write-Warning 'Missing auth token which is required'; return}
-		if ($Global:verkadaConnection.authType -ne 'UnPwd'){Write-Warning 'Un/Pwd auth is required'; return}
-		
 		if ($query) {
 			$body = @{
 			'query' = $query
@@ -47,10 +51,10 @@ function Invoke-VerkadaGraphqlCall
 		$body.variables.pagination.pageToken		= $null
 
 		$cookies = @{
-			'auth'	= $Global:verkadaConnection.userToken
-			'org'		= $Global:verkadaConnection.org_id
-			'token'	= $Global:verkadaConnection.csrfToken
-			'usr'		= $Global:verkadaConnection.usr = $response.userId
+			'auth'	= $x_verkada_auth
+			'org'		= $org_id
+			'token'	= $x_verkada_token
+			'usr'		= $usr_id
 		}
 
 		$session = New-WebSession $cookies $url
@@ -66,6 +70,5 @@ function Invoke-VerkadaGraphqlCall
 		} While ($body.variables.pagination.pageToken)
 		
 		return $records
-		
 	} #end process
 } #end function

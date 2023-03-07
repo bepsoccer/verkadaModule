@@ -18,8 +18,10 @@ function Get-VerkadaCloudBackupSettings
 		[Parameter(ValueFromPipelineByPropertyName = $true, Mandatory = $true, Position = 0)]
 		[String]$camera_id,
 		[Parameter(Position = 1)]
+		[ValidateNotNullOrEmpty()]
 		[String]$org_id = $Global:verkadaConnection.org_id,
 		[Parameter(Position = 2)]
+		[ValidateNotNullOrEmpty()]
 		[String]$x_api_key = $Global:verkadaConnection.token,
 		[Parameter()]
 		[Switch]$backup
@@ -28,8 +30,8 @@ function Get-VerkadaCloudBackupSettings
 	Begin {
 		$url = "https://api.verkada.com/cameras/v1/cloud_backup/settings"
 		$response = @()
-		if (!($org_id)){Write-Warning 'missing org_id'; return}
-		if (!($x_api_key)){Write-Warning 'missing API token'; return}
+		#if (!($org_id)){Write-Warning 'missing org_id'; return}
+		#if (!($x_api_key)){Write-Warning 'missing API token'; return}
 	} #end beging
 	
 	Process {
