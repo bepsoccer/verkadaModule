@@ -14,10 +14,12 @@ function Get-VerkadaCameras
 	#>
 
 	[CmdletBinding(PositionalBinding = $true)]
-	Param(
+	Param(	
 		[Parameter(ValueFromPipelineByPropertyName = $true, Position = 0)]
+		[ValidateNotNullOrEmpty()]
 		[String]$org_id = $Global:verkadaConnection.org_id,
 		[Parameter(Position = 1)]
+		[ValidateNotNullOrEmpty()]
 		[String]$x_api_key = $Global:verkadaConnection.token,
 		[Parameter(ValueFromPipelineByPropertyName = $true, Position = 2)]
 		[String]$serial,
@@ -29,8 +31,9 @@ function Get-VerkadaCameras
 		$url = "https://api.verkada.com/cameras/v1/devices"
 		$page_size = 100
 		$propertyName = 'cameras'
-		if (!($org_id)){Write-Warning 'Missing org_id which is required'; return}
-		if (!($x_api_key)){Write-Warning 'Missing API token which is required'; return}
+		#parameter validation
+		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
+		if ([string]::IsNullOrEmpty($x_api_key)) {throw "x_api_key is missing but is required!"}
 
 		$response = @()
 

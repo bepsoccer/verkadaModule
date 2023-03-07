@@ -44,9 +44,9 @@ function Invoke-VerkadaRestMethod
 		[Parameter(Mandatory = $true, ParameterSetName = 'Pagination')]
 		[String]$propertyName,
 		[Parameter(Mandatory = $true,ParameterSetName = 'UnPwd')]
-		[string]$x_verkada_token = $Global:verkadaConnection.csrfToken,
+		[string]$x_verkada_token,
 		[Parameter(Mandatory = $true,ParameterSetName = 'UnPwd')]
-		[string]$x_verkada_auth = $Global:verkadaConnection.userToken,
+		[string]$x_verkada_auth,
 		[Parameter(ParameterSetName = 'UnPwd')]
 		[Switch]$UnPwd
 	)
