@@ -19,7 +19,7 @@ Connect-Verkada [-org_id] <String> [-Token] <String> [<CommonParameters>]
 
 ### UnPwd
 ```
-Connect-Verkada [-org_id] <String> -userName <String> [-Password] [<CommonParameters>]
+Connect-Verkada [-org_id] <String> [[-Token] <String>] -userName <String> [-Password] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -58,6 +58,18 @@ Parameter Sets: apiToken
 Aliases:
 
 Required: True
+Position: 2
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+```yaml
+Type: String
+Parameter Sets: UnPwd
+Aliases:
+
+Required: False
 Position: 2
 Default value: None
 Accept pipeline input: False

@@ -14,7 +14,7 @@ Gathers all Command Users in an organization
 
 ```
 Read-VerkadaCommandUsers [[-org_id] <String>] [[-query] <Object>] [[-variables] <Object>] [-withGroups]
- [<CommonParameters>]
+ [-x_verkada_token <String>] [-x_verkada_auth <String>] [-usr_id <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -85,6 +85,51 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -x_verkada_token
+{{ Fill x_verkada_token Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: $Global:verkadaConnection.csrfToken
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -x_verkada_auth
+{{ Fill x_verkada_auth Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: $Global:verkadaConnection.userToken
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -usr_id
+{{ Fill usr_id Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: $Global:verkadaConnection.usr
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

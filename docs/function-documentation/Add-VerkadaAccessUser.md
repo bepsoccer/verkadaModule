@@ -15,17 +15,19 @@ Adds an Access User in an organization
 ### email (Default)
 ```
 Add-VerkadaAccessUser [-org_id <String>] -email <String> [-firstName <String>] [-lastName <String>]
- [-phone <String>] [-role <String>] [-start <DateTime>] [-expiration <DateTime>] [-sendInviteEmail <Boolean>]
- [-cardType <String>] [-cardNumber <String>] [-cardNumberHex <String>] [-facilityCode <String>]
- [-groupId <String[]>] [-groupName <String[]>] [-includeBadge] [-threads <Int32>] [<CommonParameters>]
+ [-x_verkada_token <String>] [-x_verkada_auth <String>] [-phone <String>] [-role <String>] [-start <DateTime>]
+ [-expiration <DateTime>] [-sendInviteEmail <Boolean>] [-cardType <String>] [-cardNumber <String>]
+ [-cardNumberHex <String>] [-facilityCode <String>] [-groupId <String[]>] [-groupName <String[]>]
+ [-includeBadge] [-threads <Int32>] [<CommonParameters>]
 ```
 
 ### name
 ```
 Add-VerkadaAccessUser [-org_id <String>] [-email <String>] -firstName <String> -lastName <String>
- [-phone <String>] [-role <String>] [-start <DateTime>] [-expiration <DateTime>] [-sendInviteEmail <Boolean>]
- [-cardType <String>] [-cardNumber <String>] [-cardNumberHex <String>] [-facilityCode <String>]
- [-groupId <String[]>] [-groupName <String[]>] [-includeBadge] [-threads <Int32>] [<CommonParameters>]
+ [-x_verkada_token <String>] [-x_verkada_auth <String>] [-phone <String>] [-role <String>] [-start <DateTime>]
+ [-expiration <DateTime>] [-sendInviteEmail <Boolean>] [-cardType <String>] [-cardNumber <String>]
+ [-cardNumberHex <String>] [-facilityCode <String>] [-groupId <String[]>] [-groupName <String[]>]
+ [-includeBadge] [-threads <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -133,6 +135,36 @@ Required: True
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -x_verkada_token
+{{ Fill x_verkada_token Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: $Global:verkadaConnection.csrfToken
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -x_verkada_auth
+{{ Fill x_verkada_auth Description }}
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: $Global:verkadaConnection.userToken
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
