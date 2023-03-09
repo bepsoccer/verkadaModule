@@ -29,7 +29,7 @@ function Get-VerkadaCameras
 
 	Begin {
 		$url = "https://api.verkada.com/cameras/v1/devices"
-		$page_size = 100
+		$page_size = '100'
 		$propertyName = 'cameras'
 		#parameter validation
 		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
