@@ -38,6 +38,10 @@ function Set-VerkadaCloudBackupSettings
 	)
 
 	Begin {
+		#parameter validation
+		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
+		if ([string]::IsNullOrEmpty($x_api_key)) {throw "x_api_key is missing but is required!"}
+		
 		$url = "https://api.verkada.com/cameras/v1/cloud_backup/settings"
 		$result = @()
 		Write-Warning "Have you backed up your configs first? If not, consider halting and running Get-VerkadaCloudBackupSettings -backup" -WarningAction Inquire

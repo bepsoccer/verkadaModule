@@ -28,6 +28,11 @@ function Get-VerkadaAccessUser
 	)
 
 	Begin {
+		#parameter validation
+		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
+		if ([string]::IsNullOrEmpty($x_verkada_token)) {throw "x_verkada_token is missing but is required!"}
+		if ([string]::IsNullOrEmpty($x_verkada_auth)) {throw "x_verkada_auth is missing but is required!"}
+		
 		$url = "https://vcerberus.command.verkada.com/user/$org_id/$userId"
 	} #end begin
 	

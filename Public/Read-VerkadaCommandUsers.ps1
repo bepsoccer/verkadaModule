@@ -16,6 +16,7 @@ function Read-VerkadaCommandUsers
 	[CmdletBinding(PositionalBinding = $true)]
 	Param(
 		[Parameter(Position = 0)]
+		[ValidateNotNullOrEmpty()]
 		[string]$org_id = $Global:verkadaConnection.org_id,
 		[Parameter(Position = 1)]
 		[Object]$query,
@@ -35,6 +36,12 @@ function Read-VerkadaCommandUsers
 	)
 
 	Begin {
+		#parameter validation
+		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
+		if ([string]::IsNullOrEmpty($x_verkada_token)) {throw "x_verkada_token is missing but is required!"}
+		if ([string]::IsNullOrEmpty($x_verkada_auth)) {throw "x_verkada_auth is missing but is required!"}
+		if ([string]::IsNullOrEmpty($usr_id)) {throw "usr_id is missing but is required!"}
+		
 		$url = "https://vgateway.command.verkada.com/graphql"
 
 		if ([string]::IsNullOrEmpty($query)){

@@ -28,10 +28,12 @@ function Get-VerkadaCloudBackupSettings
 	)
 
 	Begin {
+		#parameter validation
+		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
+		if ([string]::IsNullOrEmpty($x_api_key)) {throw "x_api_key is missing but is required!"}
+	
 		$url = "https://api.verkada.com/cameras/v1/cloud_backup/settings"
 		$response = @()
-		#if (!($org_id)){Write-Warning 'missing org_id'; return}
-		#if (!($x_api_key)){Write-Warning 'missing API token'; return}
 	} #end beging
 	
 	Process {
