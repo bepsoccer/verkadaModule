@@ -32,7 +32,7 @@ function Invoke-VerkadaGraphqlCall
 		[Parameter(Mandatory = $true)]
 		[String]$org_id,
 		[Parameter(Mandatory = $true)]
-		[string]$usr_id,
+		[string]$usr,
 		[Parameter(Mandatory = $true)]
 		[string]$x_verkada_token,
 		[Parameter(Mandatory = $true)]
@@ -54,7 +54,7 @@ function Invoke-VerkadaGraphqlCall
 			'auth'	= $x_verkada_auth
 			'org'		= $org_id
 			'token'	= $x_verkada_token
-			'usr'		= $usr_id
+			'usr'		= $usr
 		}
 
 		$session = New-WebSession $cookies $url
