@@ -33,7 +33,7 @@ function Connect-Verkada
 	)
 
 	Process {
-		#Disconnect-Verkada
+		Remove-Variable -Name verkadaCameras -Scope Global -ErrorAction SilentlyContinue
 		If (!($Global:verkadaConnection)){
 			$Global:verkadaConnection = @{
 				org_id		= $org_id
