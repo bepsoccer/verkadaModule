@@ -17,6 +17,7 @@ function Add-VerkadaAccessUser
 	Param(
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
+		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[String]$org_id = $Global:verkadaConnection.org_id,
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'email')]
 		[Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'name')]
@@ -29,13 +30,16 @@ function Add-VerkadaAccessUser
 		[String]$lastName,
 		[Parameter()]
 		[ValidateNotNullOrEmpty()]
+		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[string]$x_verkada_token = $Global:verkadaConnection.csrfToken,
 		[Parameter()]
 		[ValidateNotNullOrEmpty()]
 		[string]$x_verkada_auth = $Global:verkadaConnection.userToken,
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		[ValidatePattern("^\+\d{11}")]
 		[String]$phone,
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		[ValidateSet('ORG_MEMBER','ADMIN')]
 		[String]$role='ORG_MEMBER',
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[datetime]$start,
@@ -44,6 +48,7 @@ function Add-VerkadaAccessUser
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[bool]$sendInviteEmail=$false,
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		[ValidateSet('HID','HID33DSX','HID33RS2','HID34','HID36Keyscan','HID37wFacilityCode','HID37woFacilityCode','Corporate1000_35','Corporate1000_48','CasiRusco','MiFareClassic1K_CSN','DESFire','PointGuardMDI37','GProxII36','KantechXSF','Schlage34','HID36Simplex','Kastle32','RBH50')]
 		[String]$cardType,
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[String]$cardNumber,
@@ -52,12 +57,14 @@ function Add-VerkadaAccessUser
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[String]$facilityCode,
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[String[]]$groupId,
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[String[]]$groupName,
 		[Parameter()]
 		[Switch]$includeBadge,
 		[Parameter()]
+		[ValidateRange(1,4)]
 		[int]$threads=$null
 	)
 

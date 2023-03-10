@@ -17,6 +17,7 @@ function Read-VerkadaCommandUsers
 	Param(
 		[Parameter(Position = 0)]
 		[ValidateNotNullOrEmpty()]
+		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[string]$org_id = $Global:verkadaConnection.org_id,
 		[Parameter(Position = 1)]
 		[Object]$query,
@@ -26,6 +27,7 @@ function Read-VerkadaCommandUsers
 		[switch]$withGroups,
 		[Parameter()]
 		[ValidateNotNullOrEmpty()]
+		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[string]$x_verkada_token = $Global:verkadaConnection.csrfToken,
 		[Parameter()]
 		[ValidateNotNullOrEmpty()]

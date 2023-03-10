@@ -16,24 +16,32 @@ function Set-VerkadaCloudBackupSettings
 	[CmdletBinding(PositionalBinding = $true)]
 	Param(
 		[Parameter(ValueFromPipelineByPropertyName = $true, Mandatory = $true, Position = 0)]
+		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[String]$camera_id,
 		[Parameter(Position = 1)]
 		[ValidateNotNullOrEmpty()]
+		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[String]$org_id = $Global:verkadaConnection.org_id,
 		[Parameter(Position = 2)]
 		[ValidateNotNullOrEmpty()]
 		[String]$x_api_key = $Global:verkadaConnection.token,
 		[Parameter(ValueFromPipelineByPropertyName = $true, Mandatory = $true)]
+		[ValidatePattern("[0-1],[0-1],[0-1],[0-1],[0-1],[0-1],[0-1]")]
 		[String]$days_to_preserve,
 		[Parameter(ValueFromPipelineByPropertyName = $true, Mandatory = $true)]
+		[ValidatePattern("[0-1]")]
 		[int]$enabled,
 		[Parameter(ValueFromPipelineByPropertyName = $true, Mandatory = $true)]
+		[ValidatePattern("^(\d|[1-9]\d{1,3}|[1-7]\d{4}|8[0-3]\d{3}|84[0-5]\d{2}|84600),(\d|[1-9]\d{1,3}|[1-7]\d{4}|8[0-3]\d{3}|84[0-5]\d{2}|84600)$")]
 		[String]$time_to_preserve,
 		[Parameter(ValueFromPipelineByPropertyName = $true, Mandatory = $true)]
+		[ValidatePattern("^(\d|[1-9]\d{1,3}|[1-7]\d{4}|8[0-3]\d{3}|84[0-5]\d{2}|84600),(\d|[1-9]\d{1,3}|[1-7]\d{4}|8[0-3]\d{3}|84[0-5]\d{2}|84600)$")]
 		[String]$upload_timeslot,
 		[Parameter(ValueFromPipelineByPropertyName = $true, Mandatory = $true)]
+		[ValidateSet("STANDARD_QUALITY","HIGH_QUALITY")]
 		[String]$video_quality,
 		[Parameter(ValueFromPipelineByPropertyName = $true, Mandatory = $true)]
+		[ValidateSet("MOTION","ALL")]
 		[String]$video_to_upload
 	)
 
