@@ -75,17 +75,19 @@ function Invoke-VerkadaRestMethod
 		}
 
 		if ($pagination.IsPresent){
+			$page_token = '1'
 			$query.add('page_size', $page_size)
-			$query.add('page_token', '1')
-			$uri = [System.UriBuilder]"$url"
-			$uri.Query = $query.ToString()
-			$uri = $uri.Uri.OriginalString
+			$query.add('page_token', $page_token)
 			$records = @()
 			Do {
+				$uri = [System.UriBuilder]"$url"
+				$uri.Query = $query.ToString()
+				$uri = $uri.Uri.OriginalString
 				$response = Invoke-RestMethod -Uri $uri -Body $body -Headers $headers -ContentType 'application/json' -MaximumRetryCount 3 -TimeoutSec 120 -RetryIntervalSec 5
 				$records += $response.($propertyName)
-				$body.page_token = $response.next_page_token
-			} While ($body.page_token)
+				$page_token = $response.next_page_token
+				$query.Set('page_token', $page_token)
+			} While ($page_token)
 			return $records
 		} else {
 			if ($UnPwd.IsPresent) {
