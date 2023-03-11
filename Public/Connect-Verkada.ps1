@@ -24,7 +24,7 @@ function Connect-Verkada
 		[Parameter(ParameterSetName = 'apiToken', Mandatory = $true, Position = 1)]
 		[Parameter(ParameterSetName = 'UnPwd', Position = 1)]
 		[ValidateNotNullOrEmpty()]
-		[String]$Token,
+		[String]$x_api_key,
 		[Parameter(ParameterSetName = 'UnPwd', Mandatory = $true)]
 		[ValidateNotNullOrEmpty()]
 		[String]$userName,
@@ -41,8 +41,8 @@ function Connect-Verkada
 			}
 		}
 		
-		if($Token) {
-			$Global:verkadaConnection.token = $Token
+		if($x_api_key) {
+			$Global:verkadaConnection.token = $x_api_key
 
 			try {
 				$body = @{
