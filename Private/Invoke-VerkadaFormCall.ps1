@@ -18,14 +18,19 @@ function Invoke-VerkadaFormCall
 		[Parameter(Mandatory = $true, Position = 0)]
 		[String]$url,
 		[Parameter(Mandatory = $true, Position = 1)]
+		[ValidateNotNullOrEmpty()]
+		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[String]$org_id,
 		[Parameter(Mandatory = $true,Position = 3)]
 		[Object]$form_params,
 		[Parameter()]
 		[String]$method = 'POST',
 		[Parameter(Mandatory = $true)]
+		[ValidateNotNullOrEmpty()]
+		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[string]$x_verkada_token,
 		[Parameter(Mandatory = $true)]
+		[ValidateNotNullOrEmpty()]
 		[string]$x_verkada_auth
 	)
 

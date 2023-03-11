@@ -22,6 +22,8 @@ function Invoke-VerkadaRestMethod
 		[Parameter(Mandatory = $true, Position = 1, ParameterSetName = 'Default')]
 		[Parameter(Mandatory = $true, Position = 1, ParameterSetName = 'Pagination')]
 		[Parameter(Mandatory = $true, Position = 1, ParameterSetName = 'UnPwd')]
+		[ValidateNotNullOrEmpty()]
+		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[String]$org_id,
 		[Parameter(Mandatory = $true, Position = 2, ParameterSetName = 'Default')]
 		[Parameter(Mandatory = $true, Position = 2, ParameterSetName = 'Pagination')]
@@ -44,6 +46,8 @@ function Invoke-VerkadaRestMethod
 		[Parameter(Mandatory = $true, ParameterSetName = 'Pagination')]
 		[String]$propertyName,
 		[Parameter(Mandatory = $true,ParameterSetName = 'UnPwd')]
+		[ValidateNotNullOrEmpty()]
+		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[string]$x_verkada_token,
 		[Parameter(Mandatory = $true,ParameterSetName = 'UnPwd')]
 		[string]$x_verkada_auth,
