@@ -14,23 +14,37 @@ Gathers all Command Users in an organization
 
 ```
 Read-VerkadaCommandUsers [[-org_id] <String>] [[-query] <Object>] [[-variables] <Object>] [-withGroups]
- [-x_verkada_token <String>] [-x_verkada_auth <String>] [-usr_id <String>] [<CommonParameters>]
+ [-x_verkada_token <String>] [-x_verkada_auth <String>] [-usr <String>] [-refresh] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+This function will return all the active Command users in an organization.
+The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
+Read-VerkadaCommandUsers
+This will return all the active users in an organization.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+```
 
+### EXAMPLE 2
+```
+Read-VerkadaCommandUsers -userId 'aefrfefb-3429-39ec-b042-userAC' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+This will return all the active users in an organization.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+```
+
+### EXAMPLE 3
+```
+Read-VerkadaCommandUsers -refresh
+This will return all the active users in an organization with the most recent data available from Command.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ## PARAMETERS
 
 ### -org_id
-{{ Fill org_id Description }}
+The UUID of the organization the user belongs to
 
 ```yaml
 Type: String
@@ -45,7 +59,7 @@ Accept wildcard characters: False
 ```
 
 ### -query
-{{ Fill query Description }}
+This is the graphql query to be submitted (do not use unless you know what you are doing)
 
 ```yaml
 Type: Object
@@ -60,7 +74,7 @@ Accept wildcard characters: False
 ```
 
 ### -variables
-{{ Fill variables Description }}
+This is the graphql variables to be submitted (do not use unless you know what you are doing)
 
 ```yaml
 Type: Object
@@ -75,7 +89,7 @@ Accept wildcard characters: False
 ```
 
 ### -withGroups
-{{ Fill withGroups Description }}
+Switch to include retrieving group membership (not currently implemented)
 
 ```yaml
 Type: SwitchParameter
@@ -90,7 +104,7 @@ Accept wildcard characters: False
 ```
 
 ### -x_verkada_token
-{{ Fill x_verkada_token Description }}
+The Verkada(CSRF) token of the user running the command
 
 ```yaml
 Type: String
@@ -105,7 +119,7 @@ Accept wildcard characters: False
 ```
 
 ### -x_verkada_auth
-{{ Fill x_verkada_auth Description }}
+The Verkada Auth(session auth) token of the user running the command
 
 ```yaml
 Type: String
@@ -119,8 +133,8 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -usr_id
-{{ Fill usr_id Description }}
+### -usr
+The UUID of the user account making the request
 
 ```yaml
 Type: String
@@ -130,6 +144,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: $Global:verkadaConnection.usr
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -refresh
+Switch to force a refreshed list of cameras from Command (not currently implemented)
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

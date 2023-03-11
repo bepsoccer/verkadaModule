@@ -2,51 +2,61 @@ function Invoke-VerkadaRestMethod
 {
 	<#
 		.SYNOPSIS
-		Used to build an Invoke-RestMethod call for Verkada's RESTful API
+		Used to build an Invoke-RestMethod call for Verkada's private API enpoints
 		.DESCRIPTION
-
-		.NOTES
-
-		.EXAMPLE
-
-		.LINK
-
+		Private function to build Invoke-RestMethod calls for Verkada's private API enpoints
 	#>
 
 	[CmdletBinding(PositionalBinding = $true, DefaultParameterSetName = 'Default')]
 	Param(
+		#The url for the enpoint to be used
 		[Parameter(Mandatory = $true, Position = 0, ParameterSetName = 'Default')]
 		[Parameter(Mandatory = $true, Position = 0, ParameterSetName = 'Pagination')]
 		[Parameter(Mandatory = $true, Position = 0, ParameterSetName = 'UnPwd')]
 		[String]$url,
+		#The UUID of the organization the user belongs to
 		[Parameter(Mandatory = $true, Position = 1, ParameterSetName = 'Default')]
 		[Parameter(Mandatory = $true, Position = 1, ParameterSetName = 'Pagination')]
 		[Parameter(Mandatory = $true, Position = 1, ParameterSetName = 'UnPwd')]
+		[ValidateNotNullOrEmpty()]
+		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[String]$org_id,
+		#The public API key to be used for calls that hit the public API gateway
 		[Parameter(Mandatory = $true, Position = 2, ParameterSetName = 'Default')]
 		[Parameter(Mandatory = $true, Position = 2, ParameterSetName = 'Pagination')]
 		[String]$x_api_key,
+		#Object containing the query parameters need that will be put into the query string of the uri
 		[Parameter(Position = 3, ParameterSetName = 'Default')]
 		[Parameter(Position = 3, ParameterSetName = 'Pagination')]
 		[Object]$query_params,
+		#The body of the REST call
 		[Parameter(Position = 4, ParameterSetName = 'Default')]
 		[Parameter(Position = 4, ParameterSetName = 'Pagination')]
 		[Parameter(Position = 2, ParameterSetName = 'UnPwd')]
 		[Object]$body_params,
+		#HTTP method required
 		[Parameter(ParameterSetName = 'Default')]
 		[Parameter(ParameterSetName = 'Pagination')]
 		[Parameter(ParameterSetName = 'UnPwd')]
 		[String]$method = 'GET',
+		#Switch to enable pagination through records
 		[Parameter(Mandatory = $true, ParameterSetName = 'Pagination')]
 		[switch]$pagination,
+		#The page size used for pagination
 		[Parameter(Mandatory = $true, ParameterSetName = 'Pagination')]
 		[String]$page_size,
+		#The property to be used from the returned payload
 		[Parameter(Mandatory = $true, ParameterSetName = 'Pagination')]
 		[String]$propertyName,
+		#The Verkada(CSRF) token of the user running the command
 		[Parameter(Mandatory = $true,ParameterSetName = 'UnPwd')]
+		[ValidateNotNullOrEmpty()]
+		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[string]$x_verkada_token,
+		#The Verkada Auth(session auth) token of the user running the command
 		[Parameter(Mandatory = $true,ParameterSetName = 'UnPwd')]
 		[string]$x_verkada_auth,
+		#Switch to indicate username/password auth is required
 		[Parameter(ParameterSetName = 'UnPwd')]
 		[Switch]$UnPwd
 	)

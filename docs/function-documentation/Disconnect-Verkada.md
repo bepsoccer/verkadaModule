@@ -8,7 +8,7 @@ schema: 2.0.0
 # Disconnect-Verkada
 
 ## SYNOPSIS
-Removes cached credentials for Verkada's Public API
+Removes cached credentials for Verkada's API Enpoints
 
 ## SYNTAX
 
@@ -17,19 +17,19 @@ Disconnect-Verkada [[-org_id] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+This function is used to removed stored org_id, tokens, and cached data from the session.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-
+Disconnect-Verkada
 ```
 
 ## PARAMETERS
 
 ### -org_id
-Parameter help description
+The UUID of the organization the user belongs to(not implemented)
 
 ```yaml
 Type: String

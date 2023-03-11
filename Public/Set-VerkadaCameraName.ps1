@@ -4,35 +4,52 @@ function Set-VerkadaCameraName
 		.SYNOPSIS
 		Set the name of a camera in an organization
 		.DESCRIPTION
-
-		.NOTES
-
+		This function is used to rename a camera or cameras in a Verkada org.
+		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 		.EXAMPLE
-
-		.LINK
-
+		Set-VerkadaCameraName -camera_id 'cwdfwfw-3f3-cwdf2-cameraId' -camera_name 'Camera1'
+		This will rename camera_id cwdfwfw-3f3-cwdf2-cameraId to Camera1.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		.EXAMPLE
+		Set-VerkadaCameraName -camera_id 'cwdfwfw-3f3-cwdf2-cameraId' -camera_name 'Camera1' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+		This will rename camera_id cwdfwfw-3f3-cwdf2-cameraId to Camera1.   The org_id and tokens are submitted as parameters in the call.
+		.EXAMPLE
+		Set-VerkadaCameraName -serial 'ABCD-123-UNME' -camera_name 'Camera1'
+		This will rename the camera with serial ABCD-123-UNME to Camera1.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		.EXAMPLE
+		Import-Csv ./cameras.csv | Set-VerkadaCameraName  
+		This will rename all the cameras in the imported CSV which needs to caontain the camera_id(cameraId) or serial and the camera_name(name).  The org_id and tokens are submitted as parameters in the call.
 	#>
 
 	[CmdletBinding(PositionalBinding = $true)]
 	Param(
+		#The UUID of the organization the user belongs to
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
+		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[String]$org_id = $Global:verkadaConnection.org_id,
+		#The UUID of the camera who's name is being changed
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'cameraId')]
+		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[Alias("cameraId")]
 		[String]$camera_id,
+		#The serial of the camera who's name is being changed
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'serial')]
 		[Parameter(ValueFromPipelineByPropertyName = $true, ParameterSetName = 'cameraId')]
 		[String]$serial,
+		#The new name for the camera who's name is being changed
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
 		[Alias("name")]
 		[String]$camera_name,
+		#The Verkada(CSRF) token of the user running the command
 		[Parameter()]
 		[ValidateNotNullOrEmpty()]
+		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[string]$x_verkada_token = $Global:verkadaConnection.csrfToken,
+		#The Verkada Auth(session auth) token of the user running the command
 		[Parameter()]
 		[ValidateNotNullOrEmpty()]
 		[string]$x_verkada_auth = $Global:verkadaConnection.userToken,
+		#The public API key to be used for calls that hit the public API gateway
 		[Parameter(ParameterSetName = 'serial')]
 		[ValidateNotNullOrEmpty()]
 		[String]$x_api_key = $Global:verkadaConnection.token

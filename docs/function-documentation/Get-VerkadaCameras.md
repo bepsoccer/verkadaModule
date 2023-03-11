@@ -18,19 +18,40 @@ Get-VerkadaCameras [[-org_id] <String>] [[-x_api_key] <String>] [[-serial] <Stri
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+This function will retrieve the complete list of cameras in an organization. 
+Upon the first run the camera list will be cached until a new powershell session is initiated, Connect/Disconnect-Verkada is run, or you use the refresh switch.
+The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
+Get-VerkadaCameras
+This will return all the cameras in the org.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+```
 
+### EXAMPLE 2
+```
+Get-VerkadaCameras -org_id 'deds343-uuid-of-org' -x_api_key 'sd78ds-uuid-of-verkada-token'
+This will return all the cameras in the org.  The org_id and tokens are submitted as parameters in the call.
+```
+
+### EXAMPLE 3
+```
+Get-VerkadaCameras -serial
+This will return the camera information using the serial.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+```
+
+### EXAMPLE 4
+```
+Get-VerkadaCameras -refresh
+This will return all the cameras in the org with the most recent data available from Command.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ## PARAMETERS
 
 ### -org_id
-{{ Fill org_id Description }}
+The UUID of the organization the user belongs to
 
 ```yaml
 Type: String
@@ -45,7 +66,7 @@ Accept wildcard characters: False
 ```
 
 ### -x_api_key
-{{ Fill x_api_key Description }}
+The public API key to be used for calls that hit the public API gateway
 
 ```yaml
 Type: String
@@ -60,7 +81,7 @@ Accept wildcard characters: False
 ```
 
 ### -serial
-{{ Fill serial Description }}
+The serial of the camera you are querying
 
 ```yaml
 Type: String
@@ -75,7 +96,7 @@ Accept wildcard characters: False
 ```
 
 ### -refresh
-{{ Fill refresh Description }}
+Switch to force a refreshed list of cameras from Command
 
 ```yaml
 Type: SwitchParameter

@@ -18,19 +18,33 @@ Get-VerkadaCloudBackupSettings [-camera_id] <String> [[-org_id] <String>] [[-x_a
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+This function will retrieve the cloud backup settings of the camera requested.
+The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
+Get-VerkadaCloudBackupSettings -camera_id "cwdfwfw-3f3-cwdf2-cameraId"
+This will get the cloud backup settings of camera cwdfwfw-3f3-cwdf2-cameraId.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+```
 
+### EXAMPLE 2
+```
+Get-VerkadaCloudBackupSettings -camera_id "cwdfwfw-3f3-cwdf2-cameraId" -org_id 'deds343-uuid-of-org' -x_api_key 'sd78ds-uuid-of-verkada-token'
+This will get the cloud backup settings of camera cwdfwfw-3f3-cwdf2-cameraId.  The org_id and tokens are submitted as parameters in the call.
+```
+
+### EXAMPLE 3
+```
+Get-VerkadaCloudBackupSettings -camera_id "cwdfwfw-3f3-cwdf2-cameraId" -backup
+This will get the cloud backup settings of camera cwdfwfw-3f3-cwdf2-cameraId and write it to a csv.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ## PARAMETERS
 
 ### -camera_id
-{{ Fill camera_id Description }}
+The UUID of the camera who's cloud backup seetings are being retrieved
 
 ```yaml
 Type: String
@@ -45,7 +59,7 @@ Accept wildcard characters: False
 ```
 
 ### -org_id
-{{ Fill org_id Description }}
+The UUID of the organization the user belongs to
 
 ```yaml
 Type: String
@@ -60,7 +74,7 @@ Accept wildcard characters: False
 ```
 
 ### -x_api_key
-{{ Fill x_api_key Description }}
+The public API key to be used for calls that hit the public API gateway
 
 ```yaml
 Type: String
@@ -75,7 +89,8 @@ Accept wildcard characters: False
 ```
 
 ### -backup
-{{ Fill backup Description }}
+Switch used to write the retrieved cloud backup settings to a csv. 
+This will prompt for the path and file name for the output csv when the backup switch is used
 
 ```yaml
 Type: SwitchParameter
