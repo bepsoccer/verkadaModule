@@ -20,13 +20,27 @@ function Add-VerkadaAccessUser
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[String]$org_id = $Global:verkadaConnection.org_id,
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'email')]
-		[Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'name')]
+		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'emailWithBadge')]
+		#[Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'name')]
+		#[Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'nameWithBadge')]
+		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'emailAndName')]
+		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'emailAndNameWithBadge')]
 		[String]$email,
-		[Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'email')]
+		#The first name of the user being added
+		#[Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'email')]
+		#[Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'emailWithBadge')]
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'name')]
+		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'nameWithBadge')]
+		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'emailAndName')]
+		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'emailAndNameWithBadge')]
 		[String]$firstName,
-		[Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'email')]
+		#The last name of the user being added
+		#[Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'email')]
+		#[Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'emailWithBadge')]
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'name')]
+		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'nameWithBadge')]
+		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'emailAndName')]
+		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'emailAndNameWithBadge')]
 		[String]$lastName,
 		[Parameter()]
 		[ValidateNotNullOrEmpty()]
@@ -47,21 +61,36 @@ function Add-VerkadaAccessUser
 		[datetime]$expiration,
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[bool]$sendInviteEmail=$false,
-		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		#The card type of the card being added
+		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'emailWithBadge')]
+		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'nameWithBadge')]
+		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'emailAndNameWithBadge')]
 		[ValidateSet('HID','HID33DSX','HID33RS2','HID34','HID36Keyscan','HID37wFacilityCode','HID37woFacilityCode','Corporate1000_35','Corporate1000_48','CasiRusco','MiFareClassic1K_CSN','DESFire','PointGuardMDI37','GProxII36','KantechXSF','Schlage34','HID36Simplex','Kastle32','RBH50')]
 		[String]$cardType,
-		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		#The card number of the card being added (Mutually exclusive with CardHex)
+		[Parameter(ValueFromPipelineByPropertyName = $true, ParameterSetName = 'emailWithBadge')]
+		[Parameter(ValueFromPipelineByPropertyName = $true, ParameterSetName = 'nameWithBadge')]
+		[Parameter(ValueFromPipelineByPropertyName = $true, ParameterSetName = 'emailAndNameWithBadge')]
 		[String]$cardNumber,
-		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		#The card Number Hex of the card being added (Mutually exclusive with Card Number)
+		[Parameter(ValueFromPipelineByPropertyName = $true, ParameterSetName = 'emailWithBadge')]
+		[Parameter(ValueFromPipelineByPropertyName = $true, ParameterSetName = 'nameWithBadge')]
+		[Parameter(ValueFromPipelineByPropertyName = $true, ParameterSetName = 'emailAndNameWithBadge')]
 		[String]$cardNumberHex,
-		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		#The facility code of the card being added
+		[Parameter(ValueFromPipelineByPropertyName = $true, ParameterSetName = 'emailWithBadge')]
+		[Parameter(ValueFromPipelineByPropertyName = $true, ParameterSetName = 'nameWithBadge')]
+		[Parameter(ValueFromPipelineByPropertyName = $true, ParameterSetName = 'emailAndNameWithBadge')]
 		[String]$facilityCode,
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[String[]]$groupId,
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[String[]]$groupName,
-		[Parameter()]
+		#Switch to create badge or not upon user creation
+		[Parameter(Mandatory = $true, ParameterSetName = 'emailWithBadge')]
+		[Parameter(Mandatory = $true, ParameterSetName = 'nameWithBadge')]
+		[Parameter(Mandatory = $true, ParameterSetName = 'emailAndNameWithBadge')]
 		[Switch]$includeBadge,
 		[Parameter()]
 		[ValidateRange(1,4)]
