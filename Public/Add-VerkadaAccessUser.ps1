@@ -86,8 +86,8 @@ function Add-VerkadaAccessUser
 		if (!([string]::IsNullOrEmpty($lastName))){$form_params.lastName = $lastName}
 		if (!([string]::IsNullOrEmpty($phone))){$form_params.phone = $phone}
 		if (!([string]::IsNullOrEmpty($role))){$form_params.role = $role}
-		if (!([string]::IsNullOrEmpty($start))){$form_params.start = $start}
-		if (!([string]::IsNullOrEmpty($expiration))){$form_params.expiration = $expiration}
+		if (!([string]::IsNullOrEmpty($start))){$form_params.start = ([DateTimeOffset]($start)).ToUnixTimeSeconds()}
+		if (!([string]::IsNullOrEmpty($expiration))){$form_params.expiration = ([DateTimeOffset]($expiration)).ToUnixTimeSeconds()}
 		if (!([string]::IsNullOrEmpty($sendInviteEmail))){$form_params.sendInviteEmail = $sendInviteEmail.ToString().ToLower()}
 
 		if ($threads){
