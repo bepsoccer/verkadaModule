@@ -31,19 +31,27 @@ Add-VerkadaAccessUserToGroup [-org_id <String>] -userId <String[]> -groupName <S
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+This function is used to add a Verkada Access user to a group or groups.
+The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
+Add-VerkadaAccessUserToGroup -userid 'dcscsdc-dsc-user1' -groupId 'df76sd-dsc-group1','dsf987-daf-group2'
+This will add the userid dcscsdc-dsc-user1 to access groups df76sd-dsc-group1 and dsf987-daf-group2.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+```
 
+### EXAMPLE 2
+```
+Add-VerkadaAccessUserToGroup -userid 'dcscsdc-dsc-user1' -groupId 'df76sd-dsc-group1','dsf987-daf-group2' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+This will add the userid dcscsdc-dsc-user1 to access groups df76sd-dsc-group1 and dsf987-daf-group2.  The org_id and tokens are submitted as parameters in the call.
 ```
 
 ## PARAMETERS
 
 ### -org_id
-{{ Fill org_id Description }}
+The UUID of the organization the user belongs to
 
 ```yaml
 Type: String
@@ -58,7 +66,7 @@ Accept wildcard characters: False
 ```
 
 ### -userId
-{{ Fill userId Description }}
+The UUID of the user the badge is being added to
 
 ```yaml
 Type: String[]
@@ -73,7 +81,7 @@ Accept wildcard characters: False
 ```
 
 ### -groupId
-{{ Fill groupId Description }}
+The UUID of the group or groups the user should be added to
 
 ```yaml
 Type: String[]
@@ -88,7 +96,7 @@ Accept wildcard characters: False
 ```
 
 ### -groupName
-{{ Fill groupName Description }}
+The name of the group or groups the user should be added to on creation(not currently implemented)
 
 ```yaml
 Type: String[]
@@ -103,7 +111,7 @@ Accept wildcard characters: False
 ```
 
 ### -x_verkada_token
-{{ Fill x_verkada_token Description }}
+The Verkada(CSRF) token of the user running the command
 
 ```yaml
 Type: String
@@ -118,7 +126,7 @@ Accept wildcard characters: False
 ```
 
 ### -x_verkada_auth
-{{ Fill x_verkada_auth Description }}
+The Verkada Auth(session auth) token of the user running the command
 
 ```yaml
 Type: String
@@ -133,7 +141,7 @@ Accept wildcard characters: False
 ```
 
 ### -threads
-{{ Fill threads Description }}
+Number of threads allowed to multi-thread the task
 
 ```yaml
 Type: Int32

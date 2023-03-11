@@ -8,7 +8,7 @@ schema: 2.0.0
 # Add-VerkadaAccessBadgeToUser
 
 ## SYNOPSIS
-Adds a badger to an Access User in an organization
+Adds a badge to an Access User in an organization
 
 ## SYNTAX
 
@@ -33,19 +33,33 @@ Add-VerkadaAccessBadgeToUser [-org_id <String>] -userId <String> -cardType <Stri
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+This function is used to add a badge to a Verkada access user.
+The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
+Add-VerkadaAccessBadgeToUser -userId 'gjg547-uuid-of-user' -cardType 'HID' -facilityCode 111 -cardNumber 55555
+This will add a badge in the HID format with facility code 111 and card number 55555 to the user specified.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+```
 
+### EXAMPLE 2
+```
+Add-VerkadaAccessBadgeToUser -userId 'gjg547-uuid-of-user' -cardType 'HID' -facilityCode 111 -cardNumber 55555 -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+This will add a badge in the HID format with facility code 111 and card number 55555 to the user specified.  The org_id and tokens are submitted as parameters in the call.
+```
+
+### EXAMPLE 3
+```
+Import-Csv ./myUserBadges.csv |  Add-VerkadaAccessBadgeToUser
+This will add a badge for every row in the csv file which contains userId, cardType, cardNumber(or cardNumberHex), and facilityCode(optional).  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ## PARAMETERS
 
 ### -org_id
-{{ Fill org_id Description }}
+The UUID of the organization the user belongs to
 
 ```yaml
 Type: String
@@ -60,7 +74,7 @@ Accept wildcard characters: False
 ```
 
 ### -userId
-{{ Fill userId Description }}
+The UUID of the user the badge is being added to
 
 ```yaml
 Type: String
@@ -75,7 +89,7 @@ Accept wildcard characters: False
 ```
 
 ### -cardType
-{{ Fill cardType Description }}
+The card type of the card being added
 
 ```yaml
 Type: String
@@ -90,7 +104,7 @@ Accept wildcard characters: False
 ```
 
 ### -cardNumber
-{{ Fill cardNumber Description }}
+The card number of the card being added
 
 ```yaml
 Type: String
@@ -105,7 +119,7 @@ Accept wildcard characters: False
 ```
 
 ### -cardNumberHex
-{{ Fill cardNumberHex Description }}
+The card Number Hex of the card being added
 
 ```yaml
 Type: String
@@ -120,7 +134,7 @@ Accept wildcard characters: False
 ```
 
 ### -facilityCode
-{{ Fill facilityCode Description }}
+The facility code of the card being added
 
 ```yaml
 Type: String
@@ -135,7 +149,7 @@ Accept wildcard characters: False
 ```
 
 ### -x_verkada_token
-{{ Fill x_verkada_token Description }}
+The Verkada(CSRF) token of the user running the command
 
 ```yaml
 Type: String
@@ -150,7 +164,7 @@ Accept wildcard characters: False
 ```
 
 ### -x_verkada_auth
-{{ Fill x_verkada_auth Description }}
+The Verkada Auth(session auth) token of the user running the command
 
 ```yaml
 Type: String
@@ -165,7 +179,7 @@ Accept wildcard characters: False
 ```
 
 ### -threads
-{{ Fill threads Description }}
+Number of threads allowed to multi-thread the task
 
 ```yaml
 Type: Int32

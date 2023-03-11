@@ -8,34 +8,47 @@ schema: 2.0.0
 # Connect-Verkada
 
 ## SYNOPSIS
-Gathers needed credentials for Verkada's Public API
+Gathers needed credentials for Verkada's API Endpoints
 
 ## SYNTAX
 
 ### apiToken (Default)
 ```
-Connect-Verkada [-org_id] <String> [-Token] <String> [<CommonParameters>]
+Connect-Verkada [-org_id] <String> [-x_api_key] <String> [<CommonParameters>]
 ```
 
 ### UnPwd
 ```
-Connect-Verkada [-org_id] <String> [[-Token] <String>] -userName <String> [-Password] [<CommonParameters>]
+Connect-Verkada [-org_id] <String> [[-x_api_key] <String>] -userName <String> [-Password] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+This function is used to authenticate a session and store the needed tokens and org_id for other functions in this module.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
+Connect-Verkada 'dsfwfd-wdf-orgId' 'myapiKey-dcwdskjnlnlkj'
+This will store the org_id dsfwfd-wdf-orgId with the public API key myapiKey-dcwdskjnlnlkj.
+```
 
+### EXAMPLE 2
+```
+Connect-Verkada 'dsfwfd-wdf-orgId' -userName "admin.user@contoso.com" -Password
+This will authenticate user admin.user@contoso.com by prompting for the password(stored as a secure string) and upon success store the org_id dsfwfd-wdf-orgId and the returned tokens.
+```
+
+### EXAMPLE 3
+```
+Connect-Verkada 'dsfwfd-wdf-orgId' - Token 'myapiKey-dcwdskjnlnlkj' -userName "admin.user@contoso.com" -Password
+This will store the org_id dsfwfd-wdf-orgId with the public API key myapiKey-dcwdskjnlnlkj and will authenticate user admin.user@contoso.com by prompting for the password(stored as a secure string) and storing the returned tokens.
 ```
 
 ## PARAMETERS
 
 ### -org_id
-Parameter help description
+The UUID of the organization the user belongs to
 
 ```yaml
 Type: String
@@ -49,8 +62,8 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -Token
-{{ Fill Token Description }}
+### -x_api_key
+The public API key to be used for calls that hit the public API gateway
 
 ```yaml
 Type: String
@@ -77,7 +90,7 @@ Accept wildcard characters: False
 ```
 
 ### -userName
-{{ Fill userName Description }}
+The admin user name to be used to obtain needed session and auth tokens
 
 ```yaml
 Type: String
@@ -92,7 +105,7 @@ Accept wildcard characters: False
 ```
 
 ### -Password
-{{ Fill Password Description }}
+The switch needed to prompt for admin password to be used to obtain needed session and auth tokens
 
 ```yaml
 Type: SwitchParameter

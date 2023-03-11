@@ -19,19 +19,33 @@ Set-VerkadaCloudBackupSettings [-camera_id] <String> [[-org_id] <String>] [[-x_a
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+This function set the cloud back settings for a camera or cameras.
+The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
+Set-VerkadaCloudBackupSettings -enabled 1 -upload_timeslot '0,86400' -time_to_preserve '25200,68400' -days_to_preserve '1,1,1,1,1,1,1'  -video_to_upload 'ALL' -video_quality 'STANDARD_QUALITY' -camera_id 'cwdfwfw-3f3-cwdf2-cameraId'
+This will set the camera cwdfwfw-3f3-cwdf2-cameraId to use cloud backup with the submitted settings.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+```
 
+### EXAMPLE 2
+```
+Set-VerkadaCloudBackupSettings -enabled 1 -upload_timeslot '0,86400' -time_to_preserve '25200,68400' -days_to_preserve '1,1,1,1,1,1,1'  -video_to_upload 'ALL' -video_quality 'STANDARD_QUALITY' -camera_id 'cwdfwfw-3f3-cwdf2-cameraId' -org_id 'deds343-uuid-of-org' -x_api_key 'sd78ds-uuid-of-verkada-token'
+This will set the camera cwdfwfw-3f3-cwdf2-cameraId to use cloud backup with the submitted settings.  The org_id and tokens are submitted as parameters in the call.
+```
+
+### EXAMPLE 3
+```
+import-Csv ./cameras.csv | Set-VerkadaCloudBackupSettings
+This will set the camera cloud backup settings for all the rows in the CSV which contains all needed params.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ## PARAMETERS
 
 ### -camera_id
-{{ Fill camera_id Description }}
+The UUID of the camera who's cloud backup seetings are being changed
 
 ```yaml
 Type: String
@@ -46,7 +60,7 @@ Accept wildcard characters: False
 ```
 
 ### -org_id
-{{ Fill org_id Description }}
+The UUID of the organization the user belongs to
 
 ```yaml
 Type: String
@@ -61,7 +75,7 @@ Accept wildcard characters: False
 ```
 
 ### -x_api_key
-{{ Fill x_api_key Description }}
+The public API key to be used for calls that hit the public API gateway
 
 ```yaml
 Type: String
@@ -76,7 +90,11 @@ Accept wildcard characters: False
 ```
 
 ### -days_to_preserve
-{{ Fill days_to_preserve Description }}
+Delimited list of booleans indicating which days footage should be uploaded.
+The elements in the array indicate the following days in order: Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday.
+If value is 1, cloud backup is on for that day.
+If value is 0, cloud backup is off for that day.
+For example, 0,1,1,1,1,1,0 means only backup on weekdays.
 
 ```yaml
 Type: String
@@ -91,7 +109,9 @@ Accept wildcard characters: False
 ```
 
 ### -enabled
-{{ Fill enabled Description }}
+Status of cloud backup for a camera.
+If value is 1, cloud backup is enabled.
+If value is 0, cloud backup is disabled.
 
 ```yaml
 Type: Int32
@@ -106,7 +126,7 @@ Accept wildcard characters: False
 ```
 
 ### -time_to_preserve
-{{ Fill time_to_preserve Description }}
+Delimited list of start_time, end_time as timeslot for which a user wants footage to be backed up to the cloud, start_time and end_time are integers indicating seconds to midnight, i.e, 3600,7200 means 1am - 2am
 
 ```yaml
 Type: String
@@ -121,7 +141,7 @@ Accept wildcard characters: False
 ```
 
 ### -upload_timeslot
-{{ Fill upload_timeslot Description }}
+Delimited list of start_time, end_time as timeslot for scheduled time for footage upload, start_time and end_time are integers indicating seconds to midnight, i.e, 3600,7200 means 1am - 2am
 
 ```yaml
 Type: String
@@ -136,7 +156,8 @@ Accept wildcard characters: False
 ```
 
 ### -video_quality
-{{ Fill video_quality Description }}
+Quality of the uploaded video.
+Two values are possible: STANDARD_QUALITY and HIGH_QUALITY.
 
 ```yaml
 Type: String
@@ -151,7 +172,8 @@ Accept wildcard characters: False
 ```
 
 ### -video_to_upload
-{{ Fill video_to_upload Description }}
+The type of video that is backed-up.
+Two values are possible: MOTION and ALL.
 
 ```yaml
 Type: String

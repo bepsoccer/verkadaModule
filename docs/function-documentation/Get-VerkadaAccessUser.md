@@ -18,19 +18,28 @@ Get-VerkadaAccessUser [[-org_id] <String>] [-userId] <String> [-x_verkada_token 
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+This function is used to get all the details about an indivual Access user in an org.
+This function is used to rename a camera or cameras in a Verkada org.
+The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
+Get-VerkadaAccessUser -userId 'aefrfefb-3429-39ec-b042-userAC'
+This will retrieve the user with userId aefrfefb-3429-39ec-b042-userAC.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+```
 
+### EXAMPLE 2
+```
+Get-VerkadaAccessUser -userId 'aefrfefb-3429-39ec-b042-userAC' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+This will retrieve the user with userId aefrfefb-3429-39ec-b042-userAC.  The org_id and tokens are submitted as parameters in the call.
 ```
 
 ## PARAMETERS
 
 ### -org_id
-{{ Fill org_id Description }}
+The UUID of the organization the user belongs to
 
 ```yaml
 Type: String
@@ -45,7 +54,7 @@ Accept wildcard characters: False
 ```
 
 ### -userId
-{{ Fill userId Description }}
+The UUID of the user the badge is being added to
 
 ```yaml
 Type: String
@@ -60,7 +69,7 @@ Accept wildcard characters: False
 ```
 
 ### -x_verkada_token
-{{ Fill x_verkada_token Description }}
+The Verkada(CSRF) token of the user running the command
 
 ```yaml
 Type: String
@@ -75,7 +84,7 @@ Accept wildcard characters: False
 ```
 
 ### -x_verkada_auth
-{{ Fill x_verkada_auth Description }}
+The Verkada Auth(session auth) token of the user running the command
 
 ```yaml
 Type: String
