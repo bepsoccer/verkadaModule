@@ -4,30 +4,36 @@ function Connect-Verkada
 		.SYNOPSIS
 		Gathers needed credentials for Verkada's API Endpoints
 		.DESCRIPTION
-
-		.NOTES
-
+		This function is used to authenticate a session and store the needed tokens and org_id for other functions in this module.
 		.EXAMPLE
-
-		.LINK
-
+		Connect-Verkada 'dsfwfd-wdf-orgId' 'myapiKey-dcwdskjnlnlkj'
+		This will store the org_id dsfwfd-wdf-orgId with the public API key myapiKey-dcwdskjnlnlkj.
+		.EXAMPLE
+		Connect-Verkada 'dsfwfd-wdf-orgId' -userName "admin.user@contoso.com" -Password
+		This will authenticate user admin.user@contoso.com by prompting for the password(stored as a secure string) and upon success store the org_id dsfwfd-wdf-orgId and the returned tokens.
+		.EXAMPLE
+		Connect-Verkada 'dsfwfd-wdf-orgId' - Token 'myapiKey-dcwdskjnlnlkj' -userName "admin.user@contoso.com" -Password
+		This will store the org_id dsfwfd-wdf-orgId with the public API key myapiKey-dcwdskjnlnlkj and will authenticate user admin.user@contoso.com by prompting for the password(stored as a secure string) and storing the returned tokens.
 	#>
 
 	[CmdletBinding(PositionalBinding = $true,DefaultParameterSetName='apiToken')]
 	Param(
-		# Parameter help description
+		#The UUID of the organization the user belongs to
 		[Parameter(ParameterSetName = 'apiToken', Mandatory = $true, Position = 0)]
 		[Parameter(ParameterSetName = 'UnPwd', Mandatory = $true, Position = 0)]
 		[ValidateNotNullOrEmpty()]
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[String]$org_id,
+		#The public API key to be used for calls that hit the public API gateway
 		[Parameter(ParameterSetName = 'apiToken', Mandatory = $true, Position = 1)]
 		[Parameter(ParameterSetName = 'UnPwd', Position = 1)]
 		[ValidateNotNullOrEmpty()]
 		[String]$x_api_key,
+		#The admin user name to be used to obtain needed session and auth tokens
 		[Parameter(ParameterSetName = 'UnPwd', Mandatory = $true)]
 		[ValidateNotNullOrEmpty()]
 		[String]$userName,
+		#The switch needed to prompt for admin password to be used to obtain needed session and auth tokens
 		[Parameter(ParameterSetName = 'UnPwd', Mandatory = $true)]
 		[ValidateNotNullOrEmpty()]
 		[switch]$Password

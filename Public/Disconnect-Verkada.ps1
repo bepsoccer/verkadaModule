@@ -4,18 +4,14 @@ function Disconnect-Verkada
 		.SYNOPSIS
 		Removes cached credentials for Verkada's API Enpoints
 		.DESCRIPTION
-
-		.NOTES
-
+		This function is used to removed stored org_id, tokens, and cached data from the session.
 		.EXAMPLE
-
-		.LINK
-
+		Disconnect-Verkada
 	#>
 
 	[CmdletBinding(PositionalBinding = $true)]
 	Param(
-		# Parameter help description
+		#The UUID of the organization the user belongs to(not implemented)
 		[Parameter(Position = 0)]
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[String]$org_id

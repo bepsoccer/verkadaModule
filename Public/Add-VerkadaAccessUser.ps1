@@ -4,21 +4,36 @@ function Add-VerkadaAccessUser
 		.SYNOPSIS
 		Adds an Access User in an organization
 		.DESCRIPTION
-
-		.NOTES
-
+		This function is used to add a Verkaka Access user or users to a Verkada Command Organization.  As part of the user creation you can optionally add a badge and/or add the user to groups.
+		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 		.EXAMPLE
-
-		.LINK
-
+		Add-VerkadaAccessUser -email 'newUser@contoso.com' 
+		This will add the access user with email address newUser@contoso.com.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		.EXAMPLE
+		Add-VerkadaAccessUser -email 'newUser@contoso.com' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+		This will add the access user with email address newUser@contoso.com.  The org_id and tokens are submitted as parameters in the call.
+		.EXAMPLE
+		Add-VerkadaAccessUser -firstName 'New' -lastName 'User'
+		This will add the access user with the name "New User".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		.EXAMPLE
+		Add-VerkadaAccessUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com' 
+		This will add the access user with the name "New User" and email newUser@contoso.com.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		.EXAMPLE
+		Add-VerkadaAccessUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com' -includeBadge -cardType 'HID' -facilityCode 111 -cardNumber 55555
+		This will add the access user with the name "New User" and email newUser@contoso.com with an HID badge 111-55555.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		.EXAMPLE
+		Add-VerkadaAccessUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com' -includeBadge -cardType 'HID' -facilityCode 111 -cardNumber 55555 -groupId 'df76sd-dsc-group1','dsf987-daf-group2'
+		This will add the access user with the name "New User" and email newUser@contoso.com with an HID badge 111-55555 and in groups df76sd-dsc-group1 and dsf987-daf-group2.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 	#>
 
 	[CmdletBinding(PositionalBinding = $true, DefaultParameterSetName = 'email')]
 	Param(
+		#The UUID of the organization the user belongs to
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[String]$org_id = $Global:verkadaConnection.org_id,
+		#The email address of the user being added
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'email')]
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'emailWithBadge')]
 		#[Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'name')]
@@ -42,23 +57,30 @@ function Add-VerkadaAccessUser
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'emailAndName')]
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'emailAndNameWithBadge')]
 		[String]$lastName,
+		#The Verkada(CSRF) token of the user running the command
 		[Parameter()]
 		[ValidateNotNullOrEmpty()]
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[string]$x_verkada_token = $Global:verkadaConnection.csrfToken,
+		#The Verkada Auth(session auth) token of the user running the command
 		[Parameter()]
 		[ValidateNotNullOrEmpty()]
 		[string]$x_verkada_auth = $Global:verkadaConnection.userToken,
+		#The phone number of the user being added
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidatePattern("^\+\d{11}")]
 		[String]$phone,
+		#The role of the user being added.
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidateSet('ORG_MEMBER','ADMIN')]
 		[String]$role='ORG_MEMBER',
+		#Start date/time of the user being added
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[datetime]$start,
+		#End date/time of the user being added
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[datetime]$expiration,
+		#Boolean on whether to send invite email to newly created user
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[bool]$sendInviteEmail=$false,
 		#The card type of the card being added
@@ -82,9 +104,11 @@ function Add-VerkadaAccessUser
 		[Parameter(ValueFromPipelineByPropertyName = $true, ParameterSetName = 'nameWithBadge')]
 		[Parameter(ValueFromPipelineByPropertyName = $true, ParameterSetName = 'emailAndNameWithBadge')]
 		[String]$facilityCode,
+		#The UUID of the group or groups the user should be added to on creation
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[String[]]$groupId,
+		#The name of the group or groups the user should be added to on creation(not currently implemented)
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[String[]]$groupName,
 		#Switch to create badge or not upon user creation
@@ -92,6 +116,7 @@ function Add-VerkadaAccessUser
 		[Parameter(Mandatory = $true, ParameterSetName = 'nameWithBadge')]
 		[Parameter(Mandatory = $true, ParameterSetName = 'emailAndNameWithBadge')]
 		[Switch]$includeBadge,
+		#Number of threads allowed to multi-thread the task
 		[Parameter()]
 		[ValidateRange(1,4)]
 		[int]$threads=$null
