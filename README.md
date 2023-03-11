@@ -14,7 +14,7 @@ To use this module you will need a valid API token for some tasks and username/p
 
 To connect via API token use:
 
-`Connect-Verkada -org_id [your org_id] -token [your API Token]`
+`Connect-Verkada -org_id [your org_id] -x_api_key [your API Token]`
 
 To connect via username/password use:
 

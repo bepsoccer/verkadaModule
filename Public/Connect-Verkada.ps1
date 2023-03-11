@@ -12,7 +12,7 @@ function Connect-Verkada
 		Connect-Verkada 'dsfwfd-wdf-orgId' -userName "admin.user@contoso.com" -Password
 		This will authenticate user admin.user@contoso.com by prompting for the password(stored as a secure string) and upon success store the org_id dsfwfd-wdf-orgId and the returned tokens.
 		.EXAMPLE
-		Connect-Verkada 'dsfwfd-wdf-orgId' - Token 'myapiKey-dcwdskjnlnlkj' -userName "admin.user@contoso.com" -Password
+		Connect-Verkada 'dsfwfd-wdf-orgId' -x_api_key 'myapiKey-dcwdskjnlnlkj' -userName "admin.user@contoso.com" -Password
 		This will store the org_id dsfwfd-wdf-orgId with the public API key myapiKey-dcwdskjnlnlkj and will authenticate user admin.user@contoso.com by prompting for the password(stored as a secure string) and storing the returned tokens.
 	#>
 
