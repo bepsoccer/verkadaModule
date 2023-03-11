@@ -1,4 +1,4 @@
-# Verkada PoerShell Module - USE AT YOUR OWN RISK.
+# Verkada PowerShell Module - USE AT YOUR OWN RISK.
 This is a personal project that provides an easier way to interact with Verkada Command's various endpoints in a programatic way for ad-hoc tasks.  While I have invested time and effort to ensuring proper functionality and error handling, the user of this module is solely responsible of any outcome from it's use.
 ## How to install
 Install 3rd party module to make installing directly from Github easier:
