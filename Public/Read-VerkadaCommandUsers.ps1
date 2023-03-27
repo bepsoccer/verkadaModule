@@ -123,7 +123,13 @@ function Read-VerkadaCommandUsers
 	} #end begin
 	
 	Process {	
-		$response = Invoke-VerkadaGraphqlCall $url -query $query -qlVariables $variables -org_id $org_id -method 'Post' -propertyName 'users' -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr
-		return $response
+		if ((!([string]::IsNullOrEmpty($global:verkadaUsers))) -and (!($refresh.IsPresent))) { 
+			$users = $Global:verkadaUsers
+		} else {
+			$users = Invoke-VerkadaGraphqlCall $url -query $query -qlVariables $variables -org_id $org_id -method 'Post' -propertyName 'users' -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr
+			$global:verkadaUsers = $users
+		}
+		#$response = Invoke-VerkadaGraphqlCall $url -query $query -qlVariables $variables -org_id $org_id -method 'Post' -propertyName 'users' -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr
+		return $users
 	} #end process
 } #end function
