@@ -54,7 +54,7 @@ Accept wildcard characters: False
 ```
 
 ### -userId
-The UUID of the user the badge is being added to
+The UUID of the user
 
 ```yaml
 Type: String

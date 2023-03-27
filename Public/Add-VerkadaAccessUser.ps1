@@ -26,7 +26,7 @@ function Add-VerkadaAccessUser
 		This will add the access user with the name "New User" and email newUser@contoso.com with an HID badge 111-55555 and in groups df76sd-dsc-group1 and dsf987-daf-group2.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 	#>
 
-	[CmdletBinding(PositionalBinding = $true, DefaultParameterSetName = 'email')]
+	[CmdletBinding(PositionalBinding = $true, DefaultParameterSetName = 'emailAndName')]
 	Param(
 		#The UUID of the organization the user belongs to
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
