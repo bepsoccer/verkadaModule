@@ -71,9 +71,11 @@ PowerShellVersion = '6.1'
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 FunctionsToExport = 'Add-VerkadaAccessBadgeToUser', 'Add-VerkadaAccessUser', 
                'Add-VerkadaAccessUserToGroup', 'Connect-Verkada', 
-               'Disconnect-Verkada', 'Get-VerkadaAccessUser', 'Get-VerkadaCameras', 
-               'Get-VerkadaCloudBackupSettings', 'Read-VerkadaCommandUsers', 
-               'Set-VerkadaCameraName', 'Set-VerkadaCloudBackupSettings'
+               'Disconnect-Verkada', 'Find-VerkadaUserId', 'Get-VerkadaAccessUser', 
+               'Get-VerkadaCameras', 'Get-VerkadaCloudBackupSettings', 
+               'Read-VerkadaCommandUsers', 
+               'Set-VerkadaAccessUserEmployementDetail', 'Set-VerkadaCameraName', 
+               'Set-VerkadaCloudBackupSettings'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
