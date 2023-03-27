@@ -12,11 +12,12 @@ Adds an Access User in an organization
 
 ## SYNTAX
 
-### email (Default)
+### emailAndName (Default)
 ```
-Add-VerkadaAccessUser [-org_id <String>] -email <String> [-x_verkada_token <String>] [-x_verkada_auth <String>]
- [-phone <String>] [-role <String>] [-start <DateTime>] [-expiration <DateTime>] [-sendInviteEmail <Boolean>]
- [-groupId <String[]>] [-groupName <String[]>] [-threads <Int32>] [<CommonParameters>]
+Add-VerkadaAccessUser [-org_id <String>] -email <String> -firstName <String> -lastName <String>
+ [-x_verkada_token <String>] [-x_verkada_auth <String>] [-phone <String>] [-role <String>] [-start <DateTime>]
+ [-expiration <DateTime>] [-sendInviteEmail <Boolean>] [-groupId <String[]>] [-groupName <String[]>]
+ [-threads <Int32>] [<CommonParameters>]
 ```
 
 ### emailAndNameWithBadge
@@ -28,20 +29,19 @@ Add-VerkadaAccessUser [-org_id <String>] -email <String> -firstName <String> -la
  [-includeBadge] [-threads <Int32>] [<CommonParameters>]
 ```
 
-### emailAndName
-```
-Add-VerkadaAccessUser [-org_id <String>] -email <String> -firstName <String> -lastName <String>
- [-x_verkada_token <String>] [-x_verkada_auth <String>] [-phone <String>] [-role <String>] [-start <DateTime>]
- [-expiration <DateTime>] [-sendInviteEmail <Boolean>] [-groupId <String[]>] [-groupName <String[]>]
- [-threads <Int32>] [<CommonParameters>]
-```
-
 ### emailWithBadge
 ```
 Add-VerkadaAccessUser [-org_id <String>] -email <String> [-x_verkada_token <String>] [-x_verkada_auth <String>]
  [-phone <String>] [-role <String>] [-start <DateTime>] [-expiration <DateTime>] [-sendInviteEmail <Boolean>]
  -cardType <String> [-cardNumber <String>] [-cardNumberHex <String>] [-facilityCode <String>]
  [-groupId <String[]>] [-groupName <String[]>] [-includeBadge] [-threads <Int32>] [<CommonParameters>]
+```
+
+### email
+```
+Add-VerkadaAccessUser [-org_id <String>] -email <String> [-x_verkada_token <String>] [-x_verkada_auth <String>]
+ [-phone <String>] [-role <String>] [-start <DateTime>] [-expiration <DateTime>] [-sendInviteEmail <Boolean>]
+ [-groupId <String[]>] [-groupName <String[]>] [-threads <Int32>] [<CommonParameters>]
 ```
 
 ### nameWithBadge
@@ -128,7 +128,7 @@ The email address of the user being added
 
 ```yaml
 Type: String
-Parameter Sets: email, emailAndNameWithBadge, emailAndName, emailWithBadge
+Parameter Sets: emailAndName, emailAndNameWithBadge, emailWithBadge, email
 Aliases:
 
 Required: True
@@ -145,7 +145,7 @@ The first name of the user being added
 
 ```yaml
 Type: String
-Parameter Sets: emailAndNameWithBadge, emailAndName, nameWithBadge, name
+Parameter Sets: emailAndName, emailAndNameWithBadge, nameWithBadge, name
 Aliases:
 
 Required: True
@@ -162,7 +162,7 @@ The last name of the user being added
 
 ```yaml
 Type: String
-Parameter Sets: emailAndNameWithBadge, emailAndName, nameWithBadge, name
+Parameter Sets: emailAndName, emailAndNameWithBadge, nameWithBadge, name
 Aliases:
 
 Required: True
