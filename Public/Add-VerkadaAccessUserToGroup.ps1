@@ -64,7 +64,16 @@ function Add-VerkadaAccessUserToGroup
 			"groupIds"				= $groupId
 		}
 
-		Invoke-VerkadaRestMethod $url $org_id $body_params -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -Method 'POST' -UnPwd
+		try {
+			Invoke-VerkadaRestMethod $url $org_id $body_params -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -Method 'POST' -UnPwd
+		}
+		catch [Microsoft.PowerShell.Commands.HttpResponseException] {
+			$err = $_.ErrorDetails | ConvertFrom-Json
+			$errorMes = $_ | Convertto-Json -WarningAction SilentlyContinue
+			$err | Add-Member -NotePropertyName StatusCode -NotePropertyValue (($errorMes | ConvertFrom-Json -Depth 100 -WarningAction SilentlyContinue).Exception.Response.StatusCode) -Force
+
+			throw "$($err.StatusCode) - $($err.message)"
+		}
 	} #end process
 
 	End {

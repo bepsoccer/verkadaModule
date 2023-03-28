@@ -17,7 +17,7 @@ function Add-VerkadaAccessBadgeToUser
 		This will add a badge for every row in the csv file which contains userId, cardType, cardNumber(or cardNumberHex), and facilityCode(optional).  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 	#>
 
-	[CmdletBinding(PositionalBinding = $true, DefaultParameterSetName = 'email')]
+	[CmdletBinding(PositionalBinding = $true, DefaultParameterSetName = 'cardNumber')]
 	Param(
 		#The UUID of the organization the user belongs to
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
@@ -77,7 +77,16 @@ function Add-VerkadaAccessBadgeToUser
 		if (!([string]::IsNullOrEmpty($cardNumberHex))){$body_params.cardParams.cardNumberHex = $cardNumberHex}
 		if (!([string]::IsNullOrEmpty($facilityCode))){$body_params.cardParams.facilityCode = $facilityCode}
 		
-		Invoke-VerkadaRestMethod $url $org_id $body_params -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -Method 'POST' -UnPwd
+		try {
+			Invoke-VerkadaRestMethod $url $org_id $body_params -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -Method 'POST' -UnPwd
+		}
+		catch [Microsoft.PowerShell.Commands.HttpResponseException] {
+			$err = $_.ErrorDetails | ConvertFrom-Json
+			$errorMes = $_ | Convertto-Json -WarningAction SilentlyContinue
+			$err | Add-Member -NotePropertyName StatusCode -NotePropertyValue (($errorMes | ConvertFrom-Json -Depth 100 -WarningAction SilentlyContinue).Exception.Response.StatusCode) -Force
+
+			throw "$($err.StatusCode) - $($err.message)"
+		}
 	} #end process
 
 	End {

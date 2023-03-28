@@ -12,13 +12,7 @@ Adds a badge to an Access User in an organization
 
 ## SYNTAX
 
-### email (Default)
-```
-Add-VerkadaAccessBadgeToUser [-org_id <String>] -userId <String> -cardType <String> [-facilityCode <String>]
- [-x_verkada_token <String>] [-x_verkada_auth <String>] [-threads <Int32>] [<CommonParameters>]
-```
-
-### cardNumber
+### cardNumber (Default)
 ```
 Add-VerkadaAccessBadgeToUser [-org_id <String>] -userId <String> -cardType <String> -cardNumber <String>
  [-facilityCode <String>] [-x_verkada_token <String>] [-x_verkada_auth <String>] [-threads <Int32>]
