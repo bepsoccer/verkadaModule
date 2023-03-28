@@ -3,8 +3,13 @@ function Disconnect-Verkada
 	<#
 		.SYNOPSIS
 		Removes cached credentials for Verkada's API Enpoints
+		
 		.DESCRIPTION
 		This function is used to removed stored org_id, tokens, and cached data from the session.
+		
+		.LINK
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Disconnect-Verkada.md
+
 		.EXAMPLE
 		Disconnect-Verkada
 	#>

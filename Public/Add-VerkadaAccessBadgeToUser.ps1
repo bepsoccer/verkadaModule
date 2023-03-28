@@ -3,15 +3,22 @@ function Add-VerkadaAccessBadgeToUser
 	<#
 		.SYNOPSIS
 		Adds a badge to an Access User in an organization
+
 		.DESCRIPTION
 		This function is used to add a badge to a Verkada access user.
 		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
+		
+		.LINK
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Add-VerkadaAccessBadgeToUser.md
+
 		.EXAMPLE
 		Add-VerkadaAccessBadgeToUser -userId 'gjg547-uuid-of-user' -cardType 'HID' -facilityCode 111 -cardNumber 55555
 		This will add a badge in the HID format with facility code 111 and card number 55555 to the user specified.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
 		.EXAMPLE
 		Add-VerkadaAccessBadgeToUser -userId 'gjg547-uuid-of-user' -cardType 'HID' -facilityCode 111 -cardNumber 55555 -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
 		This will add a badge in the HID format with facility code 111 and card number 55555 to the user specified.  The org_id and tokens are submitted as parameters in the call.
+		
 		.EXAMPLE
 		Import-Csv ./myUserBadges.csv |  Add-VerkadaAccessBadgeToUser
 		This will add a badge for every row in the csv file which contains userId, cardType, cardNumber(or cardNumberHex), and facilityCode(optional).  The org_id and tokens will be populated from the cached created by Connect-Verkada.

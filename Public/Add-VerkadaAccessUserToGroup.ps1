@@ -3,12 +3,18 @@ function Add-VerkadaAccessUserToGroup
 	<#
 		.SYNOPSIS
 		Adds an Access User to an Access Group in an organization
+		
 		.DESCRIPTION
 		This function is used to add a Verkada Access user to a group or groups.
 		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
+		
+		.LINK
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Add-VerkadaAccessUserToGroup.md
+
 		.EXAMPLE
 		Add-VerkadaAccessUserToGroup -userid 'dcscsdc-dsc-user1' -groupId 'df76sd-dsc-group1','dsf987-daf-group2'
 		This will add the userid dcscsdc-dsc-user1 to access groups df76sd-dsc-group1 and dsf987-daf-group2.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
 		.EXAMPLE
 		Add-VerkadaAccessUserToGroup -userid 'dcscsdc-dsc-user1' -groupId 'df76sd-dsc-group1','dsf987-daf-group2' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
 		This will add the userid dcscsdc-dsc-user1 to access groups df76sd-dsc-group1 and dsf987-daf-group2.  The org_id and tokens are submitted as parameters in the call.

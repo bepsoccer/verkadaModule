@@ -3,15 +3,22 @@ function Set-VerkadaCloudBackupSettings
 	<#
 		.SYNOPSIS
 		Sets a camera's cloud backup settings
+		
 		.DESCRIPTION
 		This function set the cloud back settings for a camera or cameras.
 		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
+		
+		.LINK
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Set-VerkadaCloudBackupSettings.md
+
 		.EXAMPLE
 		Set-VerkadaCloudBackupSettings -enabled 1 -upload_timeslot '0,86400' -time_to_preserve '25200,68400' -days_to_preserve '1,1,1,1,1,1,1'  -video_to_upload 'ALL' -video_quality 'STANDARD_QUALITY' -camera_id 'cwdfwfw-3f3-cwdf2-cameraId'
 		This will set the camera cwdfwfw-3f3-cwdf2-cameraId to use cloud backup with the submitted settings.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
 		.EXAMPLE
 		Set-VerkadaCloudBackupSettings -enabled 1 -upload_timeslot '0,86400' -time_to_preserve '25200,68400' -days_to_preserve '1,1,1,1,1,1,1'  -video_to_upload 'ALL' -video_quality 'STANDARD_QUALITY' -camera_id 'cwdfwfw-3f3-cwdf2-cameraId' -org_id 'deds343-uuid-of-org' -x_api_key 'sd78ds-uuid-of-verkada-token'
 		This will set the camera cwdfwfw-3f3-cwdf2-cameraId to use cloud backup with the submitted settings.  The org_id and tokens are submitted as parameters in the call.
+		
 		.EXAMPLE
 		import-Csv ./cameras.csv | Set-VerkadaCloudBackupSettings
 		This will set the camera cloud backup settings for all the rows in the CSV which contains all needed params.  The org_id and tokens will be populated from the cached created by Connect-Verkada.

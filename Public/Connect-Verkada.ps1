@@ -3,14 +3,21 @@ function Connect-Verkada
 	<#
 		.SYNOPSIS
 		Gathers needed credentials for Verkada's API Endpoints
+		
 		.DESCRIPTION
 		This function is used to authenticate a session and store the needed tokens and org_id for other functions in this module.
+		
+		.LINK
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Connect-Verkada.md
+
 		.EXAMPLE
 		Connect-Verkada 'dsfwfd-wdf-orgId' 'myapiKey-dcwdskjnlnlkj'
 		This will store the org_id dsfwfd-wdf-orgId with the public API key myapiKey-dcwdskjnlnlkj.
+		
 		.EXAMPLE
 		Connect-Verkada 'dsfwfd-wdf-orgId' -userName "admin.user@contoso.com" -Password
 		This will authenticate user admin.user@contoso.com by prompting for the password(stored as a secure string) and upon success store the org_id dsfwfd-wdf-orgId and the returned tokens.
+		
 		.EXAMPLE
 		Connect-Verkada 'dsfwfd-wdf-orgId' -x_api_key 'myapiKey-dcwdskjnlnlkj' -userName "admin.user@contoso.com" -Password
 		This will store the org_id dsfwfd-wdf-orgId with the public API key myapiKey-dcwdskjnlnlkj and will authenticate user admin.user@contoso.com by prompting for the password(stored as a secure string) and storing the returned tokens.

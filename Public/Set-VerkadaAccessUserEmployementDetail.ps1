@@ -3,15 +3,22 @@ function Set-VerkadaAccessUserEmployementDetail
 	<#
 		.SYNOPSIS
 		Sets the employment details for an Access User in an organization
+		
 		.DESCRIPTION
 		This function is used to set the employment details for an Access User in an organization.  While userId is preferable to use this function, email or firstName/lastName can be used to set the details as it will attempt to use the Find-VerkadaUserId function to lookup the userId.
 		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
+		
+		.LINK
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Set-VerkadaAccessUserEmployementDetail.md
+
 		.EXAMPLE
 		Set-VerkadaAccessUserEmployementDetail -userId 'gjg547-uuid-of-user' -employeeId '9999sd' -department 'sales' -departmentId 'salesUS' -employeeTitle 'Account Executive' -companyName 'Contoso'
 		This will set the employment details specified in the parameters for the user specified.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
 		.EXAMPLE
 		Set-VerkadaAccessUserEmployementDetail -userId 'gjg547-uuid-of-user' -employeeId '9999sd' -department 'sales' -departmentId 'salesUS' -employeeTitle 'Account Executive' -companyName 'Contoso' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
 		This will set the employment details specified in the parameters for the user specified.  The org_id and tokens are submitted as parameters in the call.
+		
 		.EXAMPLE
 		Import-Csv ./myUsers.csv |  Set-VerkadaAccessUserEmployementDetail
 		This will set the employment details for every row in the csv file which contains userId, employeeId, employeeTitle, department, departmentId, and companyName.  The org_id and tokens will be populated from the cached created by Connect-Verkada.

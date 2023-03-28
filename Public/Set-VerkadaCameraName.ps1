@@ -3,18 +3,26 @@ function Set-VerkadaCameraName
 	<#
 		.SYNOPSIS
 		Set the name of a camera in an organization
+		
 		.DESCRIPTION
 		This function is used to rename a camera or cameras in a Verkada org.
 		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
+		
+		.LINK
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Set-VerkadaCameraName.md
+
 		.EXAMPLE
 		Set-VerkadaCameraName -camera_id 'cwdfwfw-3f3-cwdf2-cameraId' -camera_name 'Camera1'
 		This will rename camera_id cwdfwfw-3f3-cwdf2-cameraId to Camera1.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
 		.EXAMPLE
 		Set-VerkadaCameraName -camera_id 'cwdfwfw-3f3-cwdf2-cameraId' -camera_name 'Camera1' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
 		This will rename camera_id cwdfwfw-3f3-cwdf2-cameraId to Camera1.   The org_id and tokens are submitted as parameters in the call.
+		
 		.EXAMPLE
 		Set-VerkadaCameraName -serial 'ABCD-123-UNME' -camera_name 'Camera1'
 		This will rename the camera with serial ABCD-123-UNME to Camera1.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
 		.EXAMPLE
 		Import-Csv ./cameras.csv | Set-VerkadaCameraName  
 		This will rename all the cameras in the imported CSV which needs to caontain the camera_id(cameraId) or serial and the camera_name(name).  The org_id and tokens are submitted as parameters in the call.
