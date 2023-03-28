@@ -16,6 +16,9 @@ function Add-VerkadaAccessUser
 		Add-VerkadaAccessUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com' 
 		This will add the access user with the name "New User" and email newUser@contoso.com.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 		.EXAMPLE
+		Add-VerkadaAccessUser -email 'newUser@contoso.com' 
+		This will add the access user with the email newUser@contoso.com.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		.EXAMPLE
 		Add-VerkadaAccessUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com -department 'sales' -departmentId 'US-Sales' -employeeId '12345' -employeeTitle 'The Closer' -companyName 'Contoso' 
 		This will add the access user with the name "New User" and email newUser@contoso.com in department defined as sales with departmnetId of US-Sales with the appropriate employeeID, Title, and Company.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 		.EXAMPLE
@@ -26,7 +29,7 @@ function Add-VerkadaAccessUser
 		This will add the access user with the name "New User" and email newUser@contoso.com with an HID badge 111-55555 and in groups df76sd-dsc-group1 and dsf987-daf-group2.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 	#>
 
-	[CmdletBinding(PositionalBinding = $true, DefaultParameterSetName = 'user')]
+	[CmdletBinding(PositionalBinding = $true)]
 	Param(
 		#The UUID of the organization the user belongs to
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
@@ -37,10 +40,10 @@ function Add-VerkadaAccessUser
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[String]$email,
 		#The first name of the user being added
-		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'user')]
+		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[String]$firstName,
 		#The last name of the user being added
-		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'user')]
+		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[String]$lastName,
 		#The Verkada(CSRF) token of the user running the command
 		[Parameter()]
@@ -124,6 +127,22 @@ function Add-VerkadaAccessUser
 	} #end begin
 	
 	Process {
+		#decide which parameter set is presented for first/last name and email
+		if ([string]::IsNullOrEmpty($firstName) -and [string]::IsNullOrEmpty($lastName) -and [string]::IsNullOrEmpty($email)){
+			Write-Warning "No user created since no email or name was presented.  An email and/or First/Last Name are required to create a user."
+			return
+		} elseif ((!([string]::IsNullOrEmpty($firstName))) -and (!([string]::IsNullOrEmpty($lastName))) -and (!([string]::IsNullOrEmpty($email)))) {
+			#write-host "$firstName $lastName $email are all present" -ForegroundColor Red
+		} elseif ((!([string]::IsNullOrEmpty($email))) -and [string]::IsNullOrEmpty($firstName) -and [string]::IsNullOrEmpty($lastName)) {
+			#write-host "$email is the only thing present" -ForegroundColor Red
+		} elseif (([string]::IsNullOrEmpty($firstName) -or [string]::IsNullOrEmpty($lastName))) {
+			Write-Warning "No user created since either the first or last name is missing.  First and Last Name are required to create a user if one is specified."
+			return
+		} elseif ((!([string]::IsNullOrEmpty($firstName)) -and (!([string]::IsNullOrEmpty($lastName)))) -and [string]::IsNullOrEmpty($email)) {
+			#write-host "$firstName $lastname were specified and no email" -ForegroundColor Red
+		}
+
+		#build the form parameters for the user creation
 		$form_params = @{
 			"organizationId" = $org_id
 		}
@@ -140,23 +159,38 @@ function Add-VerkadaAccessUser
 		$jobs += Start-ThreadJob -InitializationScript {Import-Module verkadaModule.psm1} -ThrottleLimit $threads -ScriptBlock {
 			#Add the user to Command
 			#Write-Output "Add user $using:firstName $using:lastName $using:email"
-			$output = Invoke-VerkadaFormCall $using:url $using:org_id $using:form_params -x_verkada_token $using:x_verkada_token -x_verkada_auth $using:x_verkada_auth
 			$res = @{}
-			$res.created = ((Get-Date -Date "01-01-1970") + ([System.TimeSpan]::FromSeconds(($output.users.created)))).ToLocalTime()
-			$res.userId = $output.users.userId
-			$res.firstName = $output.users.firstName
-			$res.lastName = $output.users.lastName
-			$res.email = $output.users.email
+			try {
+				$output = Invoke-VerkadaFormCall $using:url $using:org_id $using:form_params -x_verkada_token $using:x_verkada_token -x_verkada_auth $using:x_verkada_auth
+				$res.created = ((Get-Date -Date "01-01-1970") + ([System.TimeSpan]::FromSeconds(($output.users.created)))).ToLocalTime()
+				$res.userId = $output.users.userId
+				$res.firstName = $output.users.firstName
+				$res.lastName = $output.users.lastName
+				$res.email = $output.users.email
 
-			$response = $res | ConvertTo-Json -Depth 100 | ConvertFrom-Json
-			if ([string]::IsNullOrEmpty(($response.userId))) {
-				Write-Warning "$using:firstName $using:lastName $using:email was not created due to an error"
+				$response = $res | ConvertTo-Json -Depth 100 | ConvertFrom-Json
+			}
+			catch [Microsoft.PowerShell.Commands.HttpResponseException] {
+				$err = $_.ErrorDetails | ConvertFrom-Json
+				$errorMes = $_ | Convertto-Json -WarningAction SilentlyContinue
+				$err | Add-Member -NotePropertyName StatusCode -NotePropertyValue (($errorMes | ConvertFrom-Json -Depth 100 -WarningAction SilentlyContinue).Exception.Response.StatusCode) -Force
+				
+				$res.created = '0'
 				$res.firstName = $using:firstName
 				$res.lastName = $using:lastName
 				$res.email = $using:email
-				$response = $res | ConvertTo-Json -Depth 100 | ConvertFrom-Json
-				return $response
+
+				Write-Warning "$using:firstName $using:lastName $using:email was not created due to: $($err.StatusCode) - $($err.message)"
+				$noUser = $true
 			}
+			catch {
+				$_.Exception
+				$noUser = $true
+			}
+			finally {
+				$response = $res | ConvertTo-Json -Depth 100 | ConvertFrom-Json
+			}
+			if ($noUser){return}
 			
 			#Add badge to user if present
 			if (!([string]::IsNullOrEmpty($using:cardType))){
