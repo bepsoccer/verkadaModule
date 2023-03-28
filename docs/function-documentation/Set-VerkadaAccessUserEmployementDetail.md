@@ -42,7 +42,7 @@ This will set the employment details specified in the parameters for the user sp
 
 ### EXAMPLE 2
 ```
-ASet-VerkadaAccessUserEmployementDetail -userId 'gjg547-uuid-of-user' -employeeId '9999sd' -department 'sales' -departmentId 'salesUS' -employeeTitle 'Account Executive' -companyName 'Contoso' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+Set-VerkadaAccessUserEmployementDetail -userId 'gjg547-uuid-of-user' -employeeId '9999sd' -department 'sales' -departmentId 'salesUS' -employeeTitle 'Account Executive' -companyName 'Contoso' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
 This will set the employment details specified in the parameters for the user specified.  The org_id and tokens are submitted as parameters in the call.
 ```
 
