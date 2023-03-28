@@ -293,6 +293,10 @@ function Add-VerkadaAccessUser
 	} #end process
 
 	End {
-		$jobs | Receive-Job -AutoRemoveJob -Wait
+		$jobs | Receive-Job -AutoRemoveJob -Wait -WarningVariable +w -ErrorVariable +e
+		foreach ($line in $w){Write-Output "Warning: $line"}
+		foreach ($line in $e){Write-Output "Error: $line"}
+		Remove-Variable -Name w -ErrorAction SilentlyContinue
+		Remove-Variable -Name e -ErrorAction SilentlyContinue
 	}
 } #end function
