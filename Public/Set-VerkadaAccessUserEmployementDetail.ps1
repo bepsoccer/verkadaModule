@@ -122,6 +122,7 @@ function Set-VerkadaAccessUserEmployementDetail
 			}
 			#Write-Host -ForegroundColor Green $errorMes
 		}
+		Remove-Variable userId -ErrorAction SilentlyContinue
 	} #end process
 
 	End {
