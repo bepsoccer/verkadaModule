@@ -112,7 +112,7 @@ function Add-VerkadaAccessUser
 		#Number of threads allowed to multi-thread the task
 		[Parameter()]
 		[ValidateRange(1,20)]
-		[int]$threads=1
+		[int]$threads=4
 	)
 
 	Begin {
