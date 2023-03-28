@@ -3,18 +3,26 @@ function Find-VerkadaUserId
 	<#
 		.SYNOPSIS
 		Finds the userID of a user in an organization
+		
 		.DESCRIPTION
 		This function is used to find a Verkaka userId using firstName/lastName or email address.  
 		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
+		
+		.LINK
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Find-VerkadaUserId.md
+
 		.EXAMPLE
 		Find-VerkadaUserId -email 'newUser@contoso.com' 
 		This will attempt to find theuserId of the user with email address newUser@contoso.com.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
 		.EXAMPLE
 		Find-VerkadaUserId -email 'newUser@contoso.com' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
 		This will attempt to find theuserId of the user with email address newUser@contoso.com.  The org_id and tokens are submitted as parameters in the call.
+		
 		.EXAMPLE
 		Find-VerkadaUserId -firstName 'New' -lastName 'User'
 		This will attempt to find theuserId of the user with the name "New User".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
 		.EXAMPLE
 		Find-VerkadaUserId -firstName 'New' -lastName 'User' -email 'newUser@contoso.com' 
 		This will attempt to find theuserId of the user with the name "New User".  The org_id and tokens will be populated from the cached created by Connect-Verkada.

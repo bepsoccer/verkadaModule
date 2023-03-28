@@ -3,15 +3,22 @@ function Get-VerkadaCloudBackupSettings
 	<#
 		.SYNOPSIS
 		Gets a camera's cloud backup settings
+		
 		.DESCRIPTION
 		This function will retrieve the cloud backup settings of the camera requested.
 		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
+		
+		.LINK
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCloudBackupSettings.md
+
 		.EXAMPLE
 		Get-VerkadaCloudBackupSettings -camera_id "cwdfwfw-3f3-cwdf2-cameraId"
 		This will get the cloud backup settings of camera cwdfwfw-3f3-cwdf2-cameraId.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
 		.EXAMPLE
 		Get-VerkadaCloudBackupSettings -camera_id "cwdfwfw-3f3-cwdf2-cameraId" -org_id 'deds343-uuid-of-org' -x_api_key 'sd78ds-uuid-of-verkada-token'
 		This will get the cloud backup settings of camera cwdfwfw-3f3-cwdf2-cameraId.  The org_id and tokens are submitted as parameters in the call.
+		
 		.EXAMPLE
 		Get-VerkadaCloudBackupSettings -camera_id "cwdfwfw-3f3-cwdf2-cameraId" -backup
 		This will get the cloud backup settings of camera cwdfwfw-3f3-cwdf2-cameraId and write it to a csv.  The org_id and tokens will be populated from the cached created by Connect-Verkada.

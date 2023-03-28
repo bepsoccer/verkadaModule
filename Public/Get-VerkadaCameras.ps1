@@ -3,18 +3,26 @@ function Get-VerkadaCameras
 	<#
 		.SYNOPSIS
 		Gets all cameras in an organization
+		
 		.DESCRIPTION
 		This function will retrieve the complete list of cameras in an organization.  Upon the first run the camera list will be cached until a new powershell session is initiated, Connect/Disconnect-Verkada is run, or you use the refresh switch.
 		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
+		
+		.LINK
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCameras.md
+
 		.EXAMPLE
 		Get-VerkadaCameras
 		This will return all the cameras in the org.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
 		.EXAMPLE
 		Get-VerkadaCameras -org_id 'deds343-uuid-of-org' -x_api_key 'sd78ds-uuid-of-verkada-token'
 		This will return all the cameras in the org.  The org_id and tokens are submitted as parameters in the call.
+		
 		.EXAMPLE
 		Get-VerkadaCameras -serial
 		This will return the camera information using the serial.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
 		.EXAMPLE
 		Get-VerkadaCameras -refresh
 		This will return all the cameras in the org with the most recent data available from Command.  The org_id and tokens will be populated from the cached created by Connect-Verkada.

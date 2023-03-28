@@ -3,13 +3,19 @@ function Get-VerkadaAccessUser
 	<#
 		.SYNOPSIS
 		Gets an Access User in an organization by userId
+		
 		.DESCRIPTION
 		This function is used to get all the details about an indivual Access user in an org.
 		This function is used to rename a camera or cameras in a Verkada org.
 		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
+		
+		.LINK
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaAccessUser.md
+
 		.EXAMPLE
 		Get-VerkadaAccessUser -userId 'aefrfefb-3429-39ec-b042-userAC'
 		This will retrieve the user with userId aefrfefb-3429-39ec-b042-userAC.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
 		.EXAMPLE
 		Get-VerkadaAccessUser -userId 'aefrfefb-3429-39ec-b042-userAC' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
 		This will retrieve the user with userId aefrfefb-3429-39ec-b042-userAC.  The org_id and tokens are submitted as parameters in the call.

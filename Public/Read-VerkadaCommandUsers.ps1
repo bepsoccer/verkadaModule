@@ -3,15 +3,22 @@ function Read-VerkadaCommandUsers
 	<#
 		.SYNOPSIS
 		Gathers all Command Users in an organization
+		
 		.DESCRIPTION
 		This function will return all the active Command users in an organization.
 		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
+		
+		.LINK
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Read-VerkadaCommandUsers.md
+
 		.EXAMPLE
 		Read-VerkadaCommandUsers
 		This will return all the active users in an organization.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
 		.EXAMPLE
 		Read-VerkadaCommandUsers -userId 'aefrfefb-3429-39ec-b042-userAC' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
 		This will return all the active users in an organization.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
 		.EXAMPLE
 		Read-VerkadaCommandUsers -refresh
 		This will return all the active users in an organization with the most recent data available from Command.  The org_id and tokens will be populated from the cached created by Connect-Verkada.

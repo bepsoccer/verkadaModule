@@ -3,27 +3,38 @@ function Add-VerkadaAccessUser
 	<#
 		.SYNOPSIS
 		Adds an Access User in an organization
+		
 		.DESCRIPTION
 		This function is used to add a Verkaka Access user or users to a Verkada Command Organization.  As part of the user creation you can optionally add a badge and/or add the user to groups.
 		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
+		
+		.LINK
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Add-VerkadaAccessUser.md
+
 		.EXAMPLE
 		Add-VerkadaAccessUser -firstName 'New' -lastName 'User'
 		This will add the access user with the name "New User".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
 		.EXAMPLE
 		Add-VerkadaAccessUser -firstName 'New' -lastName 'User' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
 		This will add the access user with the name "New User".  The org_id and tokens are submitted as parameters in the call.
+		
 		.EXAMPLE
 		Add-VerkadaAccessUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com' 
 		This will add the access user with the name "New User" and email newUser@contoso.com.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
 		.EXAMPLE
 		Add-VerkadaAccessUser -email 'newUser@contoso.com' 
 		This will add the access user with the email newUser@contoso.com.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
 		.EXAMPLE
 		Add-VerkadaAccessUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com -department 'sales' -departmentId 'US-Sales' -employeeId '12345' -employeeTitle 'The Closer' -companyName 'Contoso' 
 		This will add the access user with the name "New User" and email newUser@contoso.com in department defined as sales with departmnetId of US-Sales with the appropriate employeeID, Title, and Company.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
 		.EXAMPLE
 		Add-VerkadaAccessUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com' -includeBadge -cardType 'HID' -facilityCode 111 -cardNumber 55555
 		This will add the access user with the name "New User" and email newUser@contoso.com with an HID badge 111-55555.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
 		.EXAMPLE
 		Add-VerkadaAccessUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com' -includeBadge -cardType 'HID' -facilityCode 111 -cardNumber 55555 -groupId 'df76sd-dsc-group1','dsf987-daf-group2'
 		This will add the access user with the name "New User" and email newUser@contoso.com with an HID badge 111-55555 and in groups df76sd-dsc-group1 and dsf987-daf-group2.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
