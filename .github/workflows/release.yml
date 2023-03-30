@@ -1,0 +1,45 @@
+name: Release and Publish
+on:
+  pull_request_target:
+    types:
+      - closed
+    branches: [ "master" ]
+  workflow_dispatch:
+env:
+  PROJECT: verkadaModule
+jobs:
+  findVersion:
+    if: github.event.pull_request.merged == true
+    outputs:
+      version: ${{ steps.FindVersion.outputs.v }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Find Module Version
+        id: FindVersion
+        shell: pwsh
+        run: |
+          [version]$version = (Import-PowerShellDataFile "./$env:PROJECT/$env:PROJECT.psd1").ModuleVersion
+          echo "v=$version" >> $env:GITHUB_OUTPUT
+  releaseAndPublish:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    needs: findVersion
+    steps:
+      - name: Push Version Tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          custom_tag: ${{needs.findVersion.outputs.version}}
+      - name: Create a GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
+      - uses: actions/checkout@v3
+      - name: Publish to PS Gallery
+        shell: pwsh
+        run: |
+          Publish-Module -Path ./$env:PROJECT -NuGetApiKey ${{ secrets.NUGET_API_KEY }}
