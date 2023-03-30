@@ -7,6 +7,8 @@ on:
       - closed 
     branches: [ "dev" ]
   workflow_dispatch:
+env:
+  PROJECT: verkadaModule
 jobs:
   Patch:
     if: github.event_name == 'push' && !(startsWith(github.event.head_commit.message, 'Merge'))
@@ -25,7 +27,7 @@ jobs:
           Install-Module platyPS
           $loc = Get-Location
           $Env:PSModulePath = $Env:PSModulePath+":$loc"
-          Import-Module -name verkadaModule
+          Import-Module -name $env:PROJECT
           $output = (./maintenance/updateMod.ps1)
           echo "v=$output" >> $env:GITHUB_OUTPUT
       - name: Git Auto Commit
@@ -49,7 +51,7 @@ jobs:
           Install-Module platyPS
           $loc = Get-Location
           $Env:PSModulePath = $Env:PSModulePath+":$loc"
-          Import-Module -name verkadaModule
+          Import-Module -name $env:PROJECT
           $output = (./maintenance/updateMod.ps1 minor)
           echo "v=$output" >> $env:GITHUB_OUTPUT
       - name: Git Auto Commit
@@ -74,7 +76,7 @@ jobs:
           Install-Module platyPS
           $loc = Get-Location
           $Env:PSModulePath = $Env:PSModulePath+":$loc"
-          Import-Module -name verkadaModule
+          Import-Module -name $env:PROJECT
           $output = (./maintenance/updateMod.ps1 major)
           echo "v=$output" >> $env:GITHUB_OUTPUT
       - name: Git Auto Commit
