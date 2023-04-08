@@ -82,12 +82,36 @@ function Add-VerkadaCamera {
 		$batchInfoUri = "https://vnetsuite.command.verkada.com/device/batch/information"
 		$batchInfoSerial = @($serial)
 		$batchInfoBody = @{'serialNumbers'	= $batchInfoSerial} | ConvertTo-Json | ConvertFrom-Json
-		$batchInfo = Invoke-VerkadaCommandCall $batchInfoUri $org_id $batchInfoBody -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr -Method 'POST'
-		$batchInfo
+		try {
+			$batchInfo = Invoke-VerkadaCommandCall $batchInfoUri $org_id $batchInfoBody -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr -Method 'POST'
+		}
+		catch [Microsoft.PowerShell.Commands.HttpResponseException] {
+			$err = $_.ErrorDetails | ConvertFrom-Json
+			$errorMes = $_ | Convertto-Json -WarningAction SilentlyContinue
+			$err | Add-Member -NotePropertyName StatusCode -NotePropertyValue (($errorMes | ConvertFrom-Json -Depth 100 -WarningAction SilentlyContinue).Exception.Response.StatusCode) -Force
 
+			if ($err.message -eq 'Error looking up serials in vProvision: Unknown error') {
+				Write-Host "Camera($serial) is already claimed so it can't be added" -ForegroundColor Red
+				Return
+			} else {
+				Write-Host "$($err.StatusCode) - $($err.message)" -ForegroundColor Red
+				Return
+			}
+		}
+		if ($batchInfo.devices[0].registered){
+			Write-Host "Camera($serial) is already claimed so it can't be added" -ForegroundColor Red
+			Return
+		}
+		if ($batchInfo.devices[0].deviceType -ne 'camera'){
+			Write-Host "Serial($serial) is type:$($batchInfo.devices[0].deviceType) so it can't be added with this function" -ForegroundColor Red
+			Return
+		}
 		#get all the camera fields
 		$b = @{}
 		$b.serialNumber = $serial
+		if ([string]::IsNullOrEmpty($name)){
+			$name = "New Camera($serial)"
+		}
 		$b.name = $name
 		$b.cameraGroupId = $siteId
 		$b.location = $loc
@@ -121,10 +145,23 @@ function Add-VerkadaCamera {
 			$c = @{}
 			$c.organizationId = $org_id
 			$c.cameras = $batch.cameras
-			$body = $c | ConvertTo-Json -Depth 10
-			$body
+			$body = $c | ConvertTo-Json -Depth 10 | ConvertFrom-Json
 
 			#send camera creation call
+			$url = 'https://vprovision.command.verkada.com/camera/init/batch'
+			try {
+				$response = Invoke-VerkadaCommandCall $url $org_id $body -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr -Method 'POST'
+				$response
+			}
+			catch [Microsoft.PowerShell.Commands.HttpResponseException] {
+				$err = $_.ErrorDetails | ConvertFrom-Json
+				$errorMes = $_ | Convertto-Json -WarningAction SilentlyContinue
+				$err | Add-Member -NotePropertyName StatusCode -NotePropertyValue (($errorMes | ConvertFrom-Json -Depth 100 -WarningAction SilentlyContinue).Exception.Response.StatusCode) -Force
+
+				Write-Host "$($c.cameras)" -ForegroundColor Red
+				Write-Host "Cameras not added because:  $($err.StatusCode) - $($err.message)" -ForegroundColor Red
+				Return
+			}
 		}
 	} #end end
 } #end function
