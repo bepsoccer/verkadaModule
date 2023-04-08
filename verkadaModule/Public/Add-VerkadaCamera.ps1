@@ -4,18 +4,19 @@ function Add-VerkadaCamera {
 		Adds a camera to an organization
 		
 		.DESCRIPTION
-		Add
+		Used to bulk add cameras to an organization with the desired name and location.  This function takes pipeline paramters making it easy to add mulitple cameras via csv with the desired named out of the gate.
 
 		.LINK
 		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Add-VerkadaCamera.md
 
 		.EXAMPLE
-		Add-VerkadaAccessUser -firstName 'New' -lastName 'User'
-		This will add the access user with the name "New User".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		Add-VerkadaCamera -serial 'ABCD-1234-EF56' -name 'My New Camera' -siteId '919dedeb-b3fe-420c-b663-ce44cbfd1c1e' -location '405 E 4th Ave, San Mateo, CA'
+		This will add the new camera using serial ABCD-1234-EF56 with the name "My New Camera".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Add-VerkadaAccessUser -firstName 'New' -lastName 'User' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
-		This will add the access user with the name "New User".  The org_id and tokens are submitted as parameters in the call.
+		Add-VerkadaCamera -serial 'ABCD-1234-EF56' -name 'My New Camera' -siteId '919dedeb-b3fe-420c-b663-ce44cbfd1c1e' -location '405 E 4th Ave, San Mateo, CA'
+		 -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+		This will add the new camera using serial ABCD-1234-EF56 with the name "My New Camera".  The org_id and tokens are submitted as parameters in the call.
 	#>
 
 	[CmdletBinding()]
