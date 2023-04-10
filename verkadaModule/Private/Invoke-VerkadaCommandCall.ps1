@@ -47,36 +47,28 @@ function Invoke-VerkadaCommandCall
 			'usr'		= $usr
 		}
 
+		$headers1=@{
+			'x-verkada-token'		= $x_verkada_token
+			'X-Verkada-Auth'		=	$x_verkada_auth
+		}
+
+		$headers2=@{
+			'x-verkada-token'						= $x_verkada_token
+			'x-verkada-user-id'					=	$usr
+			'x-verkada-organization-id'	= $org_id
+		}
+
 		$session = New-WebSession $cookies $url
 		switch (([System.Uri]$url).host) {
-			default {
-				$headers=@{
-					'x-verkada-token'		= $x_verkada_token
-					'X-Verkada-Auth'		=	$x_verkada_auth
-				}
-			}
-			'vnetsuite.command.verkada.com' {
-				$headers=@{
-					'x-verkada-token'						= $x_verkada_token
-					'x-verkada-user-id'					=	$usr
-					'x-verkada-organization-id'	= $org_id
-				}
-			}
+			default { $headers=$headers1 }
+			'vnetsuite.command.verkada.com' { $headers=$headers2 }
 			'vprovision.command.verkada.com' {
 				switch (([System.Uri]$url).AbsolutePath) {
-					default {
-						$headers=@{
-							'x-verkada-token'		= $x_verkada_token
-							'X-Verkada-Auth'		=	$x_verkada_auth
-						}
-					}
-					'/camera/init/batch' {
-						$headers=@{
-							'x-verkada-token'						= $x_verkada_token
-							'x-verkada-user-id'					=	$usr
-							'x-verkada-organization-id'	= $org_id
-						}
-					}
+					default { $headers=$headers1 }
+					{
+						'/camera/init/batch',
+						'/org/camera_group/create' -contains $_
+					} { $headers=$headers2 }
 				}
 			}
 		}
