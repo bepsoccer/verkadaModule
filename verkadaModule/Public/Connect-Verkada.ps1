@@ -110,6 +110,7 @@ function Connect-Verkada
 				$Global:verkadaConnection.csrfToken = $response.csrfToken
 				$Global:verkadaConnection.usr = $response.userId
 				Write-Host -ForegroundColor green "$responseCode - Successfully connected to Verkada Command with Un/Pass"
+				Invoke-VerkadaCommandInit | Out-Null
 				return $response
 			} catch [Microsoft.PowerShell.Commands.HttpResponseException] {
 				Disconnect-Verkada
@@ -125,6 +126,7 @@ function Connect-Verkada
 				Write-Warning "Trying to read Command users to test connection.  This could take a few minutes, please be patient"
 				$response = Read-VerkadaCommandUsers
 				Write-Host -ForegroundColor Green "Successfully connected to Verkada Command with $($response.count) users found"
+				Invoke-VerkadaCommandInit | Out-Null
 				return
 			} catch [Microsoft.PowerShell.Commands.HttpResponseException] {
 				Disconnect-Verkada
