@@ -76,7 +76,13 @@ function Add-VerkadaCommandSite {
 		$body = $body | ConvertTo-Json -Depth 10 | ConvertFrom-Json
 
 		try {
-			$response = Invoke-VerkadaCommandCall $url $org_id $body -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr -Method 'POST' | Select-Object -ExpandProperty cameraGroups | Select-Object -Property name,cameraGroupId,organizationId,created 
+			$response = Invoke-VerkadaCommandCall $url $org_id $body -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr -Method 'POST' | Select-Object -ExpandProperty cameraGroups | Select-Object -Property name,cameraGroupId,organizationId,created
+			if ($Global:verkadaCameraGroups){
+				$Global:verkadaCameraGroups += $response
+			} else {
+				Invoke-VerkadaCommandInit | Out-Null
+				$Global:verkadaCameraGroups += $response
+			}
 			return $response
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {
