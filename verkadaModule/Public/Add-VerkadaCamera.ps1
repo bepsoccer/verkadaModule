@@ -14,19 +14,18 @@ function Add-VerkadaCamera {
 		This will add the new camera using serial ABCD-1234-EF56 with the name "My New Camera".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Add-VerkadaCamera -serial 'ABCD-1234-EF56' -name 'My New Camera' -siteId '919dedeb-b3fe-420c-b663-ce44cbfd1c1e' -location '405 E 4th Ave, San Mateo, CA'
-		 -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+		Add-VerkadaCamera -serial 'ABCD-1234-EF56' -name 'My New Camera' -siteId '919dedeb-b3fe-420c-b663-ce44cbfd1c1e' -location '405 E 4th Ave, San Mateo, CA' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
 		This will add the new camera using serial ABCD-1234-EF56 with the name "My New Camera".  The org_id and tokens are submitted as parameters in the call.
 	#>
 
-	[CmdletBinding()]
+	[CmdletBinding(PositionalBinding = $true)]
 	Param (
 		#The serial of the camera being added
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
+		[Alias("serialNumber")]
 		[String]$serial,
 		#The name of the camera being added
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
-		[Alias("serialNumber")]
 		[String]$name,
 		#The siteId(camerGroupId) of the site the camera will be added to
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
@@ -157,7 +156,7 @@ function Add-VerkadaCamera {
 			$url = 'https://vprovision.command.verkada.com/camera/init/batch'
 			try {
 				$response = Invoke-VerkadaCommandCall $url $org_id $body -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr -Method 'POST'
-				$response
+				return $response
 			}
 			catch [Microsoft.PowerShell.Commands.HttpResponseException] {
 				$err = $_.ErrorDetails | ConvertFrom-Json
