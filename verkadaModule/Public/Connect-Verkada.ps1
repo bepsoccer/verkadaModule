@@ -65,6 +65,8 @@ function Connect-Verkada
 
 	Process {
 		Remove-Variable -Name verkadaCameras -Scope Global -ErrorAction SilentlyContinue
+		Remove-Variable -Name verkadaCameraModels -Scope Global -ErrorAction SilentlyContinue
+		Remove-Variable -Name verkadaCameraGroups -Scope Global -ErrorAction SilentlyContinue
 		If (!($Global:verkadaConnection)){
 			$Global:verkadaConnection = @{
 				org_id		= $org_id
