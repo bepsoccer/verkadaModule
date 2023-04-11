@@ -23,6 +23,7 @@ function Get-VerkadaCameraGroup {
 	#>
 
 	[CmdletBinding(PositionalBinding = $true)]
+	[Alias("Get-VerkadaCameraSite")]
 	param (
 		#The name of the site or sub-site being added
 		[Parameter(Position = 0)]
