@@ -50,7 +50,7 @@ function Invoke-VerkadaCommandInit {
 
 		$response = Invoke-RestMethod -Uri $url -ContentType 'application/json' -WebSession $session -Method 'POST' -Headers $headers -TimeoutSec 120
 		
-		$verkadaCameraGroups = $response.cameraGroups | Select-Object -Property name,cameraGroupId,organizationId,created
+		$verkadaCameraGroups = $response.cameraGroups | Select-Object -Property name,cameraGroupId,organizationId,created,cameraGroups
 		Set-Variable -Name 'verkadaCameraGroups' -Scope Global -Value $verkadaCameraGroups
 		Set-Variable -Name 'verkadaCameraModels' -Scope Global -Value $response.models
 
