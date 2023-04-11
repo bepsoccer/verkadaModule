@@ -17,6 +17,12 @@ Gathers needed credentials for Verkada's API Endpoints
 Connect-Verkada [-org_id] <String> [-x_api_key] <String> [<CommonParameters>]
 ```
 
+### ManualTokens
+```
+Connect-Verkada [-org_id] <String> [[-x_api_key] <String>] [-userToken] <String> [-csrfToken] <String>
+ [-usr] <String> [<CommonParameters>]
+```
+
 ### UnPwd
 ```
 Connect-Verkada [-org_id] <String> [[-x_api_key] <String>] -userName <String> [-Password] [<CommonParameters>]
@@ -52,13 +58,25 @@ The UUID of the organization the user belongs to
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: apiToken, ManualTokens
 Aliases:
 
 Required: True
 Position: 1
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+```yaml
+Type: String
+Parameter Sets: UnPwd
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
@@ -73,7 +91,19 @@ Aliases:
 Required: True
 Position: 2
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+```yaml
+Type: String
+Parameter Sets: ManualTokens
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
@@ -85,7 +115,7 @@ Aliases:
 Required: False
 Position: 2
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
@@ -116,6 +146,51 @@ Required: True
 Position: Named
 Default value: False
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -userToken
+The userToken retrieved from Command login
+
+```yaml
+Type: String
+Parameter Sets: ManualTokens
+Aliases: x_verkada_auth
+
+Required: True
+Position: 3
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -csrfToken
+The csrfToken retrieved from Command login
+
+```yaml
+Type: String
+Parameter Sets: ManualTokens
+Aliases: x_verkada_token
+
+Required: True
+Position: 4
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -usr
+The usr ID retrieved from Command login
+
+```yaml
+Type: String
+Parameter Sets: ManualTokens
+Aliases: x-verkada-user-id
+
+Required: True
+Position: 5
+Default value: None
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
