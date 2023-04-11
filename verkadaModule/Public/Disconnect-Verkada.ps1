@@ -25,5 +25,8 @@ function Disconnect-Verkada
 	Process {
 		Remove-Variable -Name verkadaConnection -Scope Global -ErrorAction SilentlyContinue
 		Remove-Variable -Name verkadaCameras -Scope Global -ErrorAction SilentlyContinue
+		Remove-Variable -Name verkadaUsers -Scope Global -ErrorAction SilentlyContinue
+		Remove-Variable -Name verkadaCameraModels -Scope Global -ErrorAction SilentlyContinue
+		Remove-Variable -Name verkadaCameraGroups -Scope Global -ErrorAction SilentlyContinue
 	} #end process
 } #end function

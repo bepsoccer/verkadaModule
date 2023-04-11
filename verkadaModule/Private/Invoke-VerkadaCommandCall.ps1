@@ -47,15 +47,36 @@ function Invoke-VerkadaCommandCall
 			'usr'		= $usr
 		}
 
-		$session = New-WebSession $cookies $url
-		$headers=@{
+		$headers1=@{
 			'x-verkada-token'		= $x_verkada_token
 			'X-Verkada-Auth'		=	$x_verkada_auth
 		}
+
+		$headers2=@{
+			'x-verkada-token'						= $x_verkada_token
+			'x-verkada-user-id'					=	$usr
+			'x-verkada-organization-id'	= $org_id
+		}
+
+		$session = New-WebSession $cookies $url
+		switch (([System.Uri]$url).host) {
+			default { $headers=$headers1 }
+			'vnetsuite.command.verkada.com' { $headers=$headers2 }
+			'vprovision.command.verkada.com' {
+				switch (([System.Uri]$url).AbsolutePath) {
+					default { $headers=$headers1 }
+					{
+						'/camera/init/batch',
+						'/org/camera_group/create' -contains $_
+					} { $headers=$headers2 }
+				}
+			}
+		}
+		
 		$uri = $url
 		$bodyJson = $body | ConvertTo-Json -depth 100 -Compress
 
-		$response = Invoke-RestMethod -Uri $uri -Body $bodyJson -ContentType 'application/json' -WebSession $session -Method $method -Headers $headers  -MaximumRetryCount 3 -TimeoutSec 120 -RetryIntervalSec 5
+		$response = Invoke-RestMethod -Uri $uri -Body $bodyJson -ContentType 'application/json' -WebSession $session -Method $method -Headers $headers -TimeoutSec 120
 		
 		return $response
 	} #end process
