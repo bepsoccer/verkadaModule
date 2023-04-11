@@ -26,14 +26,16 @@ function Connect-Verkada
 	[CmdletBinding(PositionalBinding = $true,DefaultParameterSetName='apiToken')]
 	Param(
 		#The UUID of the organization the user belongs to
-		[Parameter(ParameterSetName = 'apiToken', Mandatory = $true, Position = 0)]
+		[Parameter(ParameterSetName = 'apiToken', Mandatory = $true, Position = 0, ValueFromPipelineByPropertyName = $true)]
 		[Parameter(ParameterSetName = 'UnPwd', Mandatory = $true, Position = 0)]
+		[Parameter(ParameterSetName = 'ManualTokens', Mandatory = $true, Position = 0, ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[String]$org_id,
 		#The public API key to be used for calls that hit the public API gateway
-		[Parameter(ParameterSetName = 'apiToken', Mandatory = $true, Position = 1)]
+		[Parameter(ParameterSetName = 'apiToken', Mandatory = $true, Position = 1, ValueFromPipelineByPropertyName = $true)]
 		[Parameter(ParameterSetName = 'UnPwd', Position = 1)]
+		[Parameter(ParameterSetName = 'ManualTokens', Position = 1, ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
 		[String]$x_api_key,
 		#The admin user name to be used to obtain needed session and auth tokens
@@ -43,11 +45,28 @@ function Connect-Verkada
 		#The switch needed to prompt for admin password to be used to obtain needed session and auth tokens
 		[Parameter(ParameterSetName = 'UnPwd', Mandatory = $true)]
 		[ValidateNotNullOrEmpty()]
-		[switch]$Password
+		[switch]$Password,
+		#The userToken retrieved from Command login
+		[Parameter(ParameterSetName = 'ManualTokens', Mandatory = $true, Position = 2, ValueFromPipelineByPropertyName = $true)]
+		[ValidateNotNullOrEmpty()]
+		[Alias('x_verkada_auth')]
+		[String]$userToken,
+		#The csrfToken retrieved from Command login
+		[Parameter(ParameterSetName = 'ManualTokens', Mandatory = $true, Position = 3, ValueFromPipelineByPropertyName = $true)]
+		[ValidateNotNullOrEmpty()]
+		[Alias('x_verkada_token')]
+		[String]$csrfToken,
+		#The usr ID retrieved from Command login
+		[Parameter(ParameterSetName = 'ManualTokens', Mandatory = $true, Position = 4, ValueFromPipelineByPropertyName = $true)]
+		[ValidateNotNullOrEmpty()]
+		[Alias('x-verkada-user-id')]
+		[String]$usr
 	)
 
 	Process {
 		Remove-Variable -Name verkadaCameras -Scope Global -ErrorAction SilentlyContinue
+		Remove-Variable -Name verkadaCameraModels -Scope Global -ErrorAction SilentlyContinue
+		Remove-Variable -Name verkadaCameraGroups -Scope Global -ErrorAction SilentlyContinue
 		If (!($Global:verkadaConnection)){
 			$Global:verkadaConnection = @{
 				org_id		= $org_id
@@ -93,7 +112,24 @@ function Connect-Verkada
 				$Global:verkadaConnection.csrfToken = $response.csrfToken
 				$Global:verkadaConnection.usr = $response.userId
 				Write-Host -ForegroundColor green "$responseCode - Successfully connected to Verkada Command with Un/Pass"
+				Invoke-VerkadaCommandInit | Out-Null
 				return $response
+			} catch [Microsoft.PowerShell.Commands.HttpResponseException] {
+				Disconnect-Verkada
+				Write-Host -ForegroundColor Red $_.Exception.Message
+				return
+			}
+		}
+		if ($usr){
+			try{
+				$Global:verkadaConnection.userToken = $userToken
+				$Global:verkadaConnection.csrfToken = $csrfToken
+				$Global:verkadaConnection.usr = $usr
+				Write-Warning "Trying to read Command users to test connection.  This could take a few minutes, please be patient"
+				$response = Read-VerkadaCommandUsers
+				Write-Host -ForegroundColor Green "Successfully connected to Verkada Command with $($response.count) users found"
+				Invoke-VerkadaCommandInit | Out-Null
+				return
 			} catch [Microsoft.PowerShell.Commands.HttpResponseException] {
 				Disconnect-Verkada
 				Write-Host -ForegroundColor Red $_.Exception.Message

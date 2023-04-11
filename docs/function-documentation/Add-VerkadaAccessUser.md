@@ -16,10 +16,10 @@ Adds an Access User in an organization
 Add-VerkadaAccessUser [[-org_id] <String>] [[-email] <String>] [[-firstName] <String>] [[-lastName] <String>]
  [[-x_verkada_token] <String>] [[-x_verkada_auth] <String>] [[-phone] <String>] [[-role] <String>]
  [[-start] <DateTime>] [[-expiration] <DateTime>] [[-sendInviteEmail] <Boolean>] [[-cardType] <String>]
- [[-cardNumber] <String>] [[-cardNumberHex] <String>] [[-facilityCode] <String>] [[-groupId] <String[]>]
- [[-groupName] <String[]>] [[-employeeId] <String>] [[-employeeTitle] <String>] [[-department] <String>]
- [[-departmentId] <String>] [[-companyName] <String>] [[-usr] <String>] [[-threads] <Int32>]
- [<CommonParameters>]
+ [[-cardNumber] <String>] [[-cardNumberHex] <String>] [[-facilityCode] <String>] [[-pinCode] <String>]
+ [[-groupId] <String[]>] [[-groupName] <String[]>] [[-employeeId] <String>] [[-employeeTitle] <String>]
+ [[-department] <String>] [[-departmentId] <String>] [[-companyName] <String>] [[-usr] <String>]
+ [[-threads] <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -61,8 +61,8 @@ This will add the access user with the name "New User" and email newUser@contoso
 
 ### EXAMPLE 6
 ```
-Add-VerkadaAccessUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com' -includeBadge -cardType 'HID' -facilityCode 111 -cardNumber 55555
-This will add the access user with the name "New User" and email newUser@contoso.com with an HID badge 111-55555.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+Add-VerkadaAccessUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com' -includeBadge -cardType 'HID' -facilityCode 111 -cardNumber 55555 -pinCode '12345'
+This will add the access user with the name "New User" and email newUser@contoso.com with an HID badge 111-55555 and a pin code of 12345.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ### EXAMPLE 7
@@ -298,6 +298,21 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
+### -pinCode
+The pin code being added
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases: pin
+
+Required: False
+Position: 16
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
 ### -groupId
 The UUID of the group or groups the user should be added to on creation
 
@@ -307,7 +322,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 16
+Position: 17
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -322,7 +337,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 17
+Position: 18
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -337,7 +352,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 18
+Position: 19
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -352,7 +367,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 19
+Position: 20
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -367,7 +382,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 20
+Position: 21
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -382,7 +397,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 21
+Position: 22
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -397,7 +412,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 22
+Position: 23
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -412,7 +427,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 23
+Position: 24
 Default value: $Global:verkadaConnection.usr
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -427,7 +442,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 24
+Position: 25
 Default value: 4
 Accept pipeline input: False
 Accept wildcard characters: False

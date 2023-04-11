@@ -21,10 +21,11 @@ To connect via username/password use:
 `Connect-Verkada -org_id [your org_id] -userName [your username] -Password`
 
 To connect via both(commonly needed) use:
+
 `Connect-Verkada -org_id [your org_id] -x_api_key [your API Token] -userName [your username] -Password`
 
 ## The Docs
 
-All available functions can be found in [Public](Public) and can also be enumerated using `Get-Command -Module verkadaModule`
+All available functions can be found in [Public](verkadaModule/Public) and can also be enumerated using `Get-Command -Module verkadaModule`
 
 Common uses and reference documentation can be found [here](docs/README.md)
