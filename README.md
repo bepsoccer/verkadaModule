@@ -21,6 +21,7 @@ To connect via username/password use:
 `Connect-Verkada -org_id [your org_id] -userName [your username] -Password`
 
 To connect via both(commonly needed) use:
+
 `Connect-Verkada -org_id [your org_id] -x_api_key [your API Token] -userName [your username] -Password`
 
 ## The Docs
