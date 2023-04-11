@@ -22,15 +22,19 @@ function Add-VerkadaCommandSite {
 		This will add the new site with the name "My New Site".  The org_id and tokens are submitted as parameters in the call.
 	#>
 
-	[CmdletBinding(PositionalBinding = $true, DefaultParameterSetName = 'Subsite')]
+	[CmdletBinding(PositionalBinding = $true)]
 	param (
 		#The name of the site or sub-site being added
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
 		[String]$name,
 		#The parentSiteId(parentCameraGroupId) of the sub-site being added
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[Alias("parentCameraGroupId")]
 		[String]$parentSiteId,
+		#The parentSiteName of the sub-site being added
+		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		[String]$parentSiteName,
 		#The UUID of the organization the user belongs to
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
@@ -60,6 +64,7 @@ function Add-VerkadaCommandSite {
 		if ([string]::IsNullOrEmpty($usr)) {throw "usr is missing but is required!"}
 
 		$url = 'https://vprovision.command.verkada.com/org/camera_group/create'
+		$created =@()
 	}
 	
 	process {
@@ -71,19 +76,52 @@ function Add-VerkadaCommandSite {
 		if (!([string]::IsNullOrEmpty($parentSiteId))) {
 			#get siteID of parent and set it here
 			$body.parentCameraGroupId	=	$parentSiteId
+		} elseif (!([string]::IsNullOrEmpty($parentSiteName))){
+			$g = Get-VerkadaCameraGroup $parentSiteName -org_id $org_id -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr
+			if ($g.count -lt 1){
+				$yes = New-Object System.Management.Automation.Host.ChoiceDescription "&Yes","Description."
+				$no = New-Object System.Management.Automation.Host.ChoiceDescription "&No","Description."
+				$cancel = New-Object System.Management.Automation.Host.ChoiceDescription "&Cancel","Description."
+				$options = [System.Management.Automation.Host.ChoiceDescription[]]($yes, $no, $cancel)
+
+				$title = "No site found by the name $parentSiteName"
+				$message = "Would you like to create it?"
+				$result = $host.ui.PromptForChoice($title, $message, $options, 1)
+				switch ($result) {
+					0{
+						$temp = Add-VerkadaCommandSite -name $parentSiteName -org_id $org_id -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr
+						$parentSiteId = $temp.cameraGroupId
+						$body.parentCameraGroupId	=	$parentSiteId
+					}1{
+						Write-Warning "No parent site ($parentSiteName) created, so no site name $name will be created"
+						return
+					}2{
+						Write-Host -ForegroundColor Red "Exiting invocation"
+						Exit
+					}
+				}
+			} else {
+				$parentSiteId = $g.cameraGroupId
+				$body.parentCameraGroupId	=	$parentSiteId
+			}
 		}
 
 		$body = $body | ConvertTo-Json -Depth 10 | ConvertFrom-Json
 
 		try {
-			$response = Invoke-VerkadaCommandCall $url $org_id $body -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr -Method 'POST' | Select-Object -ExpandProperty cameraGroups | Select-Object -Property name,cameraGroupId,organizationId,created
+			$response = Invoke-VerkadaCommandCall $url $org_id $body -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr -Method 'POST' | Select-Object -ExpandProperty cameraGroups | Select-Object -Property name,cameraGroupId,organizationId,created,cameraGroups
 			if ($Global:verkadaCameraGroups){
 				$Global:verkadaCameraGroups += $response
 			} else {
 				Invoke-VerkadaCommandInit | Out-Null
 				$Global:verkadaCameraGroups += $response
 			}
-			return $response
+			if ($temp){
+				$temp.cameraGroups += $response.cameraGroupId
+				$created += $temp
+			}
+			Remove-Variable -Name temp -ErrorAction SilentlyContinue
+			$created += $response
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {
 			$err = $_.ErrorDetails | ConvertFrom-Json
@@ -96,6 +134,6 @@ function Add-VerkadaCommandSite {
 	}
 	
 	end {
-		
+		return $created
 	}
 }
