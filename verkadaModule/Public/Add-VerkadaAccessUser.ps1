@@ -32,8 +32,8 @@ function Add-VerkadaAccessUser
 		This will add the access user with the name "New User" and email newUser@contoso.com in department defined as sales with departmnetId of US-Sales with the appropriate employeeID, Title, and Company.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 		
 		.EXAMPLE
-		Add-VerkadaAccessUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com' -includeBadge -cardType 'HID' -facilityCode 111 -cardNumber 55555
-		This will add the access user with the name "New User" and email newUser@contoso.com with an HID badge 111-55555.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		Add-VerkadaAccessUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com' -includeBadge -cardType 'HID' -facilityCode 111 -cardNumber 55555 -pinCode '12345'
+		This will add the access user with the name "New User" and email newUser@contoso.com with an HID badge 111-55555 and a pin code of 12345.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 		
 		.EXAMPLE
 		Add-VerkadaAccessUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com' -includeBadge -cardType 'HID' -facilityCode 111 -cardNumber 55555 -groupId 'df76sd-dsc-group1','dsf987-daf-group2'
@@ -94,6 +94,11 @@ function Add-VerkadaAccessUser
 		#The facility code of the card being added
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[String]$facilityCode,
+		#The pin code being added
+		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		[ValidatePattern('^\d{4,16}$')]
+		[Alias('pin')]
+		[String]$pinCode,
 		#The UUID of the group or groups the user should be added to on creation
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[String[]]$groupId,
@@ -235,6 +240,22 @@ function Add-VerkadaAccessUser
 					}
 				}
 			} else {$res.accessCards = ''}
+
+			#Add pin to user if present
+			if (!([string]::IsNullOrEmpty($using:pinCode))){
+				try {
+					$outputPin = $response | Add-VerkadaAccessUserPin -pinCode $using:pinCode -org_id $using:org_id -x_verkada_token $using:x_verkada_token -x_verkada_auth $using:x_verkada_auth
+					$res.pinCode = $outputPin.code
+				}
+				catch {
+					if ($_.Exception.Message -match '^\d{3}\s-\s.*') {
+						Write-Warning "No pin is being added to $using:firstName $using:lastName $using:email due to: $($_.Exception.Message)"
+					} else {
+						$_.Exception
+					}
+					$res.pinCode = ''
+				}
+			} else {$res.pinCode = ''}
 
 			#add user to group/s if present
 			if (!([string]::IsNullOrEmpty($using:groupId))){
