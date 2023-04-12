@@ -93,10 +93,29 @@ function Invoke-VerkadaRestMethod
 				$uri = [System.UriBuilder]"$url"
 				$uri.Query = $query.ToString()
 				$uri = $uri.Uri.OriginalString
-				$response = Invoke-RestMethod -Uri $uri -Body $body -Headers $headers -ContentType 'application/json' -MaximumRetryCount 3 -TimeoutSec 120 -RetryIntervalSec 5
-				$records += $response.($propertyName)
-				$page_token = $response.next_page_token
-				$query.Set('page_token', $page_token)
+
+				$loop = $false
+				$rt = 0
+				do {
+					try {
+						$response = Invoke-RestMethod -Uri $uri -Body $body -Headers $headers -ContentType 'application/json' -MaximumRetryCount 3 -TimeoutSec 120 -RetryIntervalSec 5
+						$records += $response.($propertyName)
+						$page_token = $response.next_page_token
+						$query.Set('page_token', $page_token)
+
+						$loop = $true
+					}
+					catch [System.TimeoutException] {
+						$rt++
+						if ($rt -gt 2){
+							$loop = $true
+						}
+						else {
+							Start-Sleep -Seconds 5
+						}
+					}
+				}
+				while ($loop -eq $false)
 			} While ($page_token)
 			return $records
 		} else {
@@ -108,8 +127,26 @@ function Invoke-VerkadaRestMethod
 				$uri = $uri.Uri.OriginalString
 			}
 			
-			$response = Invoke-RestMethod -Uri $uri -Body $body -Headers $headers -Method $method -ContentType 'application/json' -MaximumRetryCount 3 -TimeoutSec 120 -RetryIntervalSec 5
-			return $response
+			$loop = $false
+			$rt = 0
+			do {
+				try {
+					$response = Invoke-RestMethod -Uri $uri -Body $body -Headers $headers -Method $method -ContentType 'application/json' -MaximumRetryCount 3 -TimeoutSec 120 -RetryIntervalSec 5
+
+					$loop = $true
+					return $response
+				}
+				catch [System.TimeoutException] {
+					$rt++
+					if ($rt -gt 2){
+						$loop = $true
+					}
+					else {
+						Start-Sleep -Seconds 5
+					}
+				}
+			}
+			while ($loop -eq $false)
 		}
 	} #end process
 } #end function

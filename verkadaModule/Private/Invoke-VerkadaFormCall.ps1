@@ -42,7 +42,25 @@ function Invoke-VerkadaFormCall
 		
 		$uri = $url
 			
-		$response = Invoke-RestMethod -Uri $uri -Form $form_params -Headers $headers -Method $method -ContentType 'multipart/form-data' -MaximumRetryCount 3 -TimeoutSec 120 -RetryIntervalSec 5
-		return $response
+		$loop = $false
+		$rt = 0
+		do {
+			try {
+				$response = Invoke-RestMethod -Uri $uri -Form $form_params -Headers $headers -Method $method -ContentType 'multipart/form-data' -TimeoutSec 120
+				
+				$loop = $true
+				return $response
+			}
+			catch [System.TimeoutException] {
+				$rt++
+				if ($rt -gt 2){
+					$loop = $true
+				}
+				else {
+					Start-Sleep -Seconds 5
+				}
+			}
+		}
+		while ($loop -eq $false)
 	} #end process
 } #end function
