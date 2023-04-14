@@ -48,13 +48,30 @@ function Invoke-VerkadaCommandInit {
 
 		$session = New-WebSession $cookies $url
 
-		$response = Invoke-RestMethod -Uri $url -ContentType 'application/json' -WebSession $session -Method 'POST' -Headers $headers -TimeoutSec 120
-		
-		$verkadaCameraGroups = $response.cameraGroups | Select-Object -Property name,cameraGroupId,organizationId,created,cameraGroups
-		Set-Variable -Name 'verkadaCameraGroups' -Scope Global -Value $verkadaCameraGroups
-		Set-Variable -Name 'verkadaCameraModels' -Scope Global -Value $response.models
+		$loop = $false
+		$rt = 0
+		do {
+			try {
+				$response = Invoke-RestMethod -Uri $url -ContentType 'application/json' -WebSession $session -Method 'POST' -Headers $headers -TimeoutSec 120
+				
+				$verkadaCameraGroups = $response.cameraGroups | Select-Object -Property name,cameraGroupId,organizationId,created,cameraGroups
+				Set-Variable -Name 'verkadaCameraGroups' -Scope Global -Value $verkadaCameraGroups
+				Set-Variable -Name 'verkadaCameraModels' -Scope Global -Value $response.models
 
-		return $response
+				$loop = $true
+				return $response
+			}
+			catch [System.TimeoutException] {
+				$rt++
+				if ($rt -gt 2){
+					$loop = $true
+				}
+				else {
+					Start-Sleep -Seconds 5
+				}
+			}
+		}
+		while ($loop -eq $false)
 	}
 	
 	end {
