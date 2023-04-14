@@ -76,8 +76,25 @@ function Invoke-VerkadaCommandCall
 		$uri = $url
 		$bodyJson = $body | ConvertTo-Json -depth 100 -Compress
 
-		$response = Invoke-RestMethod -Uri $uri -Body $bodyJson -ContentType 'application/json' -WebSession $session -Method $method -Headers $headers -TimeoutSec 120
-		
-		return $response
+		$loop = $false
+		$rt = 0
+		do {
+			try {
+				$response = Invoke-RestMethod -Uri $uri -Body $bodyJson -ContentType 'application/json' -WebSession $session -Method $method -Headers $headers -TimeoutSec 120
+				
+				$loop = $true
+				return $response
+			}
+			catch [System.TimeoutException] {
+				$rt++
+				if ($rt -gt 2){
+					$loop = $true
+				}
+				else {
+					Start-Sleep -Seconds 5
+				}
+			}
+		}
+		while ($loop -eq $false)
 	} #end process
 } #end function

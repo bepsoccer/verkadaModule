@@ -74,10 +74,27 @@ function Invoke-VerkadaGraphqlCall
 		$records = @()
 		
 		Do {
-			$bodyJson = $body | ConvertTo-Json -depth 100 -Compress
-			$response = Invoke-RestMethod -Uri $uri -Body $bodyJson -ContentType 'application/json' -WebSession $session -Method $method  -MaximumRetryCount 3 -TimeoutSec 120 -RetryIntervalSec 5
-			$records += $response.data.($propertyName).($propertyName)
-			$body.variables.pagination.pageToken = $response.data.($propertyName).nextPageToken
+			$loop = $false
+			$rt = 0
+			do {
+				try {
+					$bodyJson = $body | ConvertTo-Json -depth 100 -Compress
+					$response = Invoke-RestMethod -Uri $uri -Body $bodyJson -ContentType 'application/json' -WebSession $session -Method $method -TimeoutSec 120
+					$records += $response.data.($propertyName).($propertyName)
+					$body.variables.pagination.pageToken = $response.data.($propertyName).nextPageToken
+					$loop = $true
+				}
+				catch [System.TimeoutException] {
+					$rt++
+					if ($rt -gt 2){
+						$loop = $true
+					}
+					else {
+						Start-Sleep -Seconds 5
+					}
+				}
+			}
+			while ($loop -eq $false)
 		} While ($body.variables.pagination.pageToken)
 		
 		return $records
