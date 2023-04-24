@@ -71,6 +71,14 @@ function Invoke-VerkadaCommandCall
 					} { $headers=$headers2 }
 				}
 			}
+			'vcerberus.command.verkada.com' {
+				switch (([System.Uri]$url).AbsolutePath) {
+					default { $headers=$headers1 }
+					{
+						'/user/email' -contains $_
+					} { $headers=$headers2 }
+				}
+			}
 		}
 		
 		$uri = $url
