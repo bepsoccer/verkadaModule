@@ -13,6 +13,7 @@
 * [Get-VerkadaCameraGroup](function-documentation/Get-VerkadaCameraGroup.md)
 * [Get-VerkadaCameras](function-documentation/Get-VerkadaCameras.md)
 * [Get-VerkadaCloudBackupSettings](function-documentation/Get-VerkadaCloudBackupSettings.md)
+* [Get-VerkadaCommandUser](function-documentation/Get-VerkadaCommandUser.md)
 * [Read-VerkadaCommandUsers](function-documentation/Read-VerkadaCommandUsers.md)
 * [Set-VerkadaAccessUserEmail](function-documentation/Set-VerkadaAccessUserEmail.md)
 * [Set-VerkadaAccessUserEmployementDetail](function-documentation/Set-VerkadaAccessUserEmployementDetail.md)

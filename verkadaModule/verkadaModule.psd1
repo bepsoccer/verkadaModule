@@ -12,7 +12,7 @@
 RootModule = 'verkadaModule.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.4.3'
+ModuleVersion = '0.4.4'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Desktop', 'Core'
@@ -74,8 +74,8 @@ FunctionsToExport = 'Add-VerkadaAccessBadgeToUser', 'Add-VerkadaAccessUser',
                'Add-VerkadaCamera', 'Add-VerkadaCommandSite', 'Connect-Verkada', 
                'Disconnect-Verkada', 'Find-VerkadaUserId', 'Get-VerkadaAccessUser', 
                'Get-VerkadaCameraGroup', 'Get-VerkadaCameras', 
-               'Get-VerkadaCloudBackupSettings', 'Read-VerkadaCommandUsers', 
-               'Set-VerkadaAccessUserEmail', 
+               'Get-VerkadaCloudBackupSettings', 'Get-VerkadaCommandUser', 
+               'Read-VerkadaCommandUsers', 'Set-VerkadaAccessUserEmail', 
                'Set-VerkadaAccessUserEmployementDetail', 'Set-VerkadaCameraName', 
                'Set-VerkadaCloudBackupSettings', 'Set-VerkadaSitePermissions'
 

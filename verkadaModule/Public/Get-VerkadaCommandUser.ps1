@@ -1,0 +1,137 @@
+function Get-VerkadaCommandUser {
+	<#
+		.SYNOPSIS
+		Gets the Command users' details in an organization
+		
+		.DESCRIPTION
+		This function is used return all the details of Command users.  
+		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
+		
+		.LINK
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCommandUser.md
+
+		.EXAMPLE
+		Get-VerkadaCommandUser -userId '3651fbcb-f8ba-4248-ad70-3f6512fd7b6c' 
+		This will attempt to get the user details of a user with the the userId of '3651fbcb-f8ba-4248-ad70-3f6512fd7b6c'.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
+		.EXAMPLE
+		Get-VerkadaCommandUser -email 'bob.smith@contoso.com' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+		This will attempt to get the user details of a user with email address bob.smith@contoso.com.  The org_id and tokens are submitted as parameters in the call.
+		
+		.EXAMPLE
+		Get-VerkadaCommandUser -Name 'Bob Smith'
+		This will attempt to get the user details of a user named "Bob Smith".  Depending of the name submitted, i.e. could just be a first or last name, multiple results could be returned.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+	#>
+
+	[CmdletBinding(PositionalBinding = $true, DefaultParameterSetName = 'userId')]
+	param (
+		#The first name of the user being searched for
+		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'userId')]
+		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
+		[String]$userId,	
+		#The email address of the user being searched for
+		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'email')]
+		[String]$email,
+		#The last name of the user being searched for
+		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'name')]
+		[String]$Name,
+		#The UUID of the organization the user belongs to
+		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		[ValidateNotNullOrEmpty()]
+		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
+		[String]$org_id = $Global:verkadaConnection.org_id,
+		#The Verkada(CSRF) token of the user running the command
+		[Parameter()]
+		[ValidateNotNullOrEmpty()]
+		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
+		[string]$x_verkada_token = $Global:verkadaConnection.csrfToken,
+		#The Verkada Auth(session auth) token of the user running the command
+		[Parameter()]
+		[ValidateNotNullOrEmpty()]
+		[string]$x_verkada_auth = $Global:verkadaConnection.userToken,
+		#The UUID of the user account making the request
+		[Parameter()]
+		[ValidateNotNullOrEmpty()]
+		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
+		[string]$usr = $Global:verkadaConnection.usr
+	)
+	
+	begin {
+		#parameter validation
+		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
+		if ([string]::IsNullOrEmpty($x_verkada_token)) {throw "x_verkada_token is missing but is required!"}
+		if ([string]::IsNullOrEmpty($x_verkada_auth)) {throw "x_verkada_auth is missing but is required!"}
+		if ([string]::IsNullOrEmpty($usr)) {throw "usr is missing but is required!"}
+
+		$url = "https://vgateway.command.verkada.com/graphql"
+
+		if ([string]::IsNullOrEmpty($query)){
+			$queryBase = 'query GetCommandUsers($filter: UsersFilter!, $pagination: PageOptions) {
+						users(filter: $filter, pagination: $pagination) {
+								nextPageToken
+								users {
+								...CommandUser
+								__typename
+								}
+								__typename
+						}
+			}'
+			$userFragment = 'fragment CommandUser on User {
+			created
+			email
+			emailVerified
+			firstName
+			isOrganizationAdmin
+			lastName
+			name
+			modified
+			lastLogin
+			organizationId
+			phone
+			phoneVerified
+			provisioned
+			deactivated
+			deleted
+			userId
+			__typename
+			}'
+
+			$query = $queryBase + "`n" + $userFragment
+		}
+
+		if ([string]::IsNullOrEmpty($variables)){
+			$variables= "{
+				'filter':{
+					'organizationId':'',
+					'groupIds':[],
+					'roleGrants':[],
+					'status':['active']
+				},
+				'pagination':{
+					'pageSize':1,
+					'pageToken':'',
+					'pageSort':[
+						{
+							'field':'NAME',
+							'direction':'ASC'
+						},
+						{
+							'field':'EMAIL',
+							'direction':'ASC'
+						}
+					]
+				}
+			}" | ConvertFrom-Json
+		}
+		$variables.filter.organizationId = $org_id
+	}
+	
+	process {
+		$users = Invoke-VerkadaGraphqlCall $url -query $query -qlVariables $variables -org_id $org_id -method 'Post' -propertyName 'users' -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr
+		return $users
+	}
+	
+	end {
+		
+	}
+}
