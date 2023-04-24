@@ -14,6 +14,7 @@
 * [Get-VerkadaCameras](function-documentation/Get-VerkadaCameras.md)
 * [Get-VerkadaCloudBackupSettings](function-documentation/Get-VerkadaCloudBackupSettings.md)
 * [Read-VerkadaCommandUsers](function-documentation/Read-VerkadaCommandUsers.md)
+* [Set-VerkadaAccessUserEmail](function-documentation/Set-VerkadaAccessUserEmail.md)
 * [Set-VerkadaAccessUserEmployementDetail](function-documentation/Set-VerkadaAccessUserEmployementDetail.md)
 * [Set-VerkadaCameraName](function-documentation/Set-VerkadaCameraName.md)
 * [Set-VerkadaCloudBackupSettings](function-documentation/Set-VerkadaCloudBackupSettings.md)
