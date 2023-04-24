@@ -4,7 +4,7 @@ function Set-VerkadaAccessUserEmail {
 		Sets the Access users' emails
 		
 		.DESCRIPTION
-		This function is used to edit the email address of a non-SCIM Access user.  
+		This function is used to edit the email address of a non-SCIM Access user.  Currently only users with no emails will this work for.
 		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 		
 		.LINK
