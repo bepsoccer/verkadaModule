@@ -1,6 +1,6 @@
 $myMod = 'verkadaModule'
 $mypath = $PSScriptRoot | Split-Path -Parent
-update-ModuleManifest -Path "$mypath/$myMod/$myMod.psd1" -FunctionsToExport (Get-ChildItem -Path $mypath/$myMod/Public/*.ps1 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty BaseName)
+update-ModuleManifest -Path "$mypath/$myMod/$myMod.psd1" -FunctionsToExport ((Get-ChildItem -Path $mypath/$myMod/Private/*.ps1 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty BaseName)+(Get-ChildItem -Path $mypath/$myMod/Public/*.ps1 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty BaseName))
 new-MarkdownHelp -Module $myMod -OutputFolder $mypath/docs/function-documentation -Force | Out-Null
 
 Write-output "# Verkada PowerShell module" | Out-File $mypath/docs/reference.md -Force
