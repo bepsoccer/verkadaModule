@@ -15,6 +15,6 @@
         }
     }
 
-# Export the Public modules
+# Export the functions
 Export-ModuleMember -Function $Public.Basename -Alias *
 Export-ModuleMember -Function $Private.Basename -Alias *
