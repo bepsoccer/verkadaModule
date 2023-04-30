@@ -70,36 +70,59 @@ function Read-VerkadaCommandUsers
 
 		if ([string]::IsNullOrEmpty($query)){
 			$queryBase = 'query GetCommandUsers($filter: UsersFilter!, $pagination: PageOptions) {
-						users(filter: $filter, pagination: $pagination) {
-								nextPageToken
-								users {
-								...CommandUser
-								__typename
-								}
-								__typename
-						}
-			}'
-			$userFragment = 'fragment CommandUser on User {
-			created
-			email
-			emailVerified
-			firstName
-			isOrganizationAdmin
-			lastName
-			name
-			modified
-			lastLogin
-			organizationId
-			phone
-			phoneVerified
-			provisioned
-			deactivated
-			deleted
-			userId
+	users(filter: $filter, pagination: $pagination) {
+		nextPageToken
+		users {
+			...CommandUser
 			__typename
-			}'
+		}
+		__typename
+	}
+}'
+			$userFragment = 'fragment CommandUser on User {
+	created
+	email
+	emailVerified
+	firstName
+	groups {
+		...BaseGroup
+		__typename
+	}
+	roleGrants {
+		grantId
+		entityId
+		start
+		expiration
+		role {
+			roleId
+			key
+			__typename
+		}
+		__typename
+	}
+	isOrganizationAdmin
+	lastName
+	name
+	modified
+	lastLogin
+	organizationId
+	phone
+	phoneVerified
+	provisioned
+	deactivated
+	deleted
+	userId
+	__typename
+}'
+			
+			$baseGroupFragment = 'fragment BaseGroup on SecurityEntityGroup {
+	name
+	entityGroupId
+	provisioned
+	__typename
+}'
 
-			$query = $queryBase + "`n" + $userFragment
+			$query = $queryBase + "`n" + $userFragment + "`n" + $baseGroupFragment
 		}
 
 		if ([string]::IsNullOrEmpty($variables)){
@@ -133,7 +156,7 @@ function Read-VerkadaCommandUsers
 		if ((!([string]::IsNullOrEmpty($global:verkadaUsers))) -and (!($refresh.IsPresent))) { 
 			$users = $Global:verkadaUsers
 		} else {
-			$users = Invoke-VerkadaGraphqlCall $url -query $query -qlVariables $variables -org_id $org_id -method 'Post' -propertyName 'users' -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr
+			$users = Invoke-VerkadaGraphqlCall $url -query $query -qlVariables $variables -org_id $org_id -method 'Post' -propertyName 'users' -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr -pagination
 			$global:verkadaUsers = $users
 		}
 		return $users
