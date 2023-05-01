@@ -37,9 +37,6 @@ function Read-VerkadaCommandUsers
 		#This is the graphql variables to be submitted (do not use unless you know what you are doing)
 		[Parameter(Position = 2)]
 		[Object]$variables,
-		#Switch to include retrieving group membership (not currently implemented)
-		[Parameter()]
-		[switch]$withGroups,
 		#The Verkada(CSRF) token of the user running the command
 		[Parameter()]
 		[ValidateNotNullOrEmpty()]
@@ -54,7 +51,7 @@ function Read-VerkadaCommandUsers
 		[ValidateNotNullOrEmpty()]
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[string]$usr = $Global:verkadaConnection.usr,
-		#Switch to force a refreshed list of cameras from Command (not currently implemented)
+		#Switch to force a refreshed list of users from Command
 		[Parameter()]
 		[switch]$refresh
 	)
