@@ -13,7 +13,7 @@ function Read-VerkadaAccessEntities{
 		Read-VerkadaAccessEntities.	The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Read-VerkadaAccessEntities org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'.	The org_id and tokens are submitted as parameters in the call.
+		Read-VerkadaAccessEntities -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'.	The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
 	param (
