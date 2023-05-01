@@ -25,7 +25,7 @@ function Get-VerkadaCommandUser {
 
 	[CmdletBinding(PositionalBinding = $true, DefaultParameterSetName = 'userId')]
 	param (
-		#The first name of the user being searched for
+		#The UUID of the user being searched for
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'userId')]
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[String]$userId,	
