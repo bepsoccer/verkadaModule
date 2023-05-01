@@ -71,7 +71,7 @@ PowerShellVersion = '6.1'
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 FunctionsToExport = 'Get-AddressCheck', 'Invoke-VerkadaCommandCall', 
                'Invoke-VerkadaFormCall', 'Invoke-VerkadaGraphqlCall', 
-               'Invoke-VerkadaRestMethod', 'Invoke-VerkakaCommandInit', 
+               'Invoke-VerkadaRestMethod', 'Invoke-VerkadaCommandInit', 
                'New-WebSession', 'Add-VerkadaAccessBadgeToUser', 
                'Add-VerkadaAccessUser', 'Add-VerkadaAccessUserPin', 
                'Add-VerkadaAccessUserToGroup', 'Add-VerkadaCamera', 
