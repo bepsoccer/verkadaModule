@@ -89,10 +89,13 @@ function Get-VerkadaAccessUserReport{
 					$ds | Add-Member -NotePropertyName 'siteName' -NotePropertyValue (Get-VerkadaAccessSite | Where-Object {$_.accessControllers -contains $ds.accessControllerId} | Select-Object -ExpandProperty name)
 					$ds | Add-Member -NotePropertyName 'schedule' -NotePropertyValue $schedule
 					$ds | Add-Member -NotePropertyName 'group' -NotePropertyValue $group.name
+					$ds.PSObject.Properties.Remove('accessControllerId')
+					$ds.PSObject.Properties.Remove('doorId')
 					$userDoors += $ds
 				}
 			}
 		}
+		#$userDoors | Group-Object -Property siteName
 
 		$user | Add-Member -NotePropertyName 'doors' -NotePropertyValue $userDoors
 		$user.accessGroups = $accessGroups
