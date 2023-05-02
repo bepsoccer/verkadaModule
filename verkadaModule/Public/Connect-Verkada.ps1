@@ -36,6 +36,7 @@ function Connect-Verkada
 		[Parameter(ParameterSetName = 'apiToken', Mandatory = $true, Position = 1, ValueFromPipelineByPropertyName = $true)]
 		[Parameter(ParameterSetName = 'UnPwd', Position = 1)]
 		[Parameter(ParameterSetName = 'ManualTokens', Position = 1, ValueFromPipelineByPropertyName = $true)]
+		[Alias('token')]
 		[ValidateNotNullOrEmpty()]
 		[String]$x_api_key,
 		#The admin user name to be used to obtain needed session and auth tokens
@@ -60,7 +61,10 @@ function Connect-Verkada
 		[Parameter(ParameterSetName = 'ManualTokens', Mandatory = $true, Position = 4, ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
 		[Alias('x-verkada-user-id')]
-		[String]$usr
+		[String]$usr,
+		#The switch to indicate manual token auth
+		[Parameter(ParameterSetName = 'ManualTokens')]
+		[switch]$manual
 	)
 
 	Process {
@@ -125,9 +129,8 @@ function Connect-Verkada
 				$Global:verkadaConnection.userToken = $userToken
 				$Global:verkadaConnection.csrfToken = $csrfToken
 				$Global:verkadaConnection.usr = $usr
-				Write-Warning "Trying to read Command users to test connection.  This could take a few minutes, please be patient"
-				$response = Read-VerkadaCommandUsers
-				Write-Host -ForegroundColor Green "Successfully connected to Verkada Command with $($response.count) users found"
+				Get-VerkadaCommandUser -userId $usr
+				Write-Host -ForegroundColor Green "Successfully connected to Verkada Command"
 				Invoke-VerkadaCommandInit | Out-Null
 				return
 			} catch [Microsoft.PowerShell.Commands.HttpResponseException] {

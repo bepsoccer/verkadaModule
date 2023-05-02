@@ -1,33 +1,22 @@
-function Get-VerkadaCameraGroup {
+function Read-VerkadaAccessSchedules{
 	<#
 		.SYNOPSIS
-		Gets all the camera sites in an organization
-		
+		Gathers all Command Access schedules in an organization
+
 		.DESCRIPTION
-		Used to retrieve all the camera sites in an organization or just the one with the specified name.
+		This function will return all the Access schedules in an organization with "User" schedules being Access Levels and "Door" being Door Schedules.
 
 		.LINK
-		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCameraGroup.md
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Read-VerkadaAccessSchedules.md
 
 		.EXAMPLE
-		Get-VerkadaCameraGroup
-		This will retrieve all the sites in an organization.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		Read-VerkadaAccessSchedules.	The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Get-VerkadaCameraGroup -name 'My New Sub-Site'
-		This will retrieve the site with the name "My New Sub-Site".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
-
-		.EXAMPLE
-		Get-VerkadaCameraGroup -name 'My New Site' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
-		This will retrieve the site with the name "My New Sub-Site".  The org_id and tokens are submitted as parameters in the call.
+		Read-VerkadaAccessSchedules -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'.	The org_id and tokens are submitted as parameters in the call.
 	#>
-
 	[CmdletBinding(PositionalBinding = $true)]
-	[Alias("Get-VerkadaCameraSite")]
 	param (
-		#The name of the site or sub-site being retrieved
-		[Parameter(Position = 0)]
-		[String]$name,
 		#The UUID of the organization the user belongs to
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
@@ -46,10 +35,7 @@ function Get-VerkadaCameraGroup {
 		[Parameter()]
 		[ValidateNotNullOrEmpty()]
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
-		[string]$usr = $Global:verkadaConnection.usr,
-		#Switch to force site refresh
-		[Parameter()]
-		[switch]$refresh
+		[string]$usr = $Global:verkadaConnection.usr
 	)
 	
 	begin {
@@ -58,21 +44,26 @@ function Get-VerkadaCameraGroup {
 		if ([string]::IsNullOrEmpty($x_verkada_token)) {throw "x_verkada_token is missing but is required!"}
 		if ([string]::IsNullOrEmpty($x_verkada_auth)) {throw "x_verkada_auth is missing but is required!"}
 		if ([string]::IsNullOrEmpty($usr)) {throw "usr is missing but is required!"}
+
+		$url = "https://vcerberus.command.verkada.com/organizations/$org_id/schedules"
+		$body = ""
 	}
 	
 	process {
-		if(!($Global:verkadaCameraGroups) -or $refresh.IsPresent){
-			Invoke-VerkadaCommandInit | Out-Null
+		try {
+			$response = Invoke-VerkadaCommandCall $url $org_id $body -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr -Method 'GET' | Select-Object -ExpandProperty schedules
 		}
-		$cameraGroups = $Global:verkadaCameraGroups
-		if (!([string]::IsNullOrEmpty($name))) {
-			$cameraGroups = $cameraGroups | Where-Object {$_.name -eq $name}
-		}
+		catch [Microsoft.PowerShell.Commands.HttpResponseException] {
+			$err = $_.ErrorDetails | ConvertFrom-Json
+			$errorMes = $_ | Convertto-Json -WarningAction SilentlyContinue
+			$err | Add-Member -NotePropertyName StatusCode -NotePropertyValue (($errorMes | ConvertFrom-Json -Depth 100 -WarningAction SilentlyContinue).Exception.Response.StatusCode) -Force
 
-		return $cameraGroups
+			Write-Host "$($err.StatusCode) - $($err.message)" -ForegroundColor Red
+			Return
+		}
 	}
 	
 	end {
-		
+		return $response
 	}
 }

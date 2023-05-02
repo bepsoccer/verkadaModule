@@ -1,33 +1,35 @@
-function Get-VerkadaCameraGroup {
+function Get-VerkadaAccessSite{
 	<#
 		.SYNOPSIS
-		Gets all the camera sites in an organization
-		
+		Gets all the access sites in an organization
+
 		.DESCRIPTION
-		Used to retrieve all the camera sites in an organization or just the one with the specified name.
+		Used to retrieve all the access sites in an organization or just the one with the specified name or siteId.
 
 		.LINK
-		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCameraGroup.md
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaAccessSite.md
 
 		.EXAMPLE
-		Get-VerkadaCameraGroup
-		This will retrieve all the sites in an organization.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		Get-VerkadaAccessSite.	The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Get-VerkadaCameraGroup -name 'My New Sub-Site'
-		This will retrieve the site with the name "My New Sub-Site".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		Get-VerkadaAccessSite -name 'My New Site'.	The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Get-VerkadaCameraGroup -name 'My New Site' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
-		This will retrieve the site with the name "My New Sub-Site".  The org_id and tokens are submitted as parameters in the call.
+		Get-VerkadaAccessSite -siteId 'c21efb7f-8329-4886-a89d-d2cc482b01d0'.	The org_id and tokens will be populated from the cached created by Connect-Verkada.
+
+		.EXAMPLE
+		Get-VerkadaAccessSite -name 'My New Site' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'.	The org_id and tokens are submitted as parameters in the call.
 	#>
-
 	[CmdletBinding(PositionalBinding = $true)]
-	[Alias("Get-VerkadaCameraSite")]
 	param (
-		#The name of the site or sub-site being retrieved
-		[Parameter(Position = 0)]
+		#The name of the site being retrieved
+		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[String]$name,
+		#The UUID of of the site being retrieved
+		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
+		[string]$siteId,
 		#The UUID of the organization the user belongs to
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
@@ -61,15 +63,17 @@ function Get-VerkadaCameraGroup {
 	}
 	
 	process {
-		if(!($Global:verkadaCameraGroups) -or $refresh.IsPresent){
+		if(!($global:verkadaAccessSites) -or $refresh.IsPresent){
 			Invoke-VerkadaCommandInit | Out-Null
 		}
-		$cameraGroups = $Global:verkadaCameraGroups
-		if (!([string]::IsNullOrEmpty($name))) {
-			$cameraGroups = $cameraGroups | Where-Object {$_.name -eq $name}
+		$accessSites = $global:verkadaAccessSites
+		if (!([string]::IsNullOrEmpty($siteId))) {
+			$accessSites = $accessSites | Where-Object {$_.cameraGroupId -eq $siteId}
+		} elseif (!([string]::IsNullOrEmpty($name))) {
+			$accessSites = $accessSites | Where-Object {$_.name -eq $name}
 		}
 
-		return $cameraGroups
+		return $accessSites
 	}
 	
 	end {
