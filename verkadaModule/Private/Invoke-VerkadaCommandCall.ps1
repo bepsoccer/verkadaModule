@@ -76,7 +76,8 @@ function Invoke-VerkadaCommandCall
 					default { $headers=$headers1 }
 					{
 						'/user/email',
-						'/get_entities' -contains $_
+						'/get_entities',
+						'/door/access_credentials' -contains $_
 					} { $headers=$headers2 }
 				}
 			}
