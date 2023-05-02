@@ -5,6 +5,7 @@ function Add-VerkadaCamera {
 		
 		.DESCRIPTION
 		Used to bulk add cameras to an organization with the desired name and location.  This function takes pipeline paramters making it easy to add mulitple cameras via csv with the desired named out of the gate.
+		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
 		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Add-VerkadaCamera.md

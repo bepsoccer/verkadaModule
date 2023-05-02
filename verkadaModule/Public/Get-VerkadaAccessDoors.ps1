@@ -5,15 +5,18 @@ function Get-VerkadaAccessDoors{
 
 		.DESCRIPTION
 		This function will return all the Access doors in an organization.  Only the doors the admin running this function has admin access to will be return.
+		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
 		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaAccessDoors.md
 
 		.EXAMPLE
-		Get-VerkadaAccessDoors.	The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		Get-VerkadaAccessDoors
+		This will retieve all the doors in an organization.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Get-VerkadaAccessDoors -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'.	The org_id and tokens are submitted as parameters in the call.
+		Get-VerkadaAccessDoors -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+		This will retieve all the doors in an organization.  The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
 	param (

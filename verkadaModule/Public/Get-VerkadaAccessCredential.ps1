@@ -5,17 +5,18 @@ function Get-VerkadaAccessCredential{
 
 		.DESCRIPTION
 		This function will retrieve all of the Verkada Access credentials of a specific user in an organization.
+		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
 		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaAccessCredential.md
 
 		.EXAMPLE
 		Get-VerkadaAccessCredential -userId '9c296e33-9751-4231-af6b-dbfa8a65989e'
-		This will get the Access credentials of the user with userId 9c296e33-9751-4231-af6b-dbfa8a65989e.	The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		This will get the Access credentials of the user with userId 9c296e33-9751-4231-af6b-dbfa8a65989e.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
 		Get-VerkadaAccessCredential -userId '9c296e33-9751-4231-af6b-dbfa8a65989e' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
-		This will get the Access credentials of the user with userId 9c296e33-9751-4231-af6b-dbfa8a65989e.	The org_id and tokens are submitted as parameters in the call.
+		This will get the Access credentials of the user with userId 9c296e33-9751-4231-af6b-dbfa8a65989e.  The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
 	param (
