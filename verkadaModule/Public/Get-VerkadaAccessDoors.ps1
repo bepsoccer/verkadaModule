@@ -1,5 +1,20 @@
-function Invoke-VerkadaCommandInit {
+function Get-VerkadaAccessDoors{
+	<#
+		.SYNOPSIS
+		Get's all doors configured in the organization
 
+		.DESCRIPTION
+		This function will return all the Access doors in an organization.  Only the doors the admin running this function has admin access to will be return.
+
+		.LINK
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaAccessDoors.md
+
+		.EXAMPLE
+		Get-VerkadaAccessDoors.	The org_id and tokens will be populated from the cached created by Connect-Verkada.
+
+		.EXAMPLE
+		Get-VerkadaAccessDoors -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'.	The org_id and tokens are submitted as parameters in the call.
+	#>
 	[CmdletBinding(PositionalBinding = $true)]
 	param (
 		#The UUID of the organization the user belongs to
@@ -29,52 +44,13 @@ function Invoke-VerkadaCommandInit {
 		if ([string]::IsNullOrEmpty($x_verkada_token)) {throw "x_verkada_token is missing but is required!"}
 		if ([string]::IsNullOrEmpty($x_verkada_auth)) {throw "x_verkada_auth is missing but is required!"}
 		if ([string]::IsNullOrEmpty($usr)) {throw "usr is missing but is required!"}
-
-		$url = 'https://vappinit.command.verkada.com/app/init'
 	}
 	
 	process {
-		$cookies = @{
-			'auth'	= $x_verkada_auth
-			'org'		= $org_id
-			'token'	= $x_verkada_token
-			'usr'		= $usr
-		}
-
-		$headers=@{
-			'x-verkada-token'						= $x_verkada_token
-			'x-verkada-user-id'					=	$usr
-		}
-
-		$session = New-WebSession $cookies $url
-
-		$loop = $false
-		$rt = 0
-		do {
-			try {
-				$response = Invoke-RestMethod -Uri $url -ContentType 'application/json' -WebSession $session -Method 'POST' -Headers $headers -TimeoutSec 120
-				
-				$verkadaCameraGroups = $response.cameraGroups | Select-Object -Property name,cameraGroupId,organizationId,created,cameraGroups
-				Set-Variable -Name 'verkadaCameraGroups' -Scope Global -Value $verkadaCameraGroups
-				Set-Variable -Name 'verkadaCameraModels' -Scope Global -Value $response.models
-
-				$loop = $true
-				return $response
-			}
-			catch [System.TimeoutException] {
-				$rt++
-				if ($rt -gt 2){
-					$loop = $true
-				}
-				else {
-					Start-Sleep -Seconds 5
-				}
-			}
-		}
-		while ($loop -eq $false)
+		$doors = Read-VerkadaAccessEntities -org_id $org_id -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr | Select-Object -ExpandProperty doors
 	}
 	
 	end {
-		
+		return $doors
 	}
 }
