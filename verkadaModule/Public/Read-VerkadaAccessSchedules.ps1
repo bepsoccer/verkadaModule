@@ -50,7 +50,7 @@ function Read-VerkadaAccessSchedules{
 
 		$url = "https://vcerberus.command.verkada.com/organizations/$org_id/schedules"
 		$body = ""
-	}
+	} #end begin
 	
 	process {
 		try {
@@ -64,9 +64,9 @@ function Read-VerkadaAccessSchedules{
 			Write-Host "$($err.StatusCode) - $($err.message)" -ForegroundColor Red
 			Return
 		}
-	}
+	} #end process
 	
 	end {
 		return $response
-	}
-}
+	} #end end
+} #end function

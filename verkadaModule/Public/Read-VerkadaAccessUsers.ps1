@@ -224,7 +224,7 @@ function Read-VerkadaAccessUsers{
 			}" | ConvertFrom-Json
 		}
 		$variables.filter.organizationId = $org_id
-	}
+	} #end begin
 	
 	process {
 		if ((!([string]::IsNullOrEmpty($global:verkadaAccessUsers))) -and (!($refresh.IsPresent))) { 
@@ -234,9 +234,9 @@ function Read-VerkadaAccessUsers{
 			$global:verkadaAccessUsers = $users
 		}
 		return $users
-	}
+	} #end process
 	
 	end {
 		
-	}
-}
+	} #end end
+} #end function

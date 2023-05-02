@@ -47,13 +47,13 @@ function Get-VerkadaAccessDoors{
 		if ([string]::IsNullOrEmpty($x_verkada_token)) {throw "x_verkada_token is missing but is required!"}
 		if ([string]::IsNullOrEmpty($x_verkada_auth)) {throw "x_verkada_auth is missing but is required!"}
 		if ([string]::IsNullOrEmpty($usr)) {throw "usr is missing but is required!"}
-	}
+	} #end begin
 	
 	process {
 		$doors = Read-VerkadaAccessEntities -org_id $org_id -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr | Select-Object -ExpandProperty doors
-	}
+	} #end process
 	
 	end {
 		return $doors
-	}
-}
+	} #end end
+} #end function

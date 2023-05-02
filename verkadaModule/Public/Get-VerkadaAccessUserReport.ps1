@@ -116,7 +116,7 @@ function Get-VerkadaAccessUserReport{
 			}
 			return $myInput
 		}
-	}
+	} #end begin
 	
 	process {
 		$user = $user | Select-Object userId,name,email,@{name='accessGroups';expression={$_.accessGroups.group}},accessCards,bluetoothAccess,mobileAccess,@{name='lastActiveAccess';expression={Get-Date -UnixTimeSeconds $_.lastActiveAccess}}
@@ -163,9 +163,9 @@ function Get-VerkadaAccessUserReport{
 			}
 		}
 		$outUsers += $user
-	}
+	} #end process
 	
 	end {
 		return $outUsers
-	}
-}
+	} #end end
+} #end function

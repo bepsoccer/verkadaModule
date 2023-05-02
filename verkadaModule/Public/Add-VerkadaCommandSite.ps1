@@ -66,7 +66,7 @@ function Add-VerkadaCommandSite {
 
 		$url = 'https://vprovision.command.verkada.com/org/camera_group/create'
 		$created =@()
-	}
+	} #end begin
 	
 	process {
 		$body = @{
@@ -132,9 +132,9 @@ function Add-VerkadaCommandSite {
 			Write-Host "Site $name not added because:  $($err.StatusCode) - $($err.message)" -ForegroundColor Red
 			Return
 		}
-	}
+	} #end process
 	
 	end {
 		return $created
-	}
-}
+	} #end end
+} #end function

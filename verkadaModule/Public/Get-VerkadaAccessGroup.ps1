@@ -60,7 +60,7 @@ function Get-VerkadaAccessGroup{
 		$url = 'https://vcerberus.command.verkada.com/user_groups/get'
 
 		$groups = @()
-	}
+	} #end begin
 	
 	process {
 		$body_params = @{
@@ -84,7 +84,7 @@ function Get-VerkadaAccessGroup{
 
 			throw "$($err.StatusCode) - $($err.message)"
 		}
-	}
+	} #end process
 	
 	end {
 		if (!([string]::IsNullOrEmpty($groupId))){
@@ -93,5 +93,5 @@ function Get-VerkadaAccessGroup{
 			$groups = $groups | Where-Object {$_.name -eq $Name}
 		}
 		return $groups
-	}
-}
+	} #end end
+} #end function

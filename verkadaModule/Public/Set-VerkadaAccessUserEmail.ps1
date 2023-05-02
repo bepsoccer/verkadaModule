@@ -62,7 +62,7 @@ function Set-VerkadaAccessUserEmail {
 		if ([string]::IsNullOrEmpty($usr)) {throw "usr is missing but is required!"}
 
 		$url = "https://vcerberus.command.verkada.com/user/email"
-	}#end begin
+	} #end begin
 	
 	process {
 		$body = @{
@@ -84,9 +84,9 @@ function Set-VerkadaAccessUserEmail {
 			Write-Host "User $userId : $email not updated because:  $($err.StatusCode) - $($err.message)" -ForegroundColor Red
 			Return
 		}
-	}#end process
+	} #end process
 	
 	end {
 		
-	}
-}
+	} #end end
+} #end function

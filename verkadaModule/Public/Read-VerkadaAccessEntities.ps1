@@ -49,7 +49,7 @@ function Read-VerkadaAccessEntities{
 		if ([string]::IsNullOrEmpty($usr)) {throw "usr is missing but is required!"}
 
 		$url = "https://vcerberus.command.verkada.com/get_entities"
-	}
+	} #end begin
 	
 	process {
 		$body = @{
@@ -70,9 +70,9 @@ function Read-VerkadaAccessEntities{
 			Write-Host "$($err.StatusCode) - $($err.message)" -ForegroundColor Red
 			Return
 		}
-	}
+	} #end process
 	
 	end {
 		return $response
-	}
-}
+	} #end end
+} #end function

@@ -107,7 +107,7 @@ function Get-VerkadaCommandUser {
 	provisioned
 	__typename
 }'
-	}
+	} #end begin
 	
 	process {
 		$queryBase = 'query GetCommandUsers($filter: UsersFilter!, $pagination: PageOptions) {
@@ -186,9 +186,9 @@ function Get-VerkadaCommandUser {
 		}
 
 		return $users
-	}
+	} #end process
 	
 	end {
 		#still needs work if needed
-	}
-}
+	} #end end
+} #end function

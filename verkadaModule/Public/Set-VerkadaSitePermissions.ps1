@@ -64,7 +64,7 @@ function Set-VerkadaSitePermissions {
 		if ([string]::IsNullOrEmpty($usr)) {throw "usr is missing but is required!"}
 
 		$url = 'https://vauth.command.verkada.com/security_entity_group/set_permissions'
-	}
+	} #end begin
 	
 	process {
 		$body = @{
@@ -90,9 +90,9 @@ function Set-VerkadaSitePermissions {
 			Write-Host "Permission not added to $cameraGroupId because:  $($err.StatusCode) - $($err.message)" -ForegroundColor Red
 			Return
 		}
-	}
+	} #end process
 	
 	end {
 		
-	}
-}
+	} #end end
+} #end function

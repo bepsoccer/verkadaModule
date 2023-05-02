@@ -84,5 +84,5 @@ function Add-VerkadaAccessUserToGroup
 
 	End {
 		
-	}
+	} #end end
 } #end function

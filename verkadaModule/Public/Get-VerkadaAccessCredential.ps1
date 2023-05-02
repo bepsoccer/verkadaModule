@@ -54,7 +54,7 @@ function Get-VerkadaAccessCredential{
 		if ([string]::IsNullOrEmpty($usr)) {throw "usr is missing but is required!"}
 
 		$url = "https://vcerberus.command.verkada.com/door/access_credentials"
-	}
+	} #end begin
 	
 	process {
 		$body = @{
@@ -74,9 +74,9 @@ function Get-VerkadaAccessCredential{
 			Write-Host "$($err.StatusCode) - $($err.message)" -ForegroundColor Red
 			Return
 		}
-	}
+	} #end process
 	
 	end {
 		
-	}
-}
+	} #end end
+} #end function
