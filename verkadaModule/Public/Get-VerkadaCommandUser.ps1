@@ -25,14 +25,14 @@ function Get-VerkadaCommandUser {
 
 	[CmdletBinding(PositionalBinding = $true, DefaultParameterSetName = 'userId')]
 	param (
-		#The UUID of the user being searched for
+		#The userId of the user being searched for
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'userId')]
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[String]$userId,	
 		#The email address of the user being searched for
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'email')]
 		[String]$email,
-		#The last name of the user being searched for
+		#The name of the user being searched for
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'name')]
 		[String]$Name,
 		#The UUID of the organization the user belongs to
@@ -65,73 +65,130 @@ function Get-VerkadaCommandUser {
 
 		$url = "https://vgateway.command.verkada.com/graphql"
 
-		if ([string]::IsNullOrEmpty($query)){
-			$queryBase = 'query GetCommandUsers($filter: UsersFilter!, $pagination: PageOptions) {
-						users(filter: $filter, pagination: $pagination) {
-								nextPageToken
-								users {
-								...CommandUser
-								__typename
-								}
-								__typename
-						}
-			}'
-			$userFragment = 'fragment CommandUser on User {
-			created
-			email
-			emailVerified
-			firstName
-			isOrganizationAdmin
-			lastName
-			name
-			modified
-			lastLogin
-			organizationId
-			phone
-			phoneVerified
-			provisioned
-			deactivated
-			deleted
-			userId
+		$userFragment = 'fragment CommandUser on User {
+	created
+	email
+	emailVerified
+	firstName
+	groups {
+		...BaseGroup
+		__typename
+	}
+	roleGrants {
+		grantId
+		entityId
+		start
+		expiration
+		role {
+			roleId
+			key
 			__typename
-			}'
-
-			$query = $queryBase + "`n" + $userFragment
 		}
-
-		if ([string]::IsNullOrEmpty($variables)){
-			$variables= "{
-				'filter':{
-					'organizationId':'',
-					'groupIds':[],
-					'roleGrants':[],
-					'status':['active']
-				},
-				'pagination':{
-					'pageSize':1,
-					'pageToken':'',
-					'pageSort':[
-						{
-							'field':'NAME',
-							'direction':'ASC'
-						},
-						{
-							'field':'EMAIL',
-							'direction':'ASC'
-						}
-					]
-				}
-			}" | ConvertFrom-Json
-		}
-		$variables.filter.organizationId = $org_id
+		__typename
+	}
+	isOrganizationAdmin
+	lastName
+	name
+	modified
+	lastLogin
+	organizationId
+	phone
+	phoneVerified
+	provisioned
+	deactivated
+	deleted
+	userId
+	__typename
+}'
+			
+		$baseGroupFragment = 'fragment BaseGroup on SecurityEntityGroup {
+	name
+	entityGroupId
+	provisioned
+	__typename
+}'
 	}
 	
 	process {
-		$users = Invoke-VerkadaGraphqlCall $url -query $query -qlVariables $variables -org_id $org_id -method 'Post' -propertyName 'users' -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr
+		$queryBase = 'query GetCommandUsers($filter: UsersFilter!, $pagination: PageOptions) {
+	users(filter: $filter, pagination: $pagination) {
+		nextPageToken
+		users {
+			...CommandUser
+			__typename
+		}
+		__typename
+	}
+}'
+
+		$variables= '{
+			"filter": {
+					"organizationId": "",
+					"groupIds": [],
+					"roleGrants": [],
+					"query":{
+							"conjunction":"OR",
+							"predicates":[
+									{
+									"operator":"WILDCARD",
+									"field":"",
+									"value":""
+									}
+							]
+					},
+					"status": [
+							"active"
+					]
+			},
+			"pagination": {
+					"pageSize":100,
+					"pageToken":"",
+					"pageSort": [
+							{
+									"field": "NAME",
+									"direction": "ASC"
+							},
+							{
+									"field": "EMAIL",
+									"direction": "ASC"
+							}
+					]
+			}
+	}' | ConvertFrom-Json
+
+		$variables.filter.organizationId = $org_id
+		if ($email){
+			$variables.filter.query.predicates[0].field = 'EMAIL'
+			$variables.filter.query.predicates[0].value = "*$email*"
+			$callType = 'query'
+		} elseif ($Name) {
+			$variables.filter.query.predicates[0].field = 'NAME'
+			$variables.filter.query.predicates[0].value = "*$name*"
+			$callType = 'query'
+		} elseif ($userId) {
+			$queryBase = 'query GetCommandUser($id: ID) {
+					user(id: $id) {
+							...CommandUser
+							__typename
+					}
+			}'
+			$variables = '{"id":""}' | ConvertFrom-Json
+			$variables.id = $userId
+			$callType = 'userId'
+		}
+
+		$query = $queryBase + "`n" + $userFragment + "`n" + $baseGroupFragment
+
+		if ($callType -eq 'userId'){
+			$users = Invoke-VerkadaGraphqlCall $url -query $query -qlVariables $variables -org_id $org_id -method 'Post' -propertyName 'user' -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr
+		} else {
+			$users = Invoke-VerkadaGraphqlCall $url -query $query -qlVariables $variables -org_id $org_id -method 'Post' -propertyName 'users' -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr -pagination
+		}
+
 		return $users
 	}
 	
 	end {
-		
+		#still needs work if needed
 	}
 }
