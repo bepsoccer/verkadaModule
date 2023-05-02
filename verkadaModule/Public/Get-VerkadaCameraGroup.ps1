@@ -4,7 +4,7 @@ function Get-VerkadaCameraGroup {
 		Gets all the camera sites in an organization
 		
 		.DESCRIPTION
-		Used to retrieve all the camera sites in an organization or just the one with the specified name.  This function takes pipeline paramters making it easy to add mulitple sites via csv with the desired named out of the gate.
+		Used to retrieve all the camera sites in an organization or just the one with the specified name.
 
 		.LINK
 		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCameraGroup.md
@@ -25,7 +25,7 @@ function Get-VerkadaCameraGroup {
 	[CmdletBinding(PositionalBinding = $true)]
 	[Alias("Get-VerkadaCameraSite")]
 	param (
-		#The name of the site or sub-site being added
+		#The name of the site or sub-site being retrieved
 		[Parameter(Position = 0)]
 		[String]$name,
 		#The UUID of the organization the user belongs to
