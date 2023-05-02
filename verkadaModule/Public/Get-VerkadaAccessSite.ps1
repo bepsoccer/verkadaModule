@@ -5,21 +5,26 @@ function Get-VerkadaAccessSite{
 
 		.DESCRIPTION
 		Used to retrieve all the access sites in an organization or just the one with the specified name or siteId.
+		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
 		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaAccessSite.md
 
 		.EXAMPLE
-		Get-VerkadaAccessSite.	The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		Get-VerkadaAccessSite
+		This will return all the Access sites in the organization.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Get-VerkadaAccessSite -name 'My New Site'.	The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		Get-VerkadaAccessSite -name 'My New Site'
+		This will return the Access sites with the name 'My New Site' in the organization.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Get-VerkadaAccessSite -siteId 'c21efb7f-8329-4886-a89d-d2cc482b01d0'.	The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		Get-VerkadaAccessSite -siteId 'c21efb7f-8329-4886-a89d-d2cc482b01d0'
+		This will return the Access sites with the id 'c21efb7f-8329-4886-a89d-d2cc482b01d0' in the organization.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Get-VerkadaAccessSite -name 'My New Site' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'.	The org_id and tokens are submitted as parameters in the call.
+		Get-VerkadaAccessSite -name 'My New Site' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+		This will return the Access sites with the name 'My New Site' in the organization.  The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
 	param (

@@ -5,21 +5,26 @@ function Get-VerkadaAccessGroup{
 
 		.DESCRIPTION
 		This function will return all the Access Groups in an organization if no parameters are specified.  If the name parameter is specified, it will attempt to retrieve the group matching the name.  If the groupId parameter is specified, it will attempt to retrieve the group matching the groupId.
+		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
 		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaAccessGroup.md
 
 		.EXAMPLE
-		Get-VerkadaAccessGroup.	The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		Get-VerkadaAccessGroup
+		This will return all the Access Groups in an organization.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Get-VerkadaAccessGroup -name "Executive Access".	The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		Get-VerkadaAccessGroup -name "Executive Access"
+		This will return the Access Group named "Executive Access".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Get-VerkadaAccessGroup -groupId "7858d17a-3f72-4506-8532-a4b6ba233c5e".	The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		Get-VerkadaAccessGroup -groupId "7858d17a-3f72-4506-8532-a4b6ba233c5e"
+		This will return the Access Group with userId "7858d17a-3f72-4506-8532-a4b6ba233c5e".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Get-VerkadaAccessGroup -name "Executive Access" -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'.	The org_id and tokens are submitted as parameters in the call.
+		Get-VerkadaAccessGroup -name "Executive Access" -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+		This will return the Access Group named "Executive Access".  The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
 	param (

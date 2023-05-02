@@ -4,16 +4,19 @@ function Read-VerkadaAccessEntities{
 		Gathers all Command Access entities in an organization
 
 		.DESCRIPTION
-		This function will return all the Access entities in an organization including: Access Controllers, AuxInputs, cardTypes, doors, and userRoles
+		This function will return all the Access entities in an organization including: Access Controllers, AuxInputs, cardTypes, doors, and userRoles.
+		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
 		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Read-VerkadaAccessEntities.md
 
 		.EXAMPLE
-		Read-VerkadaAccessEntities.	The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		Read-VerkadaAccessEntities
+		This will return all the Access entities in an organization.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Read-VerkadaAccessEntities -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'.	The org_id and tokens are submitted as parameters in the call.
+		Read-VerkadaAccessEntities -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+		This will return all the Access entities in an organization.  The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
 	param (

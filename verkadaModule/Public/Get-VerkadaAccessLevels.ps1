@@ -5,15 +5,18 @@ function Get-VerkadaAccessLevels{
 
 		.DESCRIPTION
 		This function will return all the Access Levels in an organization.
+		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
 		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaAccessLevels.md
 
 		.EXAMPLE
-		Get-VerkadaAccessLevels.	The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		Get-VerkadaAccessLevels
+		This will return all the Access Levels in an organization.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Get-VerkadaAccessLevels -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'.	The org_id and tokens are submitted as parameters in the call.
+		Get-VerkadaAccessLevels -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+		This will return all the Access Levels in an organization.  The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
 	param (

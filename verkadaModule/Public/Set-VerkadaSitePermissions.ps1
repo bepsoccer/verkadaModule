@@ -5,6 +5,7 @@ function Set-VerkadaSitePermissions {
 		
 		.DESCRIPTION
 		Sets a group's or user's permission on a site in an organization.  This function takes pipeline paramters making it easy to add mulitple sites via csv with the desired named out of the gate.
+		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
 		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Set-VerkadaSitePermissions.md

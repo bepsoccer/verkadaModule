@@ -19,7 +19,7 @@ function Read-VerkadaAccessUsers{
 		This will return all the active access users in an organization.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		RRead-VerkadaAccessUsers -refresh
+		Read-VerkadaAccessUsers -refresh
 		This will return all the active access users in an organization with the most recent data available from Command.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
