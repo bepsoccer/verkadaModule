@@ -1,49 +1,51 @@
 ---
 external help file: verkadaModule-help.xml
 Module Name: verkadaModule
-online version: https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCameraGroup.md
+online version: https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaAccessSite.md
 schema: 2.0.0
 ---
 
-# Get-VerkadaCameraGroup
+# Get-VerkadaAccessSite
 
 ## SYNOPSIS
-Gets all the camera sites in an organization
+Gets all the access sites in an organization
 
 ## SYNTAX
 
 ```
-Get-VerkadaCameraGroup [[-name] <String>] [-org_id <String>] [-x_verkada_token <String>]
- [-x_verkada_auth <String>] [-usr <String>] [-refresh] [<CommonParameters>]
+Get-VerkadaAccessSite [[-name] <String>] [[-siteId] <String>] [[-org_id] <String>]
+ [[-x_verkada_token] <String>] [[-x_verkada_auth] <String>] [[-usr] <String>] [-refresh] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Used to retrieve all the camera sites in an organization or just the one with the specified name.
+Used to retrieve all the access sites in an organization or just the one with the specified name or siteId.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-VerkadaCameraGroup
-This will retrieve all the sites in an organization.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+Get-VerkadaAccessSite.	The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ### EXAMPLE 2
 ```
-Get-VerkadaCameraGroup -name 'My New Sub-Site'
-This will retrieve the site with the name "My New Sub-Site".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+Get-VerkadaAccessSite -name 'My New Site'.	The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ### EXAMPLE 3
 ```
-Get-VerkadaCameraGroup -name 'My New Site' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
-This will retrieve the site with the name "My New Sub-Site".  The org_id and tokens are submitted as parameters in the call.
+Get-VerkadaAccessSite -siteId 'c21efb7f-8329-4886-a89d-d2cc482b01d0'.	The org_id and tokens will be populated from the cached created by Connect-Verkada.
+```
+
+### EXAMPLE 4
+```
+Get-VerkadaAccessSite -name 'My New Site' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'.	The org_id and tokens are submitted as parameters in the call.
 ```
 
 ## PARAMETERS
 
 ### -name
-The name of the site or sub-site being retrieved
+The name of the site being retrieved
 
 ```yaml
 Type: String
@@ -53,7 +55,22 @@ Aliases:
 Required: False
 Position: 1
 Default value: None
-Accept pipeline input: False
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -siteId
+The UUID of of the site being retrieved
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
@@ -66,7 +83,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 3
 Default value: $Global:verkadaConnection.org_id
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -81,7 +98,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 4
 Default value: $Global:verkadaConnection.csrfToken
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -96,7 +113,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 5
 Default value: $Global:verkadaConnection.userToken
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -111,7 +128,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 6
 Default value: $Global:verkadaConnection.usr
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -143,5 +160,5 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCameraGroup.md](https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCameraGroup.md)
+[https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaAccessSite.md](https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaAccessSite.md)
 

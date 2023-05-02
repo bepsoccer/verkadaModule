@@ -58,7 +58,7 @@ This will attempt to get the user details of a user named "Bob Smith".  Dependin
 ## PARAMETERS
 
 ### -userId
-The first name of the user being searched for
+The userId of the user being searched for
 
 ```yaml
 Type: String
@@ -88,7 +88,7 @@ Accept wildcard characters: False
 ```
 
 ### -Name
-The last name of the user being searched for
+The name of the user being searched for
 
 ```yaml
 Type: String

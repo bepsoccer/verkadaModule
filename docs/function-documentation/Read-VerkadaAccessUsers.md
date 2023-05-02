@@ -1,44 +1,44 @@
 ---
 external help file: verkadaModule-help.xml
 Module Name: verkadaModule
-online version: https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Read-VerkadaCommandUsers.md
+online version: https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Read-VerkadaAccessUsers.md
 schema: 2.0.0
 ---
 
-# Read-VerkadaCommandUsers
+# Read-VerkadaAccessUsers
 
 ## SYNOPSIS
-Gathers all Command Users in an organization
+Gathers all Access Users in an organization
 
 ## SYNTAX
 
 ```
-Read-VerkadaCommandUsers [[-org_id] <String>] [[-query] <Object>] [[-variables] <Object>]
+Read-VerkadaAccessUsers [-org_id <String>] [[-query] <Object>] [[-variables] <Object>]
  [-x_verkada_token <String>] [-x_verkada_auth <String>] [-usr <String>] [-refresh] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-This function will return all the active Command users in an organization.
+This function will return all the active Access users in an organization.
 The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Read-VerkadaCommandUsers
-This will return all the active users in an organization.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+Read-VerkadaAccessUsers
+This will return all the active access users in an organization.	The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ### EXAMPLE 2
 ```
-Read-VerkadaCommandUsers -userId 'aefrfefb-3429-39ec-b042-userAC' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
-This will return all the active users in an organization.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+Read-VerkadaAccessUsers -userId 'aefrfefb-3429-39ec-b042-userAC' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+This will return all the active access users in an organization.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ### EXAMPLE 3
 ```
-Read-VerkadaCommandUsers -refresh
-This will return all the active users in an organization with the most recent data available from Command.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+RRead-VerkadaAccessUsers -refresh
+This will return all the active access users in an organization with the most recent data available from Command.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ## PARAMETERS
@@ -52,9 +52,9 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 1
+Position: Named
 Default value: $Global:verkadaConnection.org_id
-Accept pipeline input: False
+Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
@@ -159,5 +159,5 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Read-VerkadaCommandUsers.md](https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Read-VerkadaCommandUsers.md)
+[https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Read-VerkadaAccessUsers.md](https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Read-VerkadaAccessUsers.md)
 
