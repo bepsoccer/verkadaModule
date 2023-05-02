@@ -14,23 +14,26 @@ Returns a report of all doors a user has access to and by what means.
 
 ```
 Get-VerkadaAccessUserReport [[-user] <Object>] [-org_id <String>] [-x_verkada_token <String>]
- [-x_verkada_auth <String>] [-usr <String>] [<CommonParameters>]
+ [-x_verkada_auth <String>] [-usr <String>] [-beautify] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 This function will return all the doors the user/s have access to, the credentials assigned to the user, the last time they accessed a door, and their group membership. 
 This function requires that a valid Verkada Access User object be submitted.
+The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-VerkadaAccessUser -userId 'c1cb427f-9ef4-4800-95ec-4a580bfa2bf1' | Get-VerkadaAccessUserReport.	The org_id and tokens will be populated from the cached created by Connect-Verkada.
+Get-VerkadaAccessUser -userId 'c1cb427f-9ef4-4800-95ec-4a580bfa2bf1' | Get-VerkadaAccessUserReport
+This will get the Acces user object for userId c1cb427f-9ef4-4800-95ec-4a580bfa2bf1 and return the access report for that user.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ### EXAMPLE 2
 ```
-Read-VerkadaAccessUsers | Get-VerkadaAccessUserReport -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'.	The org_id and tokens are submitted as parameters in the call.
+Read-VerkadaAccessUsers | Get-VerkadaAccessUserReport -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+This will get all the Acces user objects in an organization and return the access report for that user.  The org_id and tokens are submitted as parameters in the call.
 ```
 
 ## PARAMETERS
@@ -106,6 +109,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: $Global:verkadaConnection.usr
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -beautify
+This is a switch to indicate we're gonna try to make the report prettier
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

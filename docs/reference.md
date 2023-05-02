@@ -9,6 +9,7 @@
 * [Connect-Verkada](function-documentation/Connect-Verkada.md)
 * [Disconnect-Verkada](function-documentation/Disconnect-Verkada.md)
 * [Find-VerkadaUserId](function-documentation/Find-VerkadaUserId.md)
+* [Get-VerkadaAccessCredential](function-documentation/Get-VerkadaAccessCredential.md)
 * [Get-VerkadaAccessDoors](function-documentation/Get-VerkadaAccessDoors.md)
 * [Get-VerkadaAccessDoorSchedules](function-documentation/Get-VerkadaAccessDoorSchedules.md)
 * [Get-VerkadaAccessGroup](function-documentation/Get-VerkadaAccessGroup.md)

@@ -19,17 +19,20 @@ Read-VerkadaAccessSchedules [[-org_id] <String>] [[-x_verkada_token] <String>] [
 
 ## DESCRIPTION
 This function will return all the Access schedules in an organization with "User" schedules being Access Levels and "Door" being Door Schedules.
+The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Read-VerkadaAccessSchedules.	The org_id and tokens will be populated from the cached created by Connect-Verkada.
+Read-VerkadaAccessSchedules
+This will return all the Access schedules in an organization.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ### EXAMPLE 2
 ```
-Read-VerkadaAccessSchedules -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'.	The org_id and tokens are submitted as parameters in the call.
+Read-VerkadaAccessSchedules -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+This will return all the Access schedules in an organization.  The org_id and tokens are submitted as parameters in the call.
 ```
 
 ## PARAMETERS

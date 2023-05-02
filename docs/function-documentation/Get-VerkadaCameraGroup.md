@@ -19,6 +19,7 @@ Get-VerkadaCameraGroup [[-name] <String>] [-org_id <String>] [-x_verkada_token <
 
 ## DESCRIPTION
 Used to retrieve all the camera sites in an organization or just the one with the specified name.
+The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 

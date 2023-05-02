@@ -19,17 +19,20 @@ Get-VerkadaAccessLevels [[-org_id] <String>] [[-x_verkada_token] <String>] [[-x_
 
 ## DESCRIPTION
 This function will return all the Access Levels in an organization.
+The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-VerkadaAccessLevels.	The org_id and tokens will be populated from the cached created by Connect-Verkada.
+Get-VerkadaAccessLevels
+This will return all the Access Levels in an organization.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ### EXAMPLE 2
 ```
-Get-VerkadaAccessLevels -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'.	The org_id and tokens are submitted as parameters in the call.
+Get-VerkadaAccessLevels -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+This will return all the Access Levels in an organization.  The org_id and tokens are submitted as parameters in the call.
 ```
 
 ## PARAMETERS

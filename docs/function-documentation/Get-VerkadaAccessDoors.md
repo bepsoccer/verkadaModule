@@ -20,17 +20,20 @@ Get-VerkadaAccessDoors [[-org_id] <String>] [[-x_verkada_token] <String>] [[-x_v
 ## DESCRIPTION
 This function will return all the Access doors in an organization. 
 Only the doors the admin running this function has admin access to will be return.
+The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-VerkadaAccessDoors.	The org_id and tokens will be populated from the cached created by Connect-Verkada.
+Get-VerkadaAccessDoors
+This will retieve all the doors in an organization.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ### EXAMPLE 2
 ```
-Get-VerkadaAccessDoors -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'.	The org_id and tokens are submitted as parameters in the call.
+Get-VerkadaAccessDoors -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+This will retieve all the doors in an organization.  The org_id and tokens are submitted as parameters in the call.
 ```
 
 ## PARAMETERS
