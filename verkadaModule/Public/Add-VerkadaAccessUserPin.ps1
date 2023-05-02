@@ -86,5 +86,5 @@ function Add-VerkadaAccessUserPin {
 	
 	end {
 		
-	}
+	} #end end
 } #end function

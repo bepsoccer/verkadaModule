@@ -75,5 +75,5 @@ function Get-VerkadaCameras
 
 	End {
 		return $response
-	}
+	} #end end
 } #end function

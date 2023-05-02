@@ -98,5 +98,5 @@ function Add-VerkadaAccessBadgeToUser
 
 	End {
 		
-	}
+	} #end end
 } #end function

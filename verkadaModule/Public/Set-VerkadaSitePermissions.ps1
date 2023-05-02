@@ -5,6 +5,7 @@ function Set-VerkadaSitePermissions {
 		
 		.DESCRIPTION
 		Sets a group's or user's permission on a site in an organization.  This function takes pipeline paramters making it easy to add mulitple sites via csv with the desired named out of the gate.
+		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
 		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Set-VerkadaSitePermissions.md
@@ -63,7 +64,7 @@ function Set-VerkadaSitePermissions {
 		if ([string]::IsNullOrEmpty($usr)) {throw "usr is missing but is required!"}
 
 		$url = 'https://vauth.command.verkada.com/security_entity_group/set_permissions'
-	}
+	} #end begin
 	
 	process {
 		$body = @{
@@ -89,9 +90,9 @@ function Set-VerkadaSitePermissions {
 			Write-Host "Permission not added to $cameraGroupId because:  $($err.StatusCode) - $($err.message)" -ForegroundColor Red
 			Return
 		}
-	}
+	} #end process
 	
 	end {
 		
-	}
-}
+	} #end end
+} #end function

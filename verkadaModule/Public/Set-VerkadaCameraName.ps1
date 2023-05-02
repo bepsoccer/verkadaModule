@@ -92,5 +92,5 @@ function Set-VerkadaCameraName
 
 	End {
 		return $response
-	}
+	} #end end
 } #end function

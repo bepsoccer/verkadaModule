@@ -330,5 +330,5 @@ function Add-VerkadaAccessUser
 		foreach ($line in $e){Write-Output "Error: $line"}
 		Remove-Variable -Name w -ErrorAction SilentlyContinue
 		Remove-Variable -Name e -ErrorAction SilentlyContinue
-	}
+	} #end end
 } #end function

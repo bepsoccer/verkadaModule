@@ -5,6 +5,7 @@ function Add-VerkadaCommandSite {
 		
 		.DESCRIPTION
 		Used to bulk add sites to an organization with the desired name.  This function takes pipeline paramters making it easy to add mulitple sites via csv with the desired named out of the gate.
+		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
 		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Add-VerkadaCommandSite.md
@@ -65,7 +66,7 @@ function Add-VerkadaCommandSite {
 
 		$url = 'https://vprovision.command.verkada.com/org/camera_group/create'
 		$created =@()
-	}
+	} #end begin
 	
 	process {
 		$body = @{
@@ -131,9 +132,9 @@ function Add-VerkadaCommandSite {
 			Write-Host "Site $name not added because:  $($err.StatusCode) - $($err.message)" -ForegroundColor Red
 			Return
 		}
-	}
+	} #end process
 	
 	end {
 		return $created
-	}
-}
+	} #end end
+} #end function

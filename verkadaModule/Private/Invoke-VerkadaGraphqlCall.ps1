@@ -47,19 +47,24 @@ function Invoke-VerkadaGraphqlCall
 		[string]$x_verkada_token,
 		#The Verkada Auth(session auth) token of the user running the command
 		[Parameter(Mandatory = $true)]
-		[string]$x_verkada_auth
+		[string]$x_verkada_auth,
+		#Switch to enable pagination through records
+		[Parameter()]
+		[switch]$pagination
 	)
 
 	Process {
-		if ($query) {
+		if ($PSCmdlet.ParameterSetName -eq 'query') {
 			$body = @{
 			'query' = $query
 			'variables' = $variables
 			}
 		}
 		
-		$body.variables.pagination.pageSize		= $page_size
-		$body.variables.pagination.pageToken		= $null
+		if ($pagination.IsPresent){
+			$body.variables.pagination.pageSize		= $page_size
+			$body.variables.pagination.pageToken		= $null
+		}		
 
 		$cookies = @{
 			'auth'	= $x_verkada_auth
@@ -80,8 +85,12 @@ function Invoke-VerkadaGraphqlCall
 				try {
 					$bodyJson = $body | ConvertTo-Json -depth 100 -Compress
 					$response = Invoke-RestMethod -Uri $uri -Body $bodyJson -ContentType 'application/json' -WebSession $session -Method $method -TimeoutSec 120
-					$records += $response.data.($propertyName).($propertyName)
-					$body.variables.pagination.pageToken = $response.data.($propertyName).nextPageToken
+					if ($pagination.IsPresent) {
+						$records += $response.data.($propertyName).($propertyName)
+						$body.variables.pagination.pageToken = $response.data.($propertyName).nextPageToken
+					} else {
+						$records += $response.data.($propertyName)
+					}
 					$loop = $true
 				}
 				catch [System.TimeoutException] {

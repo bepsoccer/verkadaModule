@@ -75,7 +75,9 @@ function Invoke-VerkadaCommandCall
 				switch (([System.Uri]$url).AbsolutePath) {
 					default { $headers=$headers1 }
 					{
-						'/user/email' -contains $_
+						'/user/email',
+						'/get_entities',
+						'/door/access_credentials' -contains $_
 					} { $headers=$headers2 }
 				}
 			}

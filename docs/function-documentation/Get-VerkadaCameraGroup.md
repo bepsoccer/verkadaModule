@@ -18,8 +18,8 @@ Get-VerkadaCameraGroup [[-name] <String>] [-org_id <String>] [-x_verkada_token <
 ```
 
 ## DESCRIPTION
-Used to retrieve all the camera sites in an organization or just the one with the specified name. 
-This function takes pipeline paramters making it easy to add mulitple sites via csv with the desired named out of the gate.
+Used to retrieve all the camera sites in an organization or just the one with the specified name.
+The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
@@ -44,7 +44,7 @@ This will retrieve the site with the name "My New Sub-Site".  The org_id and tok
 ## PARAMETERS
 
 ### -name
-The name of the site or sub-site being added
+The name of the site or sub-site being retrieved
 
 ```yaml
 Type: String

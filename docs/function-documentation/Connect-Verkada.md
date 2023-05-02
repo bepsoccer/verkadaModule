@@ -20,7 +20,7 @@ Connect-Verkada [-org_id] <String> [-x_api_key] <String> [<CommonParameters>]
 ### ManualTokens
 ```
 Connect-Verkada [-org_id] <String> [[-x_api_key] <String>] [-userToken] <String> [-csrfToken] <String>
- [-usr] <String> [<CommonParameters>]
+ [-usr] <String> [-manual] [<CommonParameters>]
 ```
 
 ### UnPwd
@@ -86,7 +86,7 @@ The public API key to be used for calls that hit the public API gateway
 ```yaml
 Type: String
 Parameter Sets: apiToken
-Aliases:
+Aliases: token
 
 Required: True
 Position: 2
@@ -98,7 +98,7 @@ Accept wildcard characters: False
 ```yaml
 Type: String
 Parameter Sets: ManualTokens
-Aliases:
+Aliases: token
 
 Required: False
 Position: 2
@@ -110,7 +110,7 @@ Accept wildcard characters: False
 ```yaml
 Type: String
 Parameter Sets: UnPwd
-Aliases:
+Aliases: token
 
 Required: False
 Position: 2
@@ -191,6 +191,21 @@ Required: True
 Position: 5
 Default value: None
 Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -manual
+The switch to indicate manual token auth
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: ManualTokens
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

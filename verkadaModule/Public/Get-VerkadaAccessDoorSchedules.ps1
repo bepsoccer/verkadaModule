@@ -1,34 +1,25 @@
-function Get-VerkadaCameraGroup {
+function Get-VerkadaAccessDoorSchedules{
 	<#
 		.SYNOPSIS
-		Gets all the camera sites in an organization
-		
+		Get's all Door Schedules configured in the organization
+
 		.DESCRIPTION
-		Used to retrieve all the camera sites in an organization or just the one with the specified name.
+		This function will return all the Access Door Schedules in an organization.
 		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
-		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCameraGroup.md
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaAccessDoorSchedules.md
 
 		.EXAMPLE
-		Get-VerkadaCameraGroup
-		This will retrieve all the sites in an organization.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		Get-VerkadaAccessDoorSchedules
+		This function will return all the Access Door Schedules in an organization.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Get-VerkadaCameraGroup -name 'My New Sub-Site'
-		This will retrieve the site with the name "My New Sub-Site".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
-
-		.EXAMPLE
-		Get-VerkadaCameraGroup -name 'My New Site' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
-		This will retrieve the site with the name "My New Sub-Site".  The org_id and tokens are submitted as parameters in the call.
+		Get-VerkadaAccessDoorSchedules -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+		This function will return all the Access Door Schedules in an organization.  The org_id and tokens are submitted as parameters in the call.
 	#>
-
 	[CmdletBinding(PositionalBinding = $true)]
-	[Alias("Get-VerkadaCameraSite")]
 	param (
-		#The name of the site or sub-site being retrieved
-		[Parameter(Position = 0)]
-		[String]$name,
 		#The UUID of the organization the user belongs to
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
@@ -47,10 +38,7 @@ function Get-VerkadaCameraGroup {
 		[Parameter()]
 		[ValidateNotNullOrEmpty()]
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
-		[string]$usr = $Global:verkadaConnection.usr,
-		#Switch to force site refresh
-		[Parameter()]
-		[switch]$refresh
+		[string]$usr = $Global:verkadaConnection.usr
 	)
 	
 	begin {
@@ -62,18 +50,10 @@ function Get-VerkadaCameraGroup {
 	} #end begin
 	
 	process {
-		if(!($Global:verkadaCameraGroups) -or $refresh.IsPresent){
-			Invoke-VerkadaCommandInit | Out-Null
-		}
-		$cameraGroups = $Global:verkadaCameraGroups
-		if (!([string]::IsNullOrEmpty($name))) {
-			$cameraGroups = $cameraGroups | Where-Object {$_.name -eq $name}
-		}
-
-		return $cameraGroups
+		$doorSchedules = Read-VerkadaAccessSchedules | Where-Object {$_.type -eq 'DOOR'}
 	} #end process
 	
 	end {
-		
+		return $doorSchedules
 	} #end end
 } #end function

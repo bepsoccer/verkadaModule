@@ -1,47 +1,57 @@
 ---
 external help file: verkadaModule-help.xml
 Module Name: verkadaModule
-online version: https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Read-VerkadaCommandUsers.md
+online version: https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaAccessUserReport.md
 schema: 2.0.0
 ---
 
-# Read-VerkadaCommandUsers
+# Get-VerkadaAccessUserReport
 
 ## SYNOPSIS
-Gathers all Command Users in an organization
+Returns a report of all doors a user has access to and by what means.
 
 ## SYNTAX
 
 ```
-Read-VerkadaCommandUsers [[-org_id] <String>] [[-query] <Object>] [[-variables] <Object>]
- [-x_verkada_token <String>] [-x_verkada_auth <String>] [-usr <String>] [-refresh] [<CommonParameters>]
+Get-VerkadaAccessUserReport [[-user] <Object>] [-org_id <String>] [-x_verkada_token <String>]
+ [-x_verkada_auth <String>] [-usr <String>] [-beautify] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-This function will return all the active Command users in an organization.
+This function will return all the doors the user/s have access to, the credentials assigned to the user, the last time they accessed a door, and their group membership. 
+This function requires that a valid Verkada Access User object be submitted.
 The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Read-VerkadaCommandUsers
-This will return all the active users in an organization.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+Get-VerkadaAccessUser -userId 'c1cb427f-9ef4-4800-95ec-4a580bfa2bf1' | Get-VerkadaAccessUserReport
+This will get the Acces user object for userId c1cb427f-9ef4-4800-95ec-4a580bfa2bf1 and return the access report for that user.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ### EXAMPLE 2
 ```
-Read-VerkadaCommandUsers -userId 'aefrfefb-3429-39ec-b042-userAC' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
-This will return all the active users in an organization.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
-```
-
-### EXAMPLE 3
-```
-Read-VerkadaCommandUsers -refresh
-This will return all the active users in an organization with the most recent data available from Command.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+Read-VerkadaAccessUsers | Get-VerkadaAccessUserReport -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+This will get all the Acces user objects in an organization and return the access report for that user.  The org_id and tokens are submitted as parameters in the call.
 ```
 
 ## PARAMETERS
+
+### -user
+The Access user object the report will run against
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 1
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
 
 ### -org_id
 The UUID of the organization the user belongs to
@@ -52,38 +62,8 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 1
+Position: Named
 Default value: $Global:verkadaConnection.org_id
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -query
-This is the graphql query to be submitted (do not use unless you know what you are doing)
-
-```yaml
-Type: Object
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 2
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -variables
-This is the graphql variables to be submitted (do not use unless you know what you are doing)
-
-```yaml
-Type: Object
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 3
-Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -133,8 +113,8 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -refresh
-Switch to force a refreshed list of users from Command
+### -beautify
+This is a switch to indicate we're gonna try to make the report prettier
 
 ```yaml
 Type: SwitchParameter
@@ -159,5 +139,5 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Read-VerkadaCommandUsers.md](https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Read-VerkadaCommandUsers.md)
+[https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaAccessUserReport.md](https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaAccessUserReport.md)
 
