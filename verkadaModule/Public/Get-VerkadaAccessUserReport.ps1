@@ -70,7 +70,7 @@ function Get-VerkadaAccessUserReport{
 
 		$accessLevels = Get-VerkadaAccessLevels
 		$allDoors = Get-VerkadaAccessDoors
-		$outUsers = @()
+		#$outUsers = @()
 
 		#some helper functions
 		function prettyGrouping {
@@ -146,26 +146,27 @@ function Get-VerkadaAccessUserReport{
 				}
 			}
 		}
+		$user.accessGroups = $accessGroups
+		
 		if ($beautify.IsPresent){
 			$userDoors = prettyGrouping $userDoors 'group' 'siteName' 'schedule'
-		}
+			$user.accessGroups = $user.accessGroups | ConvertTo-Json -Compress
+			if ($user.accessCards){
+				try {
+					#retrieve access cards
+					$creds = Get-VerkadaAccessCredential -userId $user.userId -org_id $org_id -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr
+					$user.accessCards = $creds.accessCards | Select-Object active,cardType,cardParams,@{name='lastUsed';expression={Get-Date -UnixTimeSeconds $_.lastUsed}} | ConvertTo-Json -Compress
+				} catch {
 
-		$user | Add-Member -NotePropertyName 'doors' -NotePropertyValue $userDoors
-		$user.accessGroups = $accessGroups
-
-		#retrieve access cards
-		if ($beautify.IsPresent){
-			try {
-				$creds = Get-VerkadaAccessCredential -userId $user.userId -org_id $org_id -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr
-				$user.accessCards = $creds.accessCards | Select-Object active,cardType,cardParams,@{name='lastUsed';expression={Get-Date -UnixTimeSeconds $_.lastUsed}} | ConvertTo-Json
-			} catch {
-
+				}
 			}
 		}
-		$outUsers += $user
+		$user | Add-Member -NotePropertyName 'doors' -NotePropertyValue $userDoors
+		#$outUsers += $user
+		return $user
 	} #end process
 	
 	end {
-		return $outUsers
+		#return $outUsers
 	} #end end
 } #end function
