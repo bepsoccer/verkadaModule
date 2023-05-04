@@ -49,11 +49,11 @@ function Set-VerkadaCloudBackupSettings
 		[int]$enabled,
 		#Delimited list of start_time, end_time as timeslot for which a user wants footage to be backed up to the cloud, start_time and end_time are integers indicating seconds to midnight, i.e, 3600,7200 means 1am - 2am
 		[Parameter(ValueFromPipelineByPropertyName = $true, Mandatory = $true)]
-		[ValidatePattern("^(\d|[1-9]\d{1,3}|[1-7]\d{4}|8[0-3]\d{3}|84[0-5]\d{2}|84600),(\d|[1-9]\d{1,3}|[1-7]\d{4}|8[0-3]\d{3}|84[0-5]\d{2}|84600)$")]
+		[ValidatePattern("^(\d|[1-9]\d{1,3}|[1-7]\d{4}|8[0-3]\d{3}|84[0-5]\d{2}|86400),(\d|[1-9]\d{1,3}|[1-7]\d{4}|8[0-3]\d{3}|84[0-5]\d{2}|86400)$")]
 		[String]$time_to_preserve,
 		#Delimited list of start_time, end_time as timeslot for scheduled time for footage upload, start_time and end_time are integers indicating seconds to midnight, i.e, 3600,7200 means 1am - 2am
 		[Parameter(ValueFromPipelineByPropertyName = $true, Mandatory = $true)]
-		[ValidatePattern("^(\d|[1-9]\d{1,3}|[1-7]\d{4}|8[0-3]\d{3}|84[0-5]\d{2}|84600),(\d|[1-9]\d{1,3}|[1-7]\d{4}|8[0-3]\d{3}|84[0-5]\d{2}|84600)$")]
+		[ValidatePattern("^(\d|[1-9]\d{1,3}|[1-7]\d{4}|8[0-3]\d{3}|84[0-5]\d{2}|86400),(\d|[1-9]\d{1,3}|[1-7]\d{4}|8[0-3]\d{3}|84[0-5]\d{2}|86400)$")]
 		[String]$upload_timeslot,
 		#Quality of the uploaded video. Two values are possible: STANDARD_QUALITY and HIGH_QUALITY.
 		[Parameter(ValueFromPipelineByPropertyName = $true, Mandatory = $true)]
