@@ -15,7 +15,7 @@ function Add-VerkadaCamera {
 		This will add the new camera using serial ABCD-1234-EF56 with the name "My New Camera".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Add-VerkadaCamera -serial 'ABCD-1234-EF56' -name 'My New Camera' -siteId '919dedeb-b3fe-420c-b663-ce44cbfd1c1e' -location '405 E 4th Ave, San Mateo, CA' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+		Add-VerkadaCamera -serial 'ABCD-1234-EF56' -name 'My New Camera' -siteId '919dedeb-b3fe-420c-b663-ce44cbfd1c1e' -location '405 E 4th Ave, San Mateo, CA' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc' -usr 'a099bfe6-34ff-4976-9d53-ac68342d2b60'
 		This will add the new camera using serial ABCD-1234-EF56 with the name "My New Camera".  The org_id and tokens are submitted as parameters in the call.
 	#>
 

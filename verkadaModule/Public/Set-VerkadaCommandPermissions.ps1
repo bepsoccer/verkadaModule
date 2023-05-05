@@ -11,7 +11,7 @@ function Set-VerkadaCommandPermissions{
 		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Set-VerkadaCommandPermissions.md
 
 		.EXAMPLE
-		Set-VerkadaCommandPermissions $payload -org_id $org_id -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr
+		Set-VerkadaCommandPermissions $payload -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc' -usr 'a099bfe6-34ff-4976-9d53-ac68342d2b60'
 		This will set the permissions sent in the payload variable.  This variable should be a PSobject with the required structure for the permission type being set.  The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]

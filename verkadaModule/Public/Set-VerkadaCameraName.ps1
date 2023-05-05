@@ -16,7 +16,7 @@ function Set-VerkadaCameraName
 		This will rename camera_id cwdfwfw-3f3-cwdf2-cameraId to Camera1.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 		
 		.EXAMPLE
-		Set-VerkadaCameraName -camera_id 'cwdfwfw-3f3-cwdf2-cameraId' -camera_name 'Camera1' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+		Set-VerkadaCameraName -camera_id 'cwdfwfw-3f3-cwdf2-cameraId' -camera_name 'Camera1' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc'
 		This will rename camera_id cwdfwfw-3f3-cwdf2-cameraId to Camera1.   The org_id and tokens are submitted as parameters in the call.
 		
 		.EXAMPLE

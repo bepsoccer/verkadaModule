@@ -40,7 +40,7 @@ This will add a badge in the HID format with facility code 111 and card number 5
 
 ### EXAMPLE 2
 ```
-Add-VerkadaAccessBadgeToUser -userId 'gjg547-uuid-of-user' -cardType 'HID' -facilityCode 111 -cardNumber 55555 -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+Add-VerkadaAccessBadgeToUser -userId 'gjg547-uuid-of-user' -cardType 'HID' -facilityCode 111 -cardNumber 55555 -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc' -usr 'a099bfe6-34ff-4976-9d53-ac68342d2b60'
 This will add a badge in the HID format with facility code 111 and card number 55555 to the user specified.  The org_id and tokens are submitted as parameters in the call.
 ```
 
