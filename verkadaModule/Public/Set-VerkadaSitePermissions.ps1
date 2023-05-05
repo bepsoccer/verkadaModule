@@ -15,7 +15,7 @@ function Set-VerkadaSitePermissions {
 		This will give the user group with ID '719c81b9-0617-4871-b249-61559dc4684c' SITE_ADMIN permission on the site with ID '919dedeb-b3fe-420c-b663-ce44cbfd1c1e'.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Set-VerkadaSitePermissions -cameraGroupId '919dedeb-b3fe-420c-b663-ce44cbfd1c1e' -securityEntityGroupId(userGroupId) '719c81b9-0617-4871-b249-61559dc4684c' -roleKey 'SITE_ADMIN' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+		Set-VerkadaSitePermissions -cameraGroupId '919dedeb-b3fe-420c-b663-ce44cbfd1c1e' -securityEntityGroupId(userGroupId) '719c81b9-0617-4871-b249-61559dc4684c' -roleKey 'SITE_ADMIN' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc' -usr 'a099bfe6-34ff-4976-9d53-ac68342d2b60'
 		This will give the user group with ID '719c81b9-0617-4871-b249-61559dc4684c' SITE_ADMIN permission on the site with ID '919dedeb-b3fe-420c-b663-ce44cbfd1c1e'.  The org_id and tokens are submitted as parameters in the call.
 	#>
 

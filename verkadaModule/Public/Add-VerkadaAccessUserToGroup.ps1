@@ -16,7 +16,7 @@ function Add-VerkadaAccessUserToGroup
 		This will add the userid dcscsdc-dsc-user1 to access groups df76sd-dsc-group1 and dsf987-daf-group2.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 		
 		.EXAMPLE
-		Add-VerkadaAccessUserToGroup -userid 'dcscsdc-dsc-user1' -groupId 'df76sd-dsc-group1','dsf987-daf-group2' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+		Add-VerkadaAccessUserToGroup -userid 'dcscsdc-dsc-user1' -groupId 'df76sd-dsc-group1','dsf987-daf-group2' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc'
 		This will add the userid dcscsdc-dsc-user1 to access groups df76sd-dsc-group1 and dsf987-daf-group2.  The org_id and tokens are submitted as parameters in the call.
 	#>
 

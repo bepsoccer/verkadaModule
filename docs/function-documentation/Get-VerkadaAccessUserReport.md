@@ -14,7 +14,7 @@ Returns a report of all doors a user has access to and by what means.
 
 ```
 Get-VerkadaAccessUserReport [[-user] <Object>] [-org_id <String>] [-x_verkada_token <String>]
- [-x_verkada_auth <String>] [-usr <String>] [-beautify] [<CommonParameters>]
+ [-x_verkada_auth <String>] [-usr <String>] [-beautify] [-outReport] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -32,7 +32,19 @@ This will get the Acces user object for userId c1cb427f-9ef4-4800-95ec-4a580bfa2
 
 ### EXAMPLE 2
 ```
-Read-VerkadaAccessUsers | Get-VerkadaAccessUserReport -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+Get-VerkadaAccessUser -userId 'c1cb427f-9ef4-4800-95ec-4a580bfa2bf1' | Get-VerkadaAccessUserReport -beautify | Export-Csv ~/Desktop.ACusersReport.csv -NoTypeInformation
+This will get the Acces user object for userId c1cb427f-9ef4-4800-95ec-4a580bfa2bf1 and return the access report for that user in a consumeable way for a csv report.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+```
+
+### EXAMPLE 3
+```
+Get-VerkadaAccessUser -userId 'c1cb427f-9ef4-4800-95ec-4a580bfa2bf1' | Get-VerkadaAccessUserReport -outReport
+This will get the Acces user object for userId c1cb427f-9ef4-4800-95ec-4a580bfa2bf1 and return the access report for that user in a pretty HTML file.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+```
+
+### EXAMPLE 4
+```
+Read-VerkadaAccessUsers | Get-VerkadaAccessUserReport -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc' -usr 'a099bfe6-34ff-4976-9d53-ac68342d2b60'
 This will get all the Acces user objects in an organization and return the access report for that user.  The org_id and tokens are submitted as parameters in the call.
 ```
 
@@ -115,6 +127,21 @@ Accept wildcard characters: False
 
 ### -beautify
 This is a switch to indicate we're gonna try to make the report prettier
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -outReport
+This is a switch to indicate we're gonna try to make the report a pretty html
 
 ```yaml
 Type: SwitchParameter

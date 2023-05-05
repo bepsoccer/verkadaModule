@@ -15,7 +15,15 @@ function Get-VerkadaAccessUserReport{
 		This will get the Acces user object for userId c1cb427f-9ef4-4800-95ec-4a580bfa2bf1 and return the access report for that user.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Read-VerkadaAccessUsers | Get-VerkadaAccessUserReport -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+		Get-VerkadaAccessUser -userId 'c1cb427f-9ef4-4800-95ec-4a580bfa2bf1' | Get-VerkadaAccessUserReport -beautify | Export-Csv ~/Desktop.ACusersReport.csv -NoTypeInformation
+		This will get the Acces user object for userId c1cb427f-9ef4-4800-95ec-4a580bfa2bf1 and return the access report for that user in a consumeable way for a csv report.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+
+		.EXAMPLE
+		Get-VerkadaAccessUser -userId 'c1cb427f-9ef4-4800-95ec-4a580bfa2bf1' | Get-VerkadaAccessUserReport -outReport
+		This will get the Acces user object for userId c1cb427f-9ef4-4800-95ec-4a580bfa2bf1 and return the access report for that user in a pretty HTML file.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+
+		.EXAMPLE
+		Read-VerkadaAccessUsers | Get-VerkadaAccessUserReport -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc' -usr 'a099bfe6-34ff-4976-9d53-ac68342d2b60'
 		This will get all the Acces user objects in an organization and return the access report for that user.  The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
@@ -58,7 +66,10 @@ function Get-VerkadaAccessUserReport{
 		[string]$usr = $Global:verkadaConnection.usr,
 		#This is a switch to indicate we're gonna try to make the report prettier
 		[Parameter()]
-		[switch]$beautify
+		[switch]$beautify,
+		#This is a switch to indicate we're gonna try to make the report a pretty html
+		[Parameter()]
+		[switch]$outReport
 	)
 	
 	begin {
@@ -70,7 +81,7 @@ function Get-VerkadaAccessUserReport{
 
 		$accessLevels = Get-VerkadaAccessLevels
 		$allDoors = Get-VerkadaAccessDoors
-		#$outUsers = @()
+		$outUsers = @()
 
 		#some helper functions
 		function prettyGrouping {
@@ -93,14 +104,13 @@ function Get-VerkadaAccessUserReport{
 					$temp3 = groupRemoveProp $temp3 $groupProperty3
 					foreach ($name in $temp3){
 						$names = $name.($name.psobject.Properties.name) | Select-Object -ExpandProperty name
-						$names = $names -join ', '
 						$name.($name.psobject.Properties.name) = $names
 					}
 					$group2.($group2.psobject.Properties.name) = $temp3
 				}
 				$group.($group.psobject.Properties.name) = $temp2
 			}
-			return $temp | ConvertTo-Json -Depth 10
+			return $temp | ConvertTo-Json -Depth 10 -Compress
 		}
 		
 		function groupRemoveProp {
@@ -115,6 +125,65 @@ function Get-VerkadaAccessUserReport{
 				}
 			}
 			return $myInput
+		}
+
+		function listFormatter {
+			param (
+				$myInput,
+				$level=1,
+				$arrayItem,
+				$open,
+				$close
+			)
+			switch ($level) {
+				default {}
+				1 {$class = 'group'}
+				2 {$class = 'site'}
+				3 {$class = 'sched'}
+				4 {$class = 'door'}
+			}
+			$s=''
+			if ($myInput.GetType().baseType.name -eq 'Array'){
+				for($i=0; $i -lt $myInput.count; $i++) {
+					$close=$false
+					$open=$false
+					if($i -eq $($($myInput.count)-1)){
+						$close = $true
+					} elseif ($i -eq 0) {
+						$open = $true
+					}
+					listFormatter $myInput[$i] $level $true $open $close
+				}
+			} elseif ($myInput.GetType().name -eq 'String') {
+				if (!($arrayItem) -or $open){
+					$s+="<ul>"
+				}
+				$s+="<li class=`"$class`">$myInput</li>"
+				if (!($arrayItem) -or $close){
+					$s+="</ul></ul></ul>"
+				}
+				$s
+			} else {
+				if($level -eq 1){
+					$s+="<li class=`"$class`">$($myInput.psobject.Properties.name)</li>"
+				} else {
+					$s+="<ul><li class=`"$class`">$($myInput.psobject.Properties.name)</li>"
+				}
+				$s
+				$level++
+				listFormatter $myInput.($myInput.psobject.Properties.name) $level
+			}
+		}
+
+		function jsonToList {
+			param (
+				$myJson
+			)
+			$json = $myJson | ConvertFrom-Json
+			$s='<ul>'
+			$s += (listFormatter $Json)
+			$s+="</ul>"
+			return $s
 		}
 	} #end begin
 	
@@ -148,25 +217,188 @@ function Get-VerkadaAccessUserReport{
 		}
 		$user.accessGroups = $accessGroups
 		
-		if ($beautify.IsPresent){
+		if ($beautify.IsPresent -or $outReport.IsPresent){
 			$userDoors = prettyGrouping $userDoors 'group' 'siteName' 'schedule'
-			$user.accessGroups = $user.accessGroups | ConvertTo-Json -Compress
+			$user.accessGroups = $user.accessGroups | ConvertTo-Json #-Compress
 			if ($user.accessCards){
 				try {
 					#retrieve access cards
 					$creds = Get-VerkadaAccessCredential -userId $user.userId -org_id $org_id -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr
-					$user.accessCards = $creds.accessCards | Select-Object active,cardType,cardParams,@{name='lastUsed';expression={Get-Date -UnixTimeSeconds $_.lastUsed}} | ConvertTo-Json -Compress
+					$user.accessCards = $creds.accessCards | Select-Object active,cardType,cardParams,@{name='lastUsed';expression={Get-Date -UnixTimeSeconds $_.lastUsed}} | ConvertTo-Json #-Compress
 				} catch {
 
 				}
 			}
+
+			if($outReport.IsPresent){
+				if($userDoors){
+					$userDoors = jsonToList $userDoors
+				}
+				$user.PSObject.Properties.Remove('userId')
+			}
 		}
 		$user | Add-Member -NotePropertyName 'doors' -NotePropertyValue $userDoors
-		#$outUsers += $user
+		$outUsers += $user
 		return $user
 	} #end process
 	
 	end {
-		#return $outUsers
+		if ($outReport.IsPresent){
+			function testReportPath {
+				param ()
+				$filePath = Read-Host -Prompt 'Please provide the path for the AC report to be saved to.'
+				try {
+					Get-ChildItem -Path $filePath -ErrorAction Stop | Out-Null
+					return $filePath
+				}
+				catch {
+					Write-Warning $_.Exception.Message
+					testReportPath
+				}
+			}
+			$reportFile = testReportPath
+			$reportFile = (Get-Item $reportFile).fullName + "/ACuserReport-$(Get-Date -Format MMddyyyy).html"
+
+			$Head = @"
+<style>
+	body {
+		font-family: "Arial";
+		font-size: 11pt;
+		color: #4C607B;
+		background-color: #F5F5F5;
+		margin-top: 50px;
+	}
+	table {
+		border-collapse: collapse;
+	}
+	th, td { 
+		max-width: 550px;
+	}
+	th {
+		font-size: 12pt;
+		text-align: left;
+		background-color: #F1F1F1;
+		color: #949BA0;
+		font-weight: bold;
+		position: sticky;
+		top: 0;
+	}
+	td {
+		color: #949BA0;
+	}
+	td:first-child {
+			width: 300px;
+			color: #000000;
+	}
+	td:nth-child(3),
+	td:nth-child(4),
+	td:nth-child(5),
+	td:nth-child(6) {
+		padding: 10px;
+	}
+	td:nth-child(4),
+	td:nth-child(5){
+		width: 100px;
+	}
+	tr:hover td {
+		Background-Color: #F5FBFE;
+		Color: #51B9ED;
+	}
+	tr:nth-child(odd) {
+		Background-Color: #F8F8F8;
+	}
+	tr:nth-child(even) {
+		Background-Color: #FFFFFF;
+	}
+	pre {
+		white-space: pre-wrap;
+	}
+	#myInput {
+		background-image: url('data:image/svg+xml;utf8,<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="26" height="26" viewBox="0 0 26 26"><g fill="none" fill-rule="evenodd"><path d="M11.65 20.21c-4.78 0-8.65-3.77-8.65-8.4s3.87-8.4 8.65-8.4a8.53 8.53 0 0 1 8.64 8.4c0 4.63-3.86 8.4-8.64 8.4z" stroke="%23949BA0" stroke-width="2"></path><path d="M17.34 17.96a1.43 1.43 0 0 1 1.98 0l3.7 3.64a1.35 1.35 0 0 1 0 1.93l.06-.05a1.43 1.43 0 0 1-1.99 0l-3.7-3.63a1.35 1.35 0 0 1 0-1.93l-.06.04z" fill="%23949BA0"></path></g></svg>');
+		background-position: 10px 10px;
+		background-repeat: no-repeat;
+		width: 300px;
+		padding: 12px 20px 12px 40px;
+		border: none;
+		margin-bottom: 12px;
+		Background-Color: #FFFFFF;
+		font-family: "Arial";
+		font-size: 11pt;
+		color: #4C607B;
+	}
+	::placeholder {
+		color: #949BA0;
+		font-family: "Arial";
+		font-size: 11pt;
+	}
+	#myInput:focus{
+		font-family: "Arial";
+		font-size: 11pt;
+		color: #4C607B;
+		border: none;
+		outline: none;
+	}
+	h2 {
+		color: #949BA0;
+	}
+	li.group {
+		list-style-image: url('data:image/svg+xml;utf8,<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14" viewBox="0 0 26 26"><g fill-rule="evenodd" fill="%23949BA0"><path d="M17.07 3.6c3.25 0 5.11 1.92 4.64 6.24-.45 4.16-2.52 4.3-2.27 5.27.23.9 5.7.13 6.45 4.16.06.3 0 .97-.86.97h-5.51c-.65-2.17-2.29-3.47-4.54-4.17a12.12 12.12 0 0 0-.52-.15c.54-1.03.9-2.25 1.07-3.76.35-3.2-.43-5.65-2.13-7.12.81-.98 2.07-1.44 3.67-1.44z"></path><path d="M1.05 22.32c-.98 0-1.05-.71-.98-1.02.78-3.98 6.21-3.21 6.44-4.1.25-.98-1.82-1.12-2.27-5.28-.47-4.32 1.39-6.24 4.64-6.24S14 7.6 13.53 11.92c-.45 4.16-2.53 4.3-2.28 5.27.24.9 5.7.12 6.46 4.16.05.3 0 .97-.87.97H1.05z" fill-rule="nonzero"></path></g></svg>');
+	}
+	li.site {
+		list-style-image: url('data:image/svg+xml;utf8,<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.09 11.09C3.38 6.36 7.07 2 12 2s8.62 4.36 7.91 9.09c-.8 5.45-6.36 10.07-7.64 10.84-.08.05-.17.07-.27.07s-.19-.02-.27-.07c-1.27-.77-6.83-5.38-7.64-10.85zM12 20.91c1.47-1.05 6.21-5.16 6.92-9.98a6.87 6.87 0 0 0-1.6-5.5A7.03 7.03 0 0 0 12 3.01a7 7 0 0 0-5.32 2.43 6.87 6.87 0 0 0-1.6 5.5c.71 4.85 5.49 8.97 6.92 9.98zM8 10a4 4 0 1 1 8 0 4 4 0 1 1-8 0zm1 0a3.01 3.01 0 0 0 3 3c1.65 0 3-1.34 3-3a3.01 3.01 0 0 0-3-3 3 3 0 0 0-3 3z" fill="%23949BA0"></path></svg>');
+	}
+	li.sched {
+		list-style-image: url('data:image/svg+xml;utf8,<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="18" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M20 4h-3V2h-1v2H8V2H7v2H4a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm-4 3H8V5h8v2zM3 6a1 1 0 0 1 1-1h3v2H3V6zm18 14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8h18v12zm0-13h-4V5h3a1 1 0 0 1 1 1v1zm-7 4h-3v1h3v-1zm-3 3h3v1h-3v-1zm5 0h3v1h-3v-1zm0-3h3v1h-3v-1zm3 6h-3v1h3v-1zm-8 0h3v1h-3v-1zm-6 2v-9h4v9H5zm1-8v7h2v-7H6z" fill="%23949BA0"></path></svg>');
+	}
+	li.door{
+		list-style-image: url('data:image/svg+xml;utf8,<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="11" height="16" viewBox="0 0 21 31" fill="none"><path d="M13.54 1.22L1.34 2.98a.4.4 0 0 0-.34.4v24.9a.4.4 0 0 0 .36.4l12.2 1.18a.4.4 0 0 0 .44-.4V1.61a.4.4 0 0 0-.46-.39z" stroke="%23949BA0" stroke-width="2"></path><path d="M17.6 3.37v-1 1zm0 24.68v-1 1zm0-25.68H14v2h3.6v-2zm-3.59 26.68h3.6v-2H14v2zm6-2.4V4.56h-2v22.09h2zm-2.4 2.4c.32 0 .65 0 .91-.03s.68-.1 1.02-.44c.33-.33.4-.75.44-1.01.03-.27.02-.6.02-.92h-2v.44a3 3 0 0 1-.01.26c-.02.13-.03-.02.13-.18s.32-.15.18-.14a3.14 3.14 0 0 1-.25.02h-.45v2zm0-24.68h.44l.27.01c.06.01.07.02.05 0a.63.63 0 0 1-.36-.33L17.99 4l.01.2v.36h2c0-.27 0-.57-.03-.82a1.5 1.5 0 0 0-.5-.98 1.7 1.7 0 0 0-.96-.37c-.26-.02-.58-.02-.9-.02v2z" fill="%23949BA0"></path><path d="M9.29 18.02a1.44 1.44 0 0 1-1.43-1.44c0-.8.64-1.44 1.43-1.44.79 0 1.43.64 1.43 1.44 0 .8-.65 1.44-1.43 1.44z" fill="%23949BA0"></path></svg>');
+	}
+	.main {
+		margin: auto;
+	}
+</style>
+"@
+
+$preContent = @"
+<h2>AC Users Report</h2>
+<div class="main">
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+"@
+
+$postContent = @"
+</div>
+<script>
+function myFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("report");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+</script>
+"@
+
+			$jsonProps = @('accessGroups','accessCards')
+			foreach ($prop in $jsonProps){
+				$outUsers | ForEach-Object {
+					if(!([string]::IsNullOrEmpty($_.($prop)))){
+						$_.($prop) = "<pre>$($_.($prop))</pre>"
+					}
+				}
+			}
+
+			$outUsers | ConvertTo-Html -Property @{name='Name';expression={$_.name}},@{name='Email';expression={$_.email}},@{name='Doors';expression={$_.doors}},@{name='Bluetooth';expression={$_.bluetoothAccess}},@{name='Mobile';expression={$_.mobileAccess}},@{name='Creds';expression={$_.accessCards}},@{name='Groups';expression={$_.accessGroups}} -Title 'AC User Report' -Head $Head -PreContent $preContent -PostContent $postContent | foreach-object {[System.Web.HttpUtility]::HtmlDecode($_)} | ForEach-Object {$_.Replace('<table>','<table id="report">')} | Set-Content $reportFile
+		}
 	} #end end
 } #end function

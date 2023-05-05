@@ -31,7 +31,7 @@ This will get the Access credentials of the user with userId 9c296e33-9751-4231-
 
 ### EXAMPLE 2
 ```
-Get-VerkadaAccessCredential -userId '9c296e33-9751-4231-af6b-dbfa8a65989e' -org_id 'deds343-uuid-of-org' -x_verkada_token 'sd78ds-uuid-of-verkada-token' -x_verkada_auth 'auth-token-uuid-dscsdc'
+Get-VerkadaAccessCredential -userId '9c296e33-9751-4231-af6b-dbfa8a65989e' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc' -usr 'a099bfe6-34ff-4976-9d53-ac68342d2b60'
 This will get the Access credentials of the user with userId 9c296e33-9751-4231-af6b-dbfa8a65989e.  The org_id and tokens are submitted as parameters in the call.
 ```
 

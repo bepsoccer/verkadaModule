@@ -81,8 +81,16 @@ function Invoke-VerkadaCommandCall
 					} { $headers=$headers2 }
 				}
 			}
+			'vauth.command.verkada.com' {
+				switch (([System.Uri]$url).AbsolutePath) {
+					default { $headers=$headers2 }
+					{
+						'' -contains $_
+					} { $headers=$headers1 }
+				}
+			}
 		}
-		
+
 		$uri = $url
 		$bodyJson = $body | ConvertTo-Json -depth 100 -Compress
 

@@ -1,57 +1,45 @@
 ---
 external help file: verkadaModule-help.xml
 Module Name: verkadaModule
-online version: https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCameraGroup.md
+online version: https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Set-VerkadaCommandPermissions.md
 schema: 2.0.0
 ---
 
-# Get-VerkadaCameraGroup
+# Set-VerkadaCommandPermissions
 
 ## SYNOPSIS
-Gets all the camera sites in an organization
+Modifies Verkada Command permissions for various entity types
 
 ## SYNTAX
 
 ```
-Get-VerkadaCameraGroup [[-name] <String>] [-org_id <String>] [-x_verkada_token <String>]
- [-x_verkada_auth <String>] [-usr <String>] [-refresh] [<CommonParameters>]
+Set-VerkadaCommandPermissions [-payload] <Object> [-org_id <String>] [-x_verkada_token <String>]
+ [-x_verkada_auth <String>] [-usr <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Used to retrieve all the camera sites in an organization or just the one with the specified name.
+This is used as a formatting function to make calls to set the needed Verkada Command permissions
 The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-VerkadaCameraGroup
-This will retrieve all the sites in an organization.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
-```
-
-### EXAMPLE 2
-```
-Get-VerkadaCameraGroup -name 'My New Sub-Site'
-This will retrieve the site with the name "My New Sub-Site".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
-```
-
-### EXAMPLE 3
-```
-Get-VerkadaCameraGroup -name 'My New Site' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc' -usr 'a099bfe6-34ff-4976-9d53-ac68342d2b60'
-This will retrieve the site with the name "My New Sub-Site".  The org_id and tokens are submitted as parameters in the call.
+Set-VerkadaCommandPermissions $payload -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc' -usr 'a099bfe6-34ff-4976-9d53-ac68342d2b60'
+This will set the permissions sent in the payload variable.  This variable should be a PSobject with the required structure for the permission type being set.  The org_id and tokens are submitted as parameters in the call.
 ```
 
 ## PARAMETERS
 
-### -name
-The name of the site or sub-site being retrieved
+### -payload
+The payload of the permissions being set
 
 ```yaml
-Type: String
+Type: Object
 Parameter Sets: (All)
-Aliases:
+Aliases: body
 
-Required: False
+Required: True
 Position: 1
 Default value: None
 Accept pipeline input: False
@@ -118,21 +106,6 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -refresh
-Switch to force site refresh
-
-```yaml
-Type: SwitchParameter
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
@@ -144,5 +117,5 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCameraGroup.md](https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCameraGroup.md)
+[https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Set-VerkadaCommandPermissions.md](https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Set-VerkadaCommandPermissions.md)
 

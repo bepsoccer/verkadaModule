@@ -1,51 +1,56 @@
 ---
 external help file: verkadaModule-help.xml
 Module Name: verkadaModule
-online version: https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Set-VerkadaSitePermissions.md
+online version: https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Add-VerkadaAccessSiteAdmin.md
 schema: 2.0.0
 ---
 
-# Set-VerkadaSitePermissions
+# Add-VerkadaAccessSiteAdmin
 
 ## SYNOPSIS
-Sets a group's or user's permission on a site in an organization
+Adds a user as an Access Site Admin to a site
 
 ## SYNTAX
 
 ```
-Set-VerkadaSitePermissions [-cameraGroupId] <String> [-securityEntityGroupId] <String> [-roleKey] <String>
+Add-VerkadaAccessSiteAdmin [-userId] <String[]> [[-siteName] <String>] [[-siteId] <String>]
  [[-org_id] <String>] [[-x_verkada_token] <String>] [[-x_verkada_auth] <String>] [[-usr] <String>]
  [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Sets a group's or user's permission on a site in an organization. 
-This function takes pipeline paramters making it easy to add mulitple sites via csv with the desired named out of the gate.
+This function will make the provided user/s an Access aite admin for the provided site.
 The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Set-VerkadaSitePermissions -cameraGroupId '919dedeb-b3fe-420c-b663-ce44cbfd1c1e' -securityEntityGroupId(userGroupId) '719c81b9-0617-4871-b249-61559dc4684c' -roleKey 'SITE_ADMIN'
-This will give the user group with ID '719c81b9-0617-4871-b249-61559dc4684c' SITE_ADMIN permission on the site with ID '919dedeb-b3fe-420c-b663-ce44cbfd1c1e'.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+Add-VerkadaAccessSiteAdmin -userId '2418dd52-0f0a-4cb0-8b4c-ad8432164804' -siteName 'HQ'
+This will add the user with userId 2418dd52-0f0a-4cb0-8b4c-ad8432164804 as an Access site admin for the site name 'HQ'.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ### EXAMPLE 2
 ```
-Set-VerkadaSitePermissions -cameraGroupId '919dedeb-b3fe-420c-b663-ce44cbfd1c1e' -securityEntityGroupId(userGroupId) '719c81b9-0617-4871-b249-61559dc4684c' -roleKey 'SITE_ADMIN' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc' -usr 'a099bfe6-34ff-4976-9d53-ac68342d2b60'
-This will give the user group with ID '719c81b9-0617-4871-b249-61559dc4684c' SITE_ADMIN permission on the site with ID '919dedeb-b3fe-420c-b663-ce44cbfd1c1e'.  The org_id and tokens are submitted as parameters in the call.
+Add-VerkadaAccessSiteAdmin -userId 'e618d19c-cf3a-4070-af41-284fd977759c','5e9455ba-06cd-4c0f-a241-ec3d673d247b','2418dd52-0f0a-4cb0-8b4c-ad8432164804' -siteId '9fb72cf6-e025-418b-86ca-31d6bad05091' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc' -usr 'a099bfe6-34ff-4976-9d53-ac68342d2b60'
+This will add the users provided as Access site admins on the site with siteId 9fb72cf6-e025-418b-86ca-31d6bad05091.  The org_id and tokens are submitted as parameters in the call.
+```
+
+### EXAMPLE 3
+```
+Read-VerkadaCommandUsers | ?{$_.firstName -eq 'alex' -or $_.firstName -eq 'john'} | Add-VerkadaAccessSiteAdmin -siteName 'HQ'
+This will add the users found as an Access site admin for the site name 'HQ'.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ## PARAMETERS
 
-### -cameraGroupId
-The cameraGroupId of the site who permissions are being set
+### -userId
+The UUID of the user the permission is being granted to
 
 ```yaml
-Type: String
+Type: String[]
 Parameter Sets: (All)
-Aliases: entityId, siteId
+Aliases:
 
 Required: True
 Position: 1
@@ -54,30 +59,31 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -securityEntityGroupId
-The securityEntityGroupId of group or user who's being given permission to the site
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases: userGroupId, userId
-
-Required: True
-Position: 2
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -roleKey
-The permission being given
+### -siteName
+The name of the site being retrieved. 
+Will be ignored if siteId is present
 
 ```yaml
 Type: String
 Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -siteId
+The UUID of of the site being retrieved
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
 Position: 3
 Default value: None
 Accept pipeline input: True (ByPropertyName)
@@ -155,5 +161,5 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Set-VerkadaSitePermissions.md](https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Set-VerkadaSitePermissions.md)
+[https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Add-VerkadaAccessSiteAdmin.md](https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Add-VerkadaAccessSiteAdmin.md)
 
