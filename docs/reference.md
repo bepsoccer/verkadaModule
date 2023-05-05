@@ -1,6 +1,7 @@
 # Verkada PowerShell module
 ## Command Documentation
 * [Add-VerkadaAccessBadgeToUser](function-documentation/Add-VerkadaAccessBadgeToUser.md)
+* [Add-VerkadaAccessSiteAdmin](function-documentation/Add-VerkadaAccessSiteAdmin.md)
 * [Add-VerkadaAccessUser](function-documentation/Add-VerkadaAccessUser.md)
 * [Add-VerkadaAccessUserPin](function-documentation/Add-VerkadaAccessUserPin.md)
 * [Add-VerkadaAccessUserToGroup](function-documentation/Add-VerkadaAccessUserToGroup.md)
@@ -29,4 +30,5 @@
 * [Set-VerkadaAccessUserEmployementDetail](function-documentation/Set-VerkadaAccessUserEmployementDetail.md)
 * [Set-VerkadaCameraName](function-documentation/Set-VerkadaCameraName.md)
 * [Set-VerkadaCloudBackupSettings](function-documentation/Set-VerkadaCloudBackupSettings.md)
+* [Set-VerkadaCommandPermissions](function-documentation/Set-VerkadaCommandPermissions.md)
 * [Set-VerkadaSitePermissions](function-documentation/Set-VerkadaSitePermissions.md)
