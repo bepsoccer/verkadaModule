@@ -285,6 +285,8 @@ function Get-VerkadaAccessUserReport{
 	}
 	td {
 		color: #949BA0;
+		vertical-align: top;
+		padding-top: 10px;
 	}
 	td:first-child {
 			width: 300px;
