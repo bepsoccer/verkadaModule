@@ -285,6 +285,8 @@ function Get-VerkadaAccessUserReport{
 	}
 	td {
 		color: #949BA0;
+		vertical-align: top;
+		padding-top: 10px;
 	}
 	td:first-child {
 			width: 300px;
@@ -317,7 +319,7 @@ function Get-VerkadaAccessUserReport{
 		background-image: url('data:image/svg+xml;utf8,<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="26" height="26" viewBox="0 0 26 26"><g fill="none" fill-rule="evenodd"><path d="M11.65 20.21c-4.78 0-8.65-3.77-8.65-8.4s3.87-8.4 8.65-8.4a8.53 8.53 0 0 1 8.64 8.4c0 4.63-3.86 8.4-8.64 8.4z" stroke="%23949BA0" stroke-width="2"></path><path d="M17.34 17.96a1.43 1.43 0 0 1 1.98 0l3.7 3.64a1.35 1.35 0 0 1 0 1.93l.06-.05a1.43 1.43 0 0 1-1.99 0l-3.7-3.63a1.35 1.35 0 0 1 0-1.93l-.06.04z" fill="%23949BA0"></path></g></svg>');
 		background-position: 10px 10px;
 		background-repeat: no-repeat;
-		width: 300px;
+		width: 375px;
 		padding: 12px 20px 12px 40px;
 		border: none;
 		margin-bottom: 12px;
