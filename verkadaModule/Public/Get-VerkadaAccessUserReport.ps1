@@ -69,7 +69,11 @@ function Get-VerkadaAccessUserReport{
 		[switch]$beautify,
 		#This is a switch to indicate we're gonna try to make the report a pretty html
 		[Parameter()]
-		[switch]$outReport
+		[switch]$outReport,
+		#Number of threads allowed to multi-thread the task
+		[Parameter()]
+		[ValidateRange(1,20)]
+		[int]$threads=10
 	)
 	
 	begin {
@@ -79,171 +83,191 @@ function Get-VerkadaAccessUserReport{
 		if ([string]::IsNullOrEmpty($x_verkada_auth)) {throw "x_verkada_auth is missing but is required!"}
 		if ([string]::IsNullOrEmpty($usr)) {throw "usr is missing but is required!"}
 
-		$accessLevels = Get-VerkadaAccessLevels
-		$allDoors = Get-VerkadaAccessDoors
+		$accessLevels = Get-VerkadaAccessLevels -org_id $org_id -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr
+		$allDoors = Get-VerkadaAccessDoors -org_id $org_id -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr
+		$accessSites = Get-VerkadaAccessSite -org_id $org_id -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr
 		$outUsers = @()
 
-		#some helper functions
-		function prettyGrouping {
-			param (
-				$myInput,
-				$groupProperty1,
-				$groupProperty2,
-				$groupProperty3
-			)
-			$temp = @()
-			$myInput | Group-Object -Property $groupProperty1 | ForEach-Object {$ob = @{"$($_.Name.toString())"=$_.Group;};$ob = $ob | ConvertTo-Json -Depth 10 | ConvertFrom-Json; $temp += $ob}
-			$temp = groupRemoveProp $temp $groupProperty1
-			foreach ($group in $temp){
-				$temp2 = @()
-				$group.($group.psobject.Properties.name) | Group-Object -Property $groupProperty2 | ForEach-Object {$ob = @{"$($_.Name.toString())"=$_.Group;};$ob = $ob | ConvertTo-Json -Depth 10 | ConvertFrom-Json; $temp2 += $ob}
-				$temp2 = groupRemoveProp $temp2 $groupProperty2
-				foreach ($group2 in $temp2){
-					$temp3 = @()
-					$group2.($group2.psobject.Properties.name) | Group-Object -Property $groupProperty3 | ForEach-Object {$ob = @{"$($_.Name.toString())"=$_.Group;};$ob = $ob | ConvertTo-Json -Depth 10 | ConvertFrom-Json; $temp3 += $ob}
-					$temp3 = groupRemoveProp $temp3 $groupProperty3
-					foreach ($name in $temp3){
-						$names = $name.($name.psobject.Properties.name) | Select-Object -ExpandProperty name
-						$name.($name.psobject.Properties.name) = $names
-					}
-					$group2.($group2.psobject.Properties.name) = $temp3
-				}
-				$group.($group.psobject.Properties.name) = $temp2
-			}
-			return $temp | ConvertTo-Json -Depth 10 -Compress
-		}
-		
-		function groupRemoveProp {
-			param (
-				$myInput,
-				$groupingProp
-			)
-			foreach ($group in $myInput){
-				$thing = $group.($group.psobject.Properties.name)
-				foreach ($prop in $thing){
-					$prop.PSObject.Properties.Remove($groupingProp)
-				}
-			}
-			return $myInput
-		}
+		if($beautify.IsPresent){$beautify = $true} else {$beautify = $false}
+		if($outReport.IsPresent){$outReport = $true} else {$outReport = $false}
 
-		function listFormatter {
-			param (
-				$myInput,
-				$level=1,
-				$arrayItem,
-				$open,
-				$close
-			)
-			switch ($level) {
-				default {}
-				1 {$class = 'group'}
-				2 {$class = 'site'}
-				3 {$class = 'sched'}
-				4 {$class = 'door'}
-			}
-			$s=''
-			if ($myInput.GetType().baseType.name -eq 'Array'){
-				for($i=0; $i -lt $myInput.count; $i++) {
-					$close=$false
-					$open=$false
-					if($i -eq $($($myInput.count)-1)){
-						$close = $true
-					} elseif ($i -eq 0) {
-						$open = $true
+		$helpers = {
+			#some helper functions
+			function prettyGrouping {
+				param (
+					$myInput,
+					$groupProperty1,
+					$groupProperty2,
+					$groupProperty3
+				)
+				$temp = @()
+				$myInput | Group-Object -Property $groupProperty1 | ForEach-Object {$ob = @{"$($_.Name.toString())"=$_.Group;};$ob = $ob | ConvertTo-Json -Depth 10 | ConvertFrom-Json; $temp += $ob}
+				$temp = groupRemoveProp $temp $groupProperty1
+				foreach ($group in $temp){
+					$temp2 = @()
+					$group.($group.psobject.Properties.name) | Group-Object -Property $groupProperty2 | ForEach-Object {$ob = @{"$($_.Name.toString())"=$_.Group;};$ob = $ob | ConvertTo-Json -Depth 10 | ConvertFrom-Json; $temp2 += $ob}
+					$temp2 = groupRemoveProp $temp2 $groupProperty2
+					foreach ($group2 in $temp2){
+						$temp3 = @()
+						$group2.($group2.psobject.Properties.name) | Group-Object -Property $groupProperty3 | ForEach-Object {$ob = @{"$($_.Name.toString())"=$_.Group;};$ob = $ob | ConvertTo-Json -Depth 10 | ConvertFrom-Json; $temp3 += $ob}
+						$temp3 = groupRemoveProp $temp3 $groupProperty3
+						foreach ($name in $temp3){
+							$names = $name.($name.psobject.Properties.name) | Select-Object -ExpandProperty name
+							$name.($name.psobject.Properties.name) = $names
+						}
+						$group2.($group2.psobject.Properties.name) = $temp3
 					}
-					listFormatter $myInput[$i] $level $true $open $close
+					$group.($group.psobject.Properties.name) = $temp2
 				}
-			} elseif ($myInput.GetType().name -eq 'String') {
-				if (!($arrayItem) -or $open){
-					$s+="<ul>"
+				return $temp | ConvertTo-Json -Depth 10 -Compress
+			}
+			
+			function groupRemoveProp {
+				param (
+					$myInput,
+					$groupingProp
+				)
+				foreach ($group in $myInput){
+					$thing = $group.($group.psobject.Properties.name)
+					foreach ($prop in $thing){
+						$prop.PSObject.Properties.Remove($groupingProp)
+					}
 				}
-				$s+="<li class=`"$class`">$myInput</li>"
-				if (!($arrayItem) -or $close){
-					$s+="</ul></ul></ul>"
+				return $myInput
+			}
+
+			function listFormatter {
+				param (
+					$myInput,
+					$level=1,
+					$arrayItem,
+					$open,
+					$close
+				)
+				switch ($level) {
+					default {}
+					1 {$class = 'group'}
+					2 {$class = 'site'}
+					3 {$class = 'sched'}
+					4 {$class = 'door'}
 				}
-				$s
-			} else {
-				if($level -eq 1){
-					$s+="<li class=`"$class`">$($myInput.psobject.Properties.name)</li>"
+				$s=''
+				if ($myInput.GetType().baseType.name -eq 'Array'){
+					for($i=0; $i -lt $myInput.count; $i++) {
+						$close=$false
+						$open=$false
+						if($i -eq $($($myInput.count)-1)){
+							$close = $true
+						} elseif ($i -eq 0) {
+							$open = $true
+						}
+						listFormatter $myInput[$i] $level $true $open $close
+					}
+				} elseif ($myInput.GetType().name -eq 'String') {
+					if (!($arrayItem) -or $open){
+						$s+="<ul>"
+					}
+					$s+="<li class=`"$class`">$myInput</li>"
+					if (!($arrayItem) -or $close){
+						$s+="</ul></ul></ul>"
+					}
+					$s
 				} else {
-					$s+="<ul><li class=`"$class`">$($myInput.psobject.Properties.name)</li>"
+					if($level -eq 1){
+						$s+="<li class=`"$class`">$($myInput.psobject.Properties.name)</li>"
+					} else {
+						$s+="<ul><li class=`"$class`">$($myInput.psobject.Properties.name)</li>"
+					}
+					$s
+					$level++
+					listFormatter $myInput.($myInput.psobject.Properties.name) $level
 				}
-				$s
-				$level++
-				listFormatter $myInput.($myInput.psobject.Properties.name) $level
+			}
+
+			function jsonToList {
+				param (
+					$myJson
+				)
+				$json = $myJson | ConvertFrom-Json
+				$s='<ul>'
+				$s += (listFormatter $Json)
+				$s+="</ul>"
+				return $s
 			}
 		}
 
-		function jsonToList {
-			param (
-				$myJson
-			)
-			$json = $myJson | ConvertFrom-Json
-			$s='<ul>'
-			$s += (listFormatter $Json)
-			$s+="</ul>"
-			return $s
-		}
+		$jobs = @()
+		$vMod = Get-Module verkadaModule | Select-Object -ExpandProperty Path
 	} #end begin
 	
 	process {
-		$user = $user | Select-Object userId,name,email,@{name='accessGroups';expression={$_.accessGroups.group}},accessCards,bluetoothAccess,mobileAccess,@{name='lastActiveAccess';expression={Get-Date -UnixTimeSeconds $_.lastActiveAccess}}
+		$jobs += Start-ThreadJob -InitializationScript $helpers -ThrottleLimit $threads -ScriptBlock {
+			Import-Module $using:vMod
+			$user = $using:user | Select-Object userId,name,email,@{name='accessGroups';expression={$_.accessGroups.group}},accessCards,bluetoothAccess,mobileAccess,@{name='lastActiveAccess';expression={Get-Date -UnixTimeSeconds $_.lastActiveAccess}}
 
-		$userDoors = @()
-		$accessGroups = @()
-		foreach ($group in $user.accessGroups){
-			#find which access levels that group is a part of
-			$acLevels =@()
-			$acLevels += $accessLevels | Where-Object {$_.userGroups -contains $group.userGroupId}
-			$accessGroups += $group.name
+			$userDoors = @()
+			$accessGroups = @()
+			foreach ($group in $user.accessGroups){
+				#find which access levels that group is a part of
+				$acLevels =@()
+				$acLevels += $using:accessLevels | Where-Object {$_.userGroups -contains $group.userGroupId}
+				$accessGroups += $group.name
 
-			#find which doors that access level has access to and schedule
-			foreach ($level in $acLevels){
-				$schedule = $level | Select-Object -ExpandProperty events
-				$schedule = Get-HumanReadableSchedule $schedule
+				#find which doors that access level has access to and schedule
+				foreach ($level in $acLevels){
+					$schedule = $level | Select-Object -ExpandProperty events
+					$schedule = Get-HumanReadableSchedule $schedule
 
-				$doors = $level | Select-Object -ExpandProperty doors
-				foreach ($d in $doors){
-					$ds = $allDoors | Where-Object {$_.doorId -eq $d} | Select-Object name,doorId,accessControllerId
-					$ds | Add-Member -NotePropertyName 'siteName' -NotePropertyValue (Get-VerkadaAccessSite | Where-Object {$_.accessControllers -contains $ds.accessControllerId} | Select-Object -ExpandProperty name)
-					$ds | Add-Member -NotePropertyName 'schedule' -NotePropertyValue $schedule
-					$ds | Add-Member -NotePropertyName 'group' -NotePropertyValue $group.name
-					$ds.PSObject.Properties.Remove('accessControllerId')
-					$ds.PSObject.Properties.Remove('doorId')
-					$userDoors += $ds
+					$doors = $level | Select-Object -ExpandProperty doors
+					foreach ($d in $doors){
+						$ds = $using:allDoors | Where-Object {$_.doorId -eq $d} | Select-Object name,doorId,accessControllerId
+						$ds | Add-Member -NotePropertyName 'siteName' -NotePropertyValue ($using:accessSites | Where-Object {$_.accessControllers -contains $ds.accessControllerId} | Select-Object -ExpandProperty name)
+						$ds | Add-Member -NotePropertyName 'schedule' -NotePropertyValue $schedule
+						$ds | Add-Member -NotePropertyName 'group' -NotePropertyValue $group.name
+						$ds.PSObject.Properties.Remove('accessControllerId')
+						$ds.PSObject.Properties.Remove('doorId')
+						$userDoors += $ds
+					}
 				}
 			}
+			$user.accessGroups = $accessGroups
+			
+			if ($using:beautify -or $using:outReport){
+				$userDoors = prettyGrouping $userDoors 'group' 'siteName' 'schedule'
+				$user.accessGroups = $user.accessGroups | ConvertTo-Json #-Compress
+				if ($user.accessCards){
+					try {
+						#retrieve access cards
+						$creds = Get-VerkadaAccessCredential -userId $user.userId -org_id $using:org_id -x_verkada_token $using:x_verkada_token -x_verkada_auth $using:x_verkada_auth -usr $using:usr
+						$user.accessCards = $creds.accessCards | Select-Object active,cardType,cardParams,@{name='lastUsed';expression={Get-Date -UnixTimeSeconds $_.lastUsed}} | ConvertTo-Json #-Compress
+					} catch {
+
+					}
+				}
+
+				if($using:outReport){
+					if($userDoors){
+						$userDoors = jsonToList $userDoors
+					}
+					$user.PSObject.Properties.Remove('userId')
+				}
+			}
+			$user | Add-Member -NotePropertyName 'doors' -NotePropertyValue $userDoors
+			$user
 		}
-		$user.accessGroups = $accessGroups
-		
-		if ($beautify.IsPresent -or $outReport.IsPresent){
-			$userDoors = prettyGrouping $userDoors 'group' 'siteName' 'schedule'
-			$user.accessGroups = $user.accessGroups | ConvertTo-Json #-Compress
-			if ($user.accessCards){
-				try {
-					#retrieve access cards
-					$creds = Get-VerkadaAccessCredential -userId $user.userId -org_id $org_id -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr
-					$user.accessCards = $creds.accessCards | Select-Object active,cardType,cardParams,@{name='lastUsed';expression={Get-Date -UnixTimeSeconds $_.lastUsed}} | ConvertTo-Json #-Compress
-				} catch {
-
-				}
-			}
-
-			if($outReport.IsPresent){
-				if($userDoors){
-					$userDoors = jsonToList $userDoors
-				}
-				$user.PSObject.Properties.Remove('userId')
-			}
-		}
-		$user | Add-Member -NotePropertyName 'doors' -NotePropertyValue $userDoors
-		$outUsers += $user
-		return $user
+		#$outUsers += $user
 	} #end process
 	
 	end {
-		if ($outReport.IsPresent){
+		$outUsers = $jobs | Receive-Job -AutoRemoveJob -Wait -WarningVariable +w -ErrorVariable +e
+		foreach ($line in $w){Write-Output "Warning: $line"}
+		foreach ($line in $e){Write-Output "Error: $line"}
+		Remove-Variable -Name w -ErrorAction SilentlyContinue
+		Remove-Variable -Name e -ErrorAction SilentlyContinue
+
+		#$outUsers = $jobs
+		$outUsers
+		if ($outReport){
 			function testReportPath {
 				param ()
 				$filePath = Read-Host -Prompt 'Please provide the path for the AC report to be saved to.'
