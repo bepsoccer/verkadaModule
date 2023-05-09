@@ -140,6 +140,7 @@ function Add-VerkadaAccessUser
 		$url = "https://vcerberus.command.verkada.com/users/create"
 
 		$jobs = @()
+		$vMod = Get-Module verkadaModule | Select-Object -ExpandProperty Path
 	} #end begin
 	
 	Process {
@@ -172,7 +173,8 @@ function Add-VerkadaAccessUser
 		if (!([string]::IsNullOrEmpty($sendInviteEmail))){$form_params.sendInviteEmail = $sendInviteEmail.ToString().ToLower()}
 
 		#start a threadJob for each user addition
-		$jobs += Start-ThreadJob -InitializationScript {Import-Module verkadaModule.psm1} -ThrottleLimit $threads -ScriptBlock {
+		$jobs += Start-ThreadJob -ThrottleLimit $threads -ScriptBlock {
+			Import-Module $using:vMod
 			#Add the user to Command
 			#Write-Output "Add user $using:firstName $using:lastName $using:email"
 			$res = @{}

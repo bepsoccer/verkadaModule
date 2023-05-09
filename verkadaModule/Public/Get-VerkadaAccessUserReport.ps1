@@ -92,7 +92,6 @@ function Get-VerkadaAccessUserReport{
 		if($outReport.IsPresent){$outReport = $true} else {$outReport = $false}
 
 		$helpers = {
-			Import-Module verkadaModule
 			#some helper functions
 			function prettyGrouping {
 				param (
@@ -198,11 +197,12 @@ function Get-VerkadaAccessUserReport{
 		}
 
 		$jobs = @()
-
+		$vMod = Get-Module verkadaModule | Select-Object -ExpandProperty Path
 	} #end begin
 	
 	process {
 		$jobs += Start-ThreadJob -InitializationScript $helpers -ThrottleLimit $threads -ScriptBlock {
+			Import-Module $using:vMod
 			$user = $using:user | Select-Object userId,name,email,@{name='accessGroups';expression={$_.accessGroups.group}},accessCards,bluetoothAccess,mobileAccess,@{name='lastActiveAccess';expression={Get-Date -UnixTimeSeconds $_.lastActiveAccess}}
 
 			$userDoors = @()
