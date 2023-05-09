@@ -92,7 +92,6 @@ function Get-VerkadaAccessUserReport{
 		if($outReport.IsPresent){$outReport = $true} else {$outReport = $false}
 
 		$helpers = {
-			Import-Module verkadaModule
 			#some helper functions
 			function prettyGrouping {
 				param (
