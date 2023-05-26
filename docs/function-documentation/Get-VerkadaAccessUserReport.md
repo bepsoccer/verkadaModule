@@ -14,7 +14,8 @@ Returns a report of all doors a user has access to and by what means.
 
 ```
 Get-VerkadaAccessUserReport [[-user] <Object>] [-org_id <String>] [-x_verkada_token <String>]
- [-x_verkada_auth <String>] [-usr <String>] [-beautify] [-outReport] [-threads <Int32>] [<CommonParameters>]
+ [-x_verkada_auth <String>] [-usr <String>] [-beautify] [-outReport] [-reportPath <String>] [-threads <Int32>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -151,6 +152,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -reportPath
+This is the path the pretty html report will attempt to be saved to
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
