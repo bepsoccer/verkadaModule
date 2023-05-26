@@ -70,6 +70,9 @@ function Get-VerkadaAccessUserReport{
 		#This is a switch to indicate we're gonna try to make the report a pretty html
 		[Parameter()]
 		[switch]$outReport,
+		#This is the path the pretty html report will attempt to be saved to
+		[Parameter()]
+		[string]$reportPath,
 		#Number of threads allowed to multi-thread the task
 		[Parameter()]
 		[ValidateRange(1,20)]
@@ -280,7 +283,18 @@ function Get-VerkadaAccessUserReport{
 					testReportPath
 				}
 			}
-			$reportFile = testReportPath
+			if(!([string]::IsNullOrEmpty($reportPath))){
+				try {
+					Get-ChildItem -Path $reportPath -ErrorAction Stop | Out-Null
+					$reportFile = $reportPath
+				}
+				catch {
+					Write-Warning $_.Exception.Message
+					testReportPath
+				}
+			} else {
+				$reportFile = testReportPath
+			}
 			$reportFile = (Get-Item $reportFile).fullName + "/ACuserReport-$(Get-Date -Format MMddyyyy).html"
 
 			$Head = @"
