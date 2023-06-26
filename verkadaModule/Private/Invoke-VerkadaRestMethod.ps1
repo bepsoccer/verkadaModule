@@ -87,9 +87,12 @@ function Invoke-VerkadaRestMethod
 		if ($pagination.IsPresent){
 			$page_token = '1'
 			$query.add('page_size', $page_size)
-			$query.add('page_token', $page_token)
 			$records = @()
 			Do {
+				if($page_token -ne '1'){
+					try {$query.Remove('page_token')} catch {}
+					$query.add('page_token', $page_token)
+				}
 				$uri = [System.UriBuilder]"$url"
 				$uri.Query = $query.ToString()
 				$uri = $uri.Uri.OriginalString
@@ -98,10 +101,10 @@ function Invoke-VerkadaRestMethod
 				$rt = 0
 				do {
 					try {
-						$response = Invoke-RestMethod -Uri $uri -Body $body -Headers $headers -ContentType 'application/json' -MaximumRetryCount 3 -TimeoutSec 120 -RetryIntervalSec 5
+						$response = Invoke-RestMethod -Uri $uri -Body $body -Headers $headers -ContentType 'application/json' -MaximumRetryCount 3 -TimeoutSec 30 -RetryIntervalSec 5
 						$records += $response.($propertyName)
 						$page_token = $response.next_page_token
-						$query.Set('page_token', $page_token)
+						#$query.Set('page_token', $page_token)
 
 						$loop = $true
 					}
@@ -131,7 +134,7 @@ function Invoke-VerkadaRestMethod
 			$rt = 0
 			do {
 				try {
-					$response = Invoke-RestMethod -Uri $uri -Body $body -Headers $headers -Method $method -ContentType 'application/json' -MaximumRetryCount 3 -TimeoutSec 120 -RetryIntervalSec 5
+					$response = Invoke-RestMethod -Uri $uri -Body $body -Headers $headers -Method $method -ContentType 'application/json' -MaximumRetryCount 3 -TimeoutSec 30 -RetryIntervalSec 5
 
 					$loop = $true
 					return $response

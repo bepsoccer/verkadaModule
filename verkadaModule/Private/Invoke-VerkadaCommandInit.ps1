@@ -59,6 +59,8 @@ function Invoke-VerkadaCommandInit {
 				Set-Variable -Name 'verkadaCameraGroups' -Scope Global -Value $verkadaCameraGroups
 				Set-Variable -Name 'verkadaCameraModels' -Scope Global -Value $response.models
 				Set-Variable -Name 'verkadaAccessSites' -Scope Global -Value $accessSites
+				Set-Variable -Name 'verkadaBuildings' -Scope Global -Value $response.buildings
+				Set-Variable -Name 'verkadaFloors' -Scope Global -Value $response.floors
 
 				$loop = $true
 				return $response
