@@ -10,7 +10,7 @@ Install the latest version of the Verkada module from the [PowerShell Gallery](h
 
 ## Getting started
 
-To use this module you will need a valid API token for some tasks and username/password for others.  Every function will allow you to specify the required credential information directly within the call, however `Connect-Verkada` exists to make use of this module easier.  It will cache the pertent connection information for the session.  If you need to switch orgs you are interaction with ro use a different token, you can use `Disconnect-Verkada` to remove the cached session info and start over.
+To use this module you will need a valid API token for some tasks and username/password for others.  Every function will allow you to specify the required credential information directly within the call, however `Connect-Verkada` exists to make use of this module easier.  It will cache the pertent connection information for the session.  If you need to switch orgs you are interaction with or use a different token, you can use `Disconnect-Verkada` to remove the cached session info and start over.
 
 To connect via API token use:
 
