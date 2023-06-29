@@ -20,6 +20,7 @@
 * [Get-VerkadaAccessSite](function-documentation/Get-VerkadaAccessSite.md)
 * [Get-VerkadaAccessUser](function-documentation/Get-VerkadaAccessUser.md)
 * [Get-VerkadaAccessUserReport](function-documentation/Get-VerkadaAccessUserReport.md)
+* [Get-VerkadaCameraConfig](function-documentation/Get-VerkadaCameraConfig.md)
 * [Get-VerkadaCameraGroup](function-documentation/Get-VerkadaCameraGroup.md)
 * [Get-VerkadaCameras](function-documentation/Get-VerkadaCameras.md)
 * [Get-VerkadaCloudBackupSettings](function-documentation/Get-VerkadaCloudBackupSettings.md)
