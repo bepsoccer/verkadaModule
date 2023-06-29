@@ -14,7 +14,7 @@ Retrieves the camera config and feature settings present in Command for the spec
 
 ```
 Get-VerkadaCameraConfig [-cameraId] <String> [-org_id <String>] [-x_verkada_token <String>]
- [-x_verkada_auth <String>] [-usr <String>] [-batchSize <Int32>] [<CommonParameters>]
+ [-x_verkada_auth <String>] [-usr <String>] [[-x_api_key] <String>] [-batchSize <Int32>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -32,13 +32,19 @@ This will retieve the config information for the camera with Id 6fbdcd72-a2ec-40
 
 ### EXAMPLE 2
 ```
-Import-Csv ./cams.csv | Get-VerkadaCameraConfig
-This will retieve the config information for all of the cameraId's present in the given CSV.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+Get-VerkadaCameras | Get-VerkadaCameraConfig
+This will retieve the config information for all of the camerass present in the given organization.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ### EXAMPLE 3
 ```
-Get-VerkadaCameraConfig -cameraId '6fbdcd72-a2ec-4016-9c6f-21553a42c998' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc'
+Import-Csv ./cams.csv | Get-VerkadaCameraConfig
+This will retieve the config information for all of the cameraId's present in the given CSV.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+```
+
+### EXAMPLE 4
+```
+Get-VerkadaCameraConfig -cameraId '6fbdcd72-a2ec-4016-9c6f-21553a42c998' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc'
 This will retieve the config information for the camera with Id 6fbdcd72-a2ec-4016-9c6f-21553a42c998.  The org_id and tokens are submitted as parameters in the call.
 ```
 
@@ -115,6 +121,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: $Global:verkadaConnection.usr
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -x_api_key
+The public API key to be used for calls that hit the public API gateway
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: $Global:verkadaConnection.token
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
