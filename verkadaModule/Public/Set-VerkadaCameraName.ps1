@@ -12,12 +12,12 @@ function Set-VerkadaCameraName
 		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Set-VerkadaCameraName.md
 
 		.EXAMPLE
-		Set-VerkadaCameraName -camera_id 'cwdfwfw-3f3-cwdf2-cameraId' -camera_name 'Camera1'
-		This will rename camera_id cwdfwfw-3f3-cwdf2-cameraId to Camera1.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		Set-VerkadaCameraName -camera_id '6fbdcd72-a2ec-4016-9c6f-21553a42c998' -camera_name 'Camera1'
+		This will rename camera_id 6fbdcd72-a2ec-4016-9c6f-21553a42c998 to Camera1.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 		
 		.EXAMPLE
-		Set-VerkadaCameraName -camera_id 'cwdfwfw-3f3-cwdf2-cameraId' -camera_name 'Camera1' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc'
-		This will rename camera_id cwdfwfw-3f3-cwdf2-cameraId to Camera1.   The org_id and tokens are submitted as parameters in the call.
+		Set-VerkadaCameraName -camera_id '6fbdcd72-a2ec-4016-9c6f-21553a42c998' -camera_name 'Camera1' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc'
+		This will rename camera_id 6fbdcd72-a2ec-4016-9c6f-21553a42c998 to Camera1.   The org_id and tokens are submitted as parameters in the call.
 		
 		.EXAMPLE
 		Set-VerkadaCameraName -serial 'ABCD-123-UNME' -camera_name 'Camera1'
