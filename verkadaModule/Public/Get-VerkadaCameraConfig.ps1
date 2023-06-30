@@ -100,7 +100,7 @@ function Get-VerkadaCameraConfig{
 		foreach ($batch in $batches){
 			$configBody = @{
 				"cameraIds"		= $batch
-				"params"			= @("static-ip.enabled","static-ip.gateway","static-ip.ip","static-ip.netmask","static-ip.primary-dns","static-ip.secondary-dns","stream-configs.vda.person-crowd-detection-threshold","stream-configs.vda.vehicle-crowd-detection-threshold","accelerometer-config.tamper-low-sensitivity","accelerometer-config.enable-tamper-detect","system-config.update-window-schedule","camera-config.privacy-mask-enable", "camera-config.privacy-mask", "storage-manager.highres-jpeg", "stream-configs.vda.person-crowd-detection-threshold","stream-configs.vda.vehicle-crowd-detection-threshold")
+				"params"			= @("static-ip.enabled","static-ip.gateway","static-ip.ip","static-ip.netmask","static-ip.primary-dns","static-ip.secondary-dns","system-config.update-window-schedule","camera-config.privacy-mask-enable","camera-config.privacy-mask","storage-manager.highres-jpeg","stream-configs.vda.enable-motion-notification","stream-configs.vda.motion-notification-region","stream-configs.vda.motion-notification-throttle","stream-configs.vda.motion-notification-label-filter","stream-configs.vda.motion-notification-windows","stream-configs.vda.person-crowd-detection-threshold", "stream-configs.vda.vehicle-crowd-detection-threshold","ai-configs.motion-notification-person-detection-confidence-level","ai-configs.motion-notification-vehicle-detection-confidence-level","accelerometer-config.enable-tamper-detect","accelerometer-config.tamper-low-sensitivity")
 			}
 
 			$featureBody = @{
