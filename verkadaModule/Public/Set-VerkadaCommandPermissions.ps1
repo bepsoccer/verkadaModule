@@ -23,6 +23,8 @@ function Set-VerkadaCommandPermissions{
 				$members=Get-Member -InputObject $_ -MemberType NoteProperty
 				if ($members.Count -lt 2){
 					Throw [System.Management.Automation.ValidationMetadataException] "$_ is not a properly formated permissions payload object. Must be formatt: {'grant':[],'revoke':[]} and a PSobject"
+				} else {
+					$true
 				}
 			}
 		)]
