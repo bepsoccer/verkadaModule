@@ -82,8 +82,10 @@ function Get-VerkadaAlarmsSiteContacts{
 				$methodsList = $methods -join ", "
 				$methodsList = "[$methodsList]"
 
-				$user = Get-VerkadaCommandUser -userId $contact.userId
-				$newContact = "$($user.firstName) $($user.lastName): $methodsList"
+				try {
+					$user = Get-VerkadaCommandUser -userId $contact.userId
+					$newContact = "$($user.firstName) $($user.lastName): $methodsList"
+				} catch {}
 
 				$newNotifyUsers += $newContact
 			}

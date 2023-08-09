@@ -49,7 +49,7 @@ function Get-VerkadaAlarmsSiteConfig{
 		[string]$usr = $Global:verkadaConnection.usr,
 		#The size of the batch of zoneId's to process in a single call
 		[Parameter()]
-		[Int]$batchSize = 100
+		[Int]$batchSize = 5
 	)
 	
 	begin {
