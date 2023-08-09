@@ -64,7 +64,10 @@ function Connect-Verkada
 		[String]$usr,
 		#The switch to indicate manual token auth
 		[Parameter(ParameterSetName = 'ManualTokens')]
-		[switch]$manual
+		[switch]$manual,
+		#The One Time Password if using 2FA
+		[Parameter(ParameterSetName = 'UnPwd')]
+		[string]$otp
 	)
 
 	Process {
@@ -108,6 +111,9 @@ function Connect-Verkada
 					"email"			= $userName
 					"password"	= $credential.Password
 					"org_id"		= $Global:verkadaConnection.org_id
+				}
+				if (![string]::IsNullOrEmpty($otp)){
+					[string]$body.otp = $otp
 				}
 
 				$body = $body | ConvertTo-Json
