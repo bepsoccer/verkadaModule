@@ -25,7 +25,8 @@ Connect-Verkada [-org_id] <String> [[-x_api_key] <String>] [-userToken] <String>
 
 ### UnPwd
 ```
-Connect-Verkada [-org_id] <String> [[-x_api_key] <String>] -userName <String> [-Password] [<CommonParameters>]
+Connect-Verkada [-org_id] <String> [[-x_api_key] <String>] -userName <String> [-Password] [-otp <String>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -35,20 +36,26 @@ This function is used to authenticate a session and store the needed tokens and 
 
 ### EXAMPLE 1
 ```
-Connect-Verkada 'dsfwfd-wdf-orgId' 'myapiKey-dcwdskjnlnlkj'
-This will store the org_id dsfwfd-wdf-orgId with the public API key myapiKey-dcwdskjnlnlkj.
+Connect-Verkada '7cd47706-f51b-4419-8675-3b9f0ce7c12d' 'myapiKey-dcwdskjnlnlkj'
+This will store the org_id 7cd47706-f51b-4419-8675-3b9f0ce7c12d with the public API key myapiKey-dcwdskjnlnlkj.
 ```
 
 ### EXAMPLE 2
 ```
-Connect-Verkada 'dsfwfd-wdf-orgId' -userName "admin.user@contoso.com" -Password
-This will authenticate user admin.user@contoso.com by prompting for the password(stored as a secure string) and upon success store the org_id dsfwfd-wdf-orgId and the returned tokens.
+Connect-Verkada '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -userName "admin.user@contoso.com" -Password
+This will authenticate user admin.user@contoso.com by prompting for the password(stored as a secure string) and upon success store the org_id 7cd47706-f51b-4419-8675-3b9f0ce7c12d and the returned tokens.
 ```
 
 ### EXAMPLE 3
 ```
-Connect-Verkada 'dsfwfd-wdf-orgId' -x_api_key 'myapiKey-dcwdskjnlnlkj' -userName "admin.user@contoso.com" -Password
-This will store the org_id dsfwfd-wdf-orgId with the public API key myapiKey-dcwdskjnlnlkj and will authenticate user admin.user@contoso.com by prompting for the password(stored as a secure string) and storing the returned tokens.
+Connect-Verkada '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -userName "admin.user@contoso.com" -otp '123456' -Password
+This will authenticate user admin.user@contoso.com with a otp token by prompting for the password(stored as a secure string) and upon success store the org_id 7cd47706-f51b-4419-8675-3b9f0ce7c12d and the returned tokens.
+```
+
+### EXAMPLE 4
+```
+Connect-Verkada '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'myapiKey-dcwdskjnlnlkj' -userName "admin.user@contoso.com" -Password
+This will store the org_id 7cd47706-f51b-4419-8675-3b9f0ce7c12d with the public API key myapiKey-dcwdskjnlnlkj and will authenticate user admin.user@contoso.com by prompting for the password(stored as a secure string) and storing the returned tokens.
 ```
 
 ## PARAMETERS
@@ -205,6 +212,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -otp
+The One Time Password if using 2FA
+
+```yaml
+Type: String
+Parameter Sets: UnPwd
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

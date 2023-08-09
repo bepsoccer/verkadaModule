@@ -39,7 +39,7 @@ This will return the Access Group named "Executive Access".  The org_id and toke
 
 ### EXAMPLE 3
 ```
-Get-VerkadaAccessGroup -groupId "7858d17a-3f72-4506-8532-a4b6ba233c5e"
+Get-VerkadaAccessGroup -groupId '7858d17a-3f72-4506-8532-a4b6ba233c5e'
 This will return the Access Group with userId "7858d17a-3f72-4506-8532-a4b6ba233c5e".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
