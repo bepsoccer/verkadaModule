@@ -16,7 +16,7 @@ function Remove-VerkadaAccessUserBleUnlock{
 		
 		.EXAMPLE
 		Remove-VerkadaAccessUserBleUnlock -externalId 'newUserUPN@contoso.com' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a'
-		This will adectivate the Access user's Bluetooth unlock ability with -externalId 'newUserUPN@contoso.com'.  The org_id and tokens are submitted as parameters in the call.
+		This will deactivate the Access user's Bluetooth unlock ability with -externalId 'newUserUPN@contoso.com'.  The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
 	[Alias("Remove-VrkdaAcUsrBtUnlk","rm-VrkdaAcUsrBtUnlk")]
@@ -77,14 +77,14 @@ function Remove-VerkadaAccessUserBleUnlock{
 			$errorMes = $_ | Convertto-Json -WarningAction SilentlyContinue
 			$err | Add-Member -NotePropertyName StatusCode -NotePropertyValue (($errorMes | ConvertFrom-Json -Depth 100 -WarningAction SilentlyContinue).Exception.Response.StatusCode) -Force
 			$msg = "$($err.StatusCode) - $($err.message)"
-			$msg += ": $($body_params | ConvertTo-Json -Compress)"
+			$msg += ": $(($query_params + $body_params) | ConvertTo-Json -Compress)"
 			Write-Error $msg
 			$myErrors += $msg
 			$msg = $null
 		}
 		catch [VerkadaRestMethodException] {
 			$msg = $_.ToString()
-			$msg += ": $($body_params | ConvertTo-Json -Compress)"
+			$msg += ": $(($query_params + $body_params) | ConvertTo-Json -Compress)"
 			Write-Error $msg
 			$myErrors += $msg
 			$msg = $null
