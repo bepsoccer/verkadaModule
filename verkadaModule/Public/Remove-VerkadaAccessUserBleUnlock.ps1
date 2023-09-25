@@ -77,14 +77,14 @@ function Remove-VerkadaAccessUserBleUnlock{
 			$errorMes = $_ | Convertto-Json -WarningAction SilentlyContinue
 			$err | Add-Member -NotePropertyName StatusCode -NotePropertyValue (($errorMes | ConvertFrom-Json -Depth 100 -WarningAction SilentlyContinue).Exception.Response.StatusCode) -Force
 			$msg = "$($err.StatusCode) - $($err.message)"
-			$msg += ": $($body_params | ConvertTo-Json -Compress)"
+			$msg += ": $(($query_params + $body_params) | ConvertTo-Json -Compress)"
 			Write-Error $msg
 			$myErrors += $msg
 			$msg = $null
 		}
 		catch [VerkadaRestMethodException] {
 			$msg = $_.ToString()
-			$msg += ": $($body_params | ConvertTo-Json -Compress)"
+			$msg += ": $(($query_params + $body_params) | ConvertTo-Json -Compress)"
 			Write-Error $msg
 			$myErrors += $msg
 			$msg = $null
