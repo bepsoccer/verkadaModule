@@ -149,7 +149,7 @@ function Set-VerkadaCommandUser{
 		catch [VerkadaRestMethodException] {
 			$msg = $_.ToString()
 			$msg += ": $($body_params | ConvertTo-Json -Compress)"
-			\Write-Error $msg
+			Write-Error $msg
 			$myErrors += $msg
 			$msg = $null
 		}
