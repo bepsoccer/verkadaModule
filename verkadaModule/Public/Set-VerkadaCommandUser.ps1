@@ -54,7 +54,7 @@ function Set-VerkadaCommandUser{
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[Alias('last_name')]
 		[String]$lastName,
-		#unique identifier managed externally provided by the consumer.  This will default to email if omitted
+		#unique identifier managed externally provided by the consumer
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[Alias('external_id')]
 		[String]$externalId,
