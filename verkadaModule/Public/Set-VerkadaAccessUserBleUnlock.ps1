@@ -1,7 +1,7 @@
 function Set-VerkadaAccessUserBleUnlock{
 	<#
 		.SYNOPSIS
-		Activates a Access User's ability to use Bluetooth Unlock using https://apidocs.verkada.com/reference/putactivateblemethodviewv1
+		Activates an Access User's ability to use Bluetooth Unlock using https://apidocs.verkada.com/reference/putactivateblemethodviewv1
 
 		.DESCRIPTION
 		Given the user defined External ID or Verkada defined User ID (but not both), activate bluetooth unlock capability for a user. Response is updated Access Information Object.
