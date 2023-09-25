@@ -38,15 +38,6 @@ function Add-VerkadaCommandUser{
 	[CmdletBinding(PositionalBinding = $true)]
 	[Alias("Add-VrkdaCmdUsr","Ad-VrkdaCmdUsr")]
 	param (
-		#The UUID of the organization the user belongs to
-		[Parameter(ValueFromPipelineByPropertyName = $true)]
-		[ValidateNotNullOrEmpty()]
-		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
-		[String]$org_id = $Global:verkadaConnection.org_id,
-		#The public API key to be used for calls that hit the public API gateway
-		[Parameter()]
-		[ValidateNotNullOrEmpty()]
-		[String]$x_api_key = $Global:verkadaConnection.token,
 		#The email address of the user
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[String]$email,
