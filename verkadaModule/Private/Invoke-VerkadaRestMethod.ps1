@@ -1,3 +1,8 @@
+class VerkadaRestMethodException: System.Exception {
+	VerkadaRestMethodException([string] $x) :
+			base ("$x") {}
+}
+
 function Invoke-VerkadaRestMethod
 {
 	<#
@@ -134,10 +139,30 @@ function Invoke-VerkadaRestMethod
 			$rt = 0
 			do {
 				try {
-					$response = Invoke-RestMethod -Uri $uri -Body $body -Headers $headers -Method $method -ContentType 'application/json' -MaximumRetryCount 3 -TimeoutSec 30 -RetryIntervalSec 5
+					$response = Invoke-RestMethod -Uri $uri -Body $body -Headers $headers -Method $method -ContentType 'application/json' -TimeoutSec 30 -SkipHttpErrorCheck -StatusCodeVariable resCode
 
-					$loop = $true
-					return $response
+					switch ($resCode) {
+						200 {
+							$loop = $true
+							return $response
+						}
+						429 {
+							$rt++
+							if ($rt -gt 2){
+								$loop = $true
+								$res = "$resCode - $($response.message)"
+								throw [VerkadaRestMethodException] "$res"
+							}
+							else {
+								Start-Sleep -Seconds 5
+							}
+						}
+						Default {
+							$loop = $true
+							$res = "$resCode - $($response.message)"
+							throw [VerkadaRestMethodException] "$res"
+						}
+					}
 				}
 				catch [System.TimeoutException] {
 					$rt++
