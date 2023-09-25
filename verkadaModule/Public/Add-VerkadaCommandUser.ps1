@@ -12,10 +12,28 @@ function Add-VerkadaCommandUser{
 		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Add-VerkadaCommandUser.md
 
 		.EXAMPLE
-		The org_id and token will be populated from the cached created by Connect-Verkada.
+		Add-VerkadaCommandUser -firstName 'New' -lastName 'User'
+		This will add the Command user with the name "New User".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
+		.EXAMPLE
+		Add-VerkadaCommandUser -firstName 'New' -lastName 'User' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a'
+		This will add the Command user with the name "New User".  The org_id and tokens are submitted as parameters in the call.
+		
+		.EXAMPLE
+		Add-VerkadaCommandUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com' 
+		This will add the Command user with the name "New User" and email newUser@contoso.com.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		The org_id and token are submitted as parameters in the call.
+		Add-VerkadaCommandUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com' -externalId 'newUserUPN@contoso.com'
+		This will add the Command user with the name "New User", email newUser@contoso.com, and externalId newUserUPN@contoso.com.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
+		.EXAMPLE
+		Add-VerkadaCommandUser -email 'newUser@contoso.com' 
+		This will add the Command user with the email newUser@contoso.com.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
+		.EXAMPLE
+		Add-VerkadaCommandUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com -companyName 'Contoso' -department 'sales' -departmentId 'US-Sales' -employeeId '12345' -employeeTitle 'The Closer' -employeeTyoe 'Full Time' -phone '+18165556789'
+		This will add the Command user with the name "New User" and email newUser@contoso.com in department defined as sales with departmnetId of US-Sales with the appropriate companyName, employeeID, employeeTitle, employeeType and phone.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
 	[Alias("Add-VrkdaCmdUsr","Ad-VrkdaCmdUsr")]
@@ -72,7 +90,10 @@ function Add-VerkadaCommandUser{
 		#The main phone number of the user, E.164 format preferred
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidatePattern("^\+?[1-9]\d{1,14}$")]
-		[String]$phone
+		[String]$phone,
+		#Switch to write errors to file
+		[Parameter()]
+		[switch]$errorsToFile
 	)
 	
 	begin {
@@ -101,6 +122,7 @@ function Add-VerkadaCommandUser{
 		if (!([string]::IsNullOrEmpty($departmentId))){$body_params.department_id = $departmentId}
 		if (!([string]::IsNullOrEmpty($employeeId))){$body_params.employee_id = $employeeId}
 		if (!([string]::IsNullOrEmpty($employeeType))){$body_params.employee_type = $employeeType}
+		if (!([string]::IsNullOrEmpty($employeeTitle))){$body_params.employee_Title = $employeeTitle}
 		if (!([string]::IsNullOrEmpty($phone))){$body_params.phone = $phone}
 
 		$query_params = @{}
@@ -110,11 +132,18 @@ function Add-VerkadaCommandUser{
 		return $response
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {
-			$msg = ($body_params | ConvertTo-Json -Compress) + " not created due to an error"
 			$err = $_.ErrorDetails | ConvertFrom-Json
 			$errorMes = $_ | Convertto-Json -WarningAction SilentlyContinue
 			$err | Add-Member -NotePropertyName StatusCode -NotePropertyValue (($errorMes | ConvertFrom-Json -Depth 100 -WarningAction SilentlyContinue).Exception.Response.StatusCode) -Force
-			$msg += ": $($err.StatusCode) - $($err.message)"
+			$msg = "$($err.StatusCode) - $($err.message)"
+			$msg += ": $($body_params | ConvertTo-Json -Compress)"
+			Write-Error $msg
+			$myErrors += $msg
+			$msg = $null
+		}
+		catch [VerkadaRestMethodException] {
+			$msg = $_.ToString()
+			$msg += ": $($body_params | ConvertTo-Json -Compress)"
 			Write-Error $msg
 			$myErrors += $msg
 			$msg = $null
@@ -122,6 +151,11 @@ function Add-VerkadaCommandUser{
 	} #end process
 	
 	end {
-		#Write-Host $myErrors -ForegroundColor Red
+		if ($errorsToFile.IsPresent){
+			if (![string]::IsNullOrEmpty($myErrors)){
+				Get-Date | Out-File ./errors.txt -Append
+				$myErrors | Out-File ./errors.txt -Append
+			}
+		}
 	} #end end
 } #end function
