@@ -32,11 +32,11 @@ function Add-VerkadaCommandUser{
 		This will add the Command user with the email newUser@contoso.com.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 		
 		.EXAMPLE
-		Add-VerkadaCommandUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com -companyName 'Contoso' -department 'sales' -departmentId 'US-Sales' -employeeId '12345' -employeeTitle 'The Closer' -employeeTyoe 'Full Time' -phone '+18165556789'
+		Add-VerkadaCommandUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com -companyName 'Contoso' -department 'sales' -departmentId 'US-Sales' -employeeId '12345' -employeeTitle 'The Closer' -employeeType 'Full Time' -phone '+18165556789'
 		This will add the Command user with the name "New User" and email newUser@contoso.com in department defined as sales with departmnetId of US-Sales with the appropriate companyName, employeeID, employeeTitle, employeeType and phone.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
-	[Alias("Add-VrkdaCmdUsr","Ad-VrkdaCmdUsr")]
+	[Alias("Add-VrkdaCmdUsr","ad-VrkdaCmdUsr")]
 	param (
 		#The email address of the user
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
