@@ -16,7 +16,7 @@ function Remove-VerkadaAccessUserBleUnlock{
 		
 		.EXAMPLE
 		Remove-VerkadaAccessUserBleUnlock -externalId 'newUserUPN@contoso.com' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a'
-		This will adectivate the Access user's Bluetooth unlock ability with -externalId 'newUserUPN@contoso.com'.  The org_id and tokens are submitted as parameters in the call.
+		This will deactivate the Access user's Bluetooth unlock ability with -externalId 'newUserUPN@contoso.com'.  The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
 	[Alias("Remove-VrkdaAcUsrBtUnlk","rm-VrkdaAcUsrBtUnlk")]
