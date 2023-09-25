@@ -80,7 +80,7 @@ function Add-VerkadaCommandUser{
 		[String]$employeeTitle,
 		#The main phone number of the user, E.164 format preferred
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
-		[ValidatePattern("^\+?[1-9]\d{1,14}$")]
+		[ValidatePattern("^\+[1-9]\d{10,14}$")]
 		[String]$phone,
 		#The UUID of the organization the user belongs to
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
