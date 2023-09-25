@@ -103,7 +103,6 @@ function Set-VerkadaCommandUser{
 		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
 		if ([string]::IsNullOrEmpty($x_api_key)) {throw "x_api_key is missing but is required!"}
 		$myErrors = @()
-		
 	} #end begin
 	
 	process {
