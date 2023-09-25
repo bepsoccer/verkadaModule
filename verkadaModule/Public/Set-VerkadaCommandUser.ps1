@@ -1,43 +1,30 @@
-function Add-VerkadaCommandUser{
+function Set-VerkadaCommandUser{
 	<#
 		.SYNOPSIS
-		Adds a user to Verkada Command using https://apidocs.verkada.com/reference/postuserviewv1
+		Sets the user details for a Command User in an organization using https://apidocs.verkada.com/reference/putuserviewv1
 
 		.DESCRIPTION
-		Creates a user in an organization. External ID required.
-		Otherwise, the newly created user will contain a user ID which can be used for identification.
+		Updates a user's metadata for an organization based on either provided user ID or an external ID set during creation.
 		The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
-		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Add-VerkadaCommandUser.md
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Set-VerkadaCommandUser.md
 
 		.EXAMPLE
-		Add-VerkadaCommandUser -firstName 'New' -lastName 'User'
-		This will add the Command user with the name "New User".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
-		
-		.EXAMPLE
-		Add-VerkadaCommandUser -firstName 'New' -lastName 'User' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a'
-		This will add the Command user with the name "New User".  The org_id and tokens are submitted as parameters in the call.
-		
-		.EXAMPLE
-		Add-VerkadaCommandUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com' 
-		This will add the Command user with the name "New User" and email newUser@contoso.com.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		The org_id and token will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Add-VerkadaCommandUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com' -externalId 'newUserUPN@contoso.com'
-		This will add the Command user with the name "New User", email newUser@contoso.com, and externalId newUserUPN@contoso.com.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
-		
-		.EXAMPLE
-		Add-VerkadaCommandUser -email 'newUser@contoso.com' 
-		This will add the Command user with the email newUser@contoso.com.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
-		
-		.EXAMPLE
-		Add-VerkadaCommandUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com -companyName 'Contoso' -department 'sales' -departmentId 'US-Sales' -employeeId '12345' -employeeTitle 'The Closer' -employeeTyoe 'Full Time' -phone '+18165556789'
-		This will add the Command user with the name "New User" and email newUser@contoso.com in department defined as sales with departmnetId of US-Sales with the appropriate companyName, employeeID, employeeTitle, employeeType and phone.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		The org_id and token are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
-	[Alias("Add-VrkdaCmdUsr","Ad-VrkdaCmdUsr")]
+	[Alias("Set-VrkdaCmdUsr","St-VrkdaCmdUsr")]
 	param (
+		#The UUID of the user
+		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		[ValidateNotNullOrEmpty()]
+		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
+		[Alias('user_id')]
+		[String]$userId,
 		#The email address of the user
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[String]$email,
@@ -102,21 +89,20 @@ function Add-VerkadaCommandUser{
 		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
 		if ([string]::IsNullOrEmpty($x_api_key)) {throw "x_api_key is missing but is required!"}
 		$myErrors = @()
+		
 	} #end begin
 	
 	process {
-		if ([string]::IsNullOrEmpty($firstName) -and [string]::IsNullOrEmpty($lastName) -and [string]::IsNullOrEmpty($email)){
-			Write-Error "At least one of email, firstName, lastName required"
+		if ([string]::IsNullOrEmpty($externalId) -and [string]::IsNullOrEmpty($userId)){
+			Write-Error "Either externalId or userId required"
 			return
 		}
-		if ([string]::IsNullOrEmpty($externalId) -and ![string]::IsNullOrEmpty($email)){$externalId = $email}
 
 		$body_params = @{}
 		if (!([string]::IsNullOrEmpty($email))){$body_params.email = $email}
 		if (!([string]::IsNullOrEmpty($firstName))){$body_params.first_name = $firstName}
 		if (!([string]::IsNullOrEmpty($middleName))){$body_params.middle_name = $middleName}
 		if (!([string]::IsNullOrEmpty($lastName))){$body_params.last_name = $lastName}
-		if (!([string]::IsNullOrEmpty($externalId))){$body_params.external_id = $externalId}
 		if (!([string]::IsNullOrEmpty($companyName))){$body_params.company_name = $companyName}
 		if (!([string]::IsNullOrEmpty($department))){$body_params.department = $department}
 		if (!([string]::IsNullOrEmpty($departmentId))){$body_params.department_id = $departmentId}
@@ -124,12 +110,18 @@ function Add-VerkadaCommandUser{
 		if (!([string]::IsNullOrEmpty($employeeType))){$body_params.employee_type = $employeeType}
 		if (!([string]::IsNullOrEmpty($employeeTitle))){$body_params.employee_Title = $employeeTitle}
 		if (!([string]::IsNullOrEmpty($phone))){$body_params.phone = $phone}
-
+		
 		$query_params = @{}
-
+		if (!([string]::IsNullOrEmpty($userId))){
+			$query_params.user_id = $userId
+			if (!([string]::IsNullOrEmpty($externalId))){$body_params.external_id = $externalId}
+		} elseif (!([string]::IsNullOrEmpty($externalId))){
+			$query_params.external_id = $externalId
+		}
+		
 		try {
-		$response = Invoke-VerkadaRestMethod $url $org_id $x_api_key $query_params -body_params $body_params -method POST
-		return $response
+			$response = Invoke-VerkadaRestMethod $url $org_id $x_api_key $query_params -body_params $body_params -method PUT
+			return $response
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {
 			$err = $_.ErrorDetails | ConvertFrom-Json
@@ -144,7 +136,7 @@ function Add-VerkadaCommandUser{
 		catch [VerkadaRestMethodException] {
 			$msg = $_.ToString()
 			$msg += ": $($body_params | ConvertTo-Json -Compress)"
-			Write-Error $msg
+			\Write-Error $msg
 			$myErrors += $msg
 			$msg = $null
 		}
