@@ -1,7 +1,7 @@
 function Set-VerkadaAccessUserEndDate{
 	<#
 		.SYNOPSIS
-		Set's the end date for an Access user's access in an organization using https://apidocs.verkada.com/reference/putaccessenddateviewv1
+		Sets the end date for an Access user's access in an organization using https://apidocs.verkada.com/reference/putaccessenddateviewv1
 
 		.DESCRIPTION
 		Given the user defined External ID or Verkada defined User ID (but not both), set the end date for an access users' credentials to become invalid. After this time, all methods of access will be revoked. End date value will be passed as a parameter in a json payload. Returns the updated Access Information Object.
