@@ -11,13 +11,27 @@ function Set-VerkadaCommandUser{
 		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Set-VerkadaCommandUser.md
 
 		.EXAMPLE
-		The org_id and token will be populated from the cached created by Connect-Verkada.
+		Set-VerkadaCommandUser -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -firstName 'New' -lastName 'User'
+		This will update the Command user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 with the name "New User".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
+		.EXAMPLE
+		Set-VerkadaCommandUser -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -firstName 'New' -lastName 'User' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a'
+		This will update the Command user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 with the name "New User".  The org_id and tokens are submitted as parameters in the call.
+		
+		.EXAMPLE
+		Set-VerkadaCommandUser -externalId 'newUserUPN@contoso.com' -email 'newUser@contoso.com' 
+		This will update the Command user with externalId newUserUPN@contoso.com with the email newUser@contoso.com.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		The org_id and token are submitted as parameters in the call.
+		Set-VerkadaCommandUser -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -externalId 'newUserUPN@contoso.com' 
+		This will update the Command user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 to have the new externalId newUPN@contoso.com.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
+		.EXAMPLE
+		Set-VerkadaCommandUser -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -firstName 'New' -lastName 'User' -email 'newUser@contoso.com -companyName 'Contoso' -department 'sales' -departmentId 'US-Sales' -employeeId '12345' -employeeTitle 'The Closer' -employeeType 'Full Time' -phone '+18165556789'
+		This will update the Command user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 to the name "New User" and email newUser@contoso.com in department defined as sales with departmnetId of US-Sales with the appropriate companyName, employeeID, employeeTitle, employeeType and phone.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
-	[Alias("Set-VrkdaCmdUsr","St-VrkdaCmdUsr")]
+	[Alias("Set-VrkdaCmdUsr","st-VrkdaCmdUsr")]
 	param (
 		#The UUID of the user
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
@@ -40,7 +54,7 @@ function Set-VerkadaCommandUser{
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[Alias('last_name')]
 		[String]$lastName,
-		#unique identifier managed externally provided by the consumer.  This will default to email if omitted
+		#unique identifier managed externally provided by the consumer
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[Alias('external_id')]
 		[String]$externalId,
@@ -89,7 +103,6 @@ function Set-VerkadaCommandUser{
 		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
 		if ([string]::IsNullOrEmpty($x_api_key)) {throw "x_api_key is missing but is required!"}
 		$myErrors = @()
-		
 	} #end begin
 	
 	process {
@@ -136,7 +149,7 @@ function Set-VerkadaCommandUser{
 		catch [VerkadaRestMethodException] {
 			$msg = $_.ToString()
 			$msg += ": $($body_params | ConvertTo-Json -Compress)"
-			\Write-Error $msg
+			Write-Error $msg
 			$myErrors += $msg
 			$msg = $null
 		}
