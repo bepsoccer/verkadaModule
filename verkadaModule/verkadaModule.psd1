@@ -92,10 +92,10 @@ FunctionsToExport = 'Add-VerkadaAccessBadgeToUser', 'Add-VerkadaAccessSiteAdmin'
                'Set-VerkadaAccessUserBleUnlock', 'Set-VerkadaAccessUserEmail', 
                'Set-VerkadaAccessUserEmployementDetail', 
                'Set-VerkadaAccessUserEndDate', 'Set-VerkadaAccessUserRemoteUnlock', 
-               'Set-VerkadaCameraName', 'Set-VerkadaCameraSite', 
-               'Set-VerkadaCloudBackupSettings', 'Set-VerkadaCommandPermissions', 
-               'Set-VerkadaCommandUser', 'Set-VerkadaLicensePlateOfInterest', 
-               'Set-VerkadaSitePermissions'
+               'Set-VerkadaAccessUserStartDate', 'Set-VerkadaCameraName', 
+               'Set-VerkadaCameraSite', 'Set-VerkadaCloudBackupSettings', 
+               'Set-VerkadaCommandPermissions', 'Set-VerkadaCommandUser', 
+               'Set-VerkadaLicensePlateOfInterest', 'Set-VerkadaSitePermissions'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
@@ -111,7 +111,8 @@ AliasesToExport = 'ad-VrkdaCmdUsr', 'Add-VrkdaCmdUsr', 'Add-VerkadaLPoI',
                'Remove-VrkdaCmdUsr', 'rm-VrkdaCmdUsr', 'Remove-VerkadaLPoI', 
                'sd-VrkdaPssInv', 'Send-VrkdaPssInv', 'Set-VrkdaAcUsrBtUnlk', 
                'st-VrkdaAcUsrBtUnlk', 'Set-VrkdaAcUsrEndDt', 'st-VrkdaAcUsrEndDt', 
-               'Set-VrkdaAcUsrRmtUnlk', 'st-VrkdaAcUsrRmtUnlk', 'Set-VrkdaCmdUsr', 
+               'Set-VrkdaAcUsrRmtUnlk', 'st-VrkdaAcUsrRmtUnlk', 
+               'Set-VrkdaAcUsrStrtDt', 'st-VrkdaAcUsrStrtDt', 'Set-VrkdaCmdUsr', 
                'st-VrkdaCmdUsr', 'Set-VerkadaLPoI'
 
 # DSC resources to export from this module
