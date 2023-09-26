@@ -12,11 +12,11 @@ function Set-VerkadaAccessUserStartDate{
 
 		.EXAMPLE
 		Set-VerkadaAccessUserStartDate -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -startDate '1/28/2022 08:00 AM'
-		This set the Access user's access to start at 8am on Jan 28, 2022 with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 and send an email invite for the Pass app.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		This sets the Access user's access to start at 8am on Jan 28, 2022 with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 		
 		.EXAMPLE
 		Set-VerkadaAccessUserStartDate -externalId 'newUserUPN@contoso.com' -startDate (Get-Date) -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a'
-		This set the Access user's access to start immediately since you are specifiying the current date and time -externalId 'newUserUPN@contoso.com'.  The org_id and tokens are submitted as parameters in the call.
+		This sets the Access user's access to start immediately since you are specifiying the current date and time with externalId newUserUPN@contoso.com.  The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
 	[Alias("Set-VrkdaAcUsrStrtDt","st-VrkdaAcUsrStrtDt")]
