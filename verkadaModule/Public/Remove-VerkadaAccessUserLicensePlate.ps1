@@ -1,25 +1,25 @@
-function Set-VerkadaAccessUserStartDate{
+function Remove-VerkadaAccessUserLicensePlate{
 	<#
 		.SYNOPSIS
-		Sets the start date for an Access user's access in an organization using https://apidocs.verkada.com/reference/putaccessstartdateviewv1
+		Removes a license plate credential from an Aceess user in an organization  using https://apidocs.verkada.com/reference/deletelicenseplateviewv1
 
 		.DESCRIPTION
-		Given the user defined External ID or Verkada defined User ID (but not both), set the start date for an access users credentials to become valid. Before this time, all methods of access specified for this access user will invalid. Start date value will be passed as a parameter in a json payload. Returns the updated Access Information Object.
+		Deletes a license plate credential from a specified user by providing the user_id or the external_id, the org_id, and the license_plate_number.
 		The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
-		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Set-VerkadaAccessUserStartDate.md
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Remove-VerkadaAccessUserLicensePlate.md
 
 		.EXAMPLE
-		Set-VerkadaAccessUserStartDate -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -startDate '1/28/2022 08:00 AM'
-		This sets the Access user's access to start at 8am on Jan 28, 2022 with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		Remove-VerkadaAccessUserLicensePlate -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -licensePlateNumber 'ABC123'
+		This will remove license plate ABC123 as a credential from the Access user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 		
 		.EXAMPLE
-		Set-VerkadaAccessUserStartDate -externalId 'newUserUPN@contoso.com' -startDate (Get-Date) -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a'
-		This sets the Access user's access to start immediately since you are specifiying the current date and time with externalId newUserUPN@contoso.com.  The org_id and tokens are submitted as parameters in the call.
+		Remove-VerkadaAccessUserLicensePlate -externalId 'newUserUPN@contoso.com' -licensePlateNumber 'ABC123' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a'
+		This will remove license plate ABC123 as a credential from the Access user with externalId newUserUPN@contoso.com.  The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
-	[Alias("Set-VrkdaAcUsrStrtDt","st-VrkdaAcUsrStrtDt")]
+	[Alias("Remove-VrkdaAcUsrLPR","rm-VrkdaAcUsrLPR")]
 	param (
 		#The UUID of the user
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
@@ -31,10 +31,11 @@ function Set-VerkadaAccessUserStartDate{
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[Alias('external_id')]
 		[String]$externalId,
-		#The Date/Time the user's Access starts
+		#The license plate number of the user credential
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
-		[Alias('start_date')]
-		[datetime]$startDate,
+		[ValidatePattern('^\w{4,}$')]
+		[Alias('license_plate_number')]
+		[string]$licensePlateNumber,
 		#The UUID of the organization the user belongs to
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
@@ -50,7 +51,7 @@ function Set-VerkadaAccessUserStartDate{
 	)
 	
 	begin {
-		$url = "https://api.verkada.com/access/v1/access_users/user/start_date"
+		$url = "https://api.verkada.com/access/v1/credentials/license_plate"
 		#parameter validation
 		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
 		if ([string]::IsNullOrEmpty($x_api_key)) {throw "x_api_key is missing but is required!"}
@@ -58,19 +59,20 @@ function Set-VerkadaAccessUserStartDate{
 	} #end begin
 	
 	process {
-		if ([string]::IsNullOrEmpty($startDate)) {throw "startDate is missing but is required!"}
+		if ([string]::IsNullOrEmpty($licensePlateNumber)){
+			Write-Error "LicensePlateNumber is required"
+			return
+		}
 		if ([string]::IsNullOrEmpty($externalId) -and [string]::IsNullOrEmpty($userId)){
 			Write-Error "Either externalId or userId required"
 			return
 		}
 
-		[string]$stringStartDate = [math]::round((New-TimeSpan -Start (Get-Date -Date "01/01/1970") -End (Get-Date $startDate)).TotalSeconds)
+		$body_params = @{}
 		
-		$body_params = @{
-			'start_date'	= $stringStartDate
+		$query_params = @{
+			'license_plate_number'	= $licensePlateNumber.ToUpper()
 		}
-		
-		$query_params = @{}
 		if (!([string]::IsNullOrEmpty($userId))){
 			$query_params.user_id = $userId
 		} elseif (!([string]::IsNullOrEmpty($externalId))){
@@ -78,7 +80,9 @@ function Set-VerkadaAccessUserStartDate{
 		}
 		
 		try {
-			$response = Invoke-VerkadaRestMethod $url $org_id $x_api_key $query_params -body_params $body_params -method PUT
+			Invoke-VerkadaRestMethod $url $org_id $x_api_key $query_params -body_params $body_params -method DELETE
+			$response = $query_params | ConvertTo-Json | ConvertFrom-Json
+			$response | Add-Member -NotePropertyName 'status' -NotePropertyValue 'deleted'
 			return $response
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {
