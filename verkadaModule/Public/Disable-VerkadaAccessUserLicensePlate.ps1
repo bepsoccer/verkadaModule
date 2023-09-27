@@ -1,7 +1,7 @@
 function Disable-VerkadaAccessUserLicensePlate{
 	<#
 		.SYNOPSIS
-		Deactivates a license plate credential to an Aceess user in an organization using https://apidocs.verkada.com/reference/putlicenseplatedeactivateviewv1
+		Deactivates a license plate credential for an Aceess user in an organization using https://apidocs.verkada.com/reference/putlicenseplatedeactivateviewv1
 
 		.DESCRIPTION
 		Given the Verkada defined User ID (OR user defined External ID)and License Plate Number, deactivate a users License Plate Credential. Returns the updated License Plate Object.
@@ -12,11 +12,11 @@ function Disable-VerkadaAccessUserLicensePlate{
 
 		.EXAMPLE
 		Disable-VerkadaAccessUserLicensePlate -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -licensePlateNumber 'ABC123'
-		This will deactivate the license plate ABC123 to the Access user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 as a credential.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		This will deactivate the license plate ABC123 for the Access user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 as a credential.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 		
 		.EXAMPLE
 		Disable-VerkadaAccessUserLicensePlate -externalId 'newUserUPN@contoso.com' -licensePlateNumber 'ABC123' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a'
-		This will deactivate the license plate ABC123 to the Access user with externalId newUserUPN@contoso.com as a credential.  The org_id and tokens are submitted as parameters in the call.
+		This will deactivate the license plate ABC123 for the Access user with externalId newUserUPN@contoso.com as a credential.  The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
 	[Alias("Disable-VrkdaAcUsrLPR","d-VrkdaAcUsrLPR")]
