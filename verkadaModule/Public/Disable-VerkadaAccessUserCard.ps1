@@ -1,25 +1,25 @@
-function Enable-VerkadaAccessUserCard{
+function Disable-VerkadaAccessUserCard{
 	<#
 		.SYNOPSIS
-		Activates a credential for an Aceess user in an organization using https://apidocs.verkada.com/reference/putaccesscardactivateviewv1
+		Deactivates a credential for an Aceess user in an organization using https://apidocs.verkada.com/reference/putaccesscarddeactivateviewv1
 
 		.DESCRIPTION
-		Given the Verkada defined User ID (OR user defined External ID)and Card ID, activate a specific access card for a user. Returns the updated Access Card Object.
+		Given the Verkada defined User ID (OR user defined External ID)and Card ID, deactivate a specific access card for a user. Returns the updated Access Card Object.
 		The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
-		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Enable-VerkadaAccessUserCard.md
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Disable-VerkadaAccessUserCard.md
 
 		.EXAMPLE
-		Enable-VerkadaAccessUserCard -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -cardId '3f3b3e4d-1a67-4b88-a321-43c5e502991c'
+		Disable-VerkadaAccessUserCard -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -cardId '10110010000000000000001011'
 		This will activate the credential with cardId 10110010000000000000001011 for the Access user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 as a credential.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 		
 		.EXAMPLE
-		Enable-VerkadaAccessUserCard -externalId 'newUserUPN@contoso.com' -cardId '3f3b3e4d-1a67-4b88-a321-43c5e502991c' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a'
+		Disable-VerkadaAccessUserCard -externalId 'newUserUPN@contoso.com' -cardId '10110010000000000000001011' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a'
 		This will activate the credential with cardId 10110010000000000000001011 for the Access user with externalId newUserUPN@contoso.com as a credential.  The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
-	[Alias("Enable-VrkdaAcUsrCrd","e-VrkdaAcUsrCrd")]
+	[Alias("Disable-VrkdaAcUsrCrd","d-VrkdaAcUsrCrd")]
 	param (
 		#The UUID of the user
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
@@ -51,7 +51,7 @@ function Enable-VerkadaAccessUserCard{
 	)
 	
 	begin {
-		$url = "https://api.verkada.com/access/v1/credentials/card/activate"
+		$url = "https://api.verkada.com/access/v1/credentials/card/deactivate"
 		#parameter validation
 		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
 		if ([string]::IsNullOrEmpty($x_api_key)) {throw "x_api_key is missing but is required!"}
