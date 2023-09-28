@@ -139,7 +139,7 @@ function Invoke-VerkadaRestMethod
 			$rt = 0
 			do {
 				try {
-					$response = Invoke-RestMethod -Uri $uri -Body $body -Headers $headers -Method $method -ContentType 'application/json' -TimeoutSec 30 -SkipHttpErrorCheck -StatusCodeVariable resCode
+					$response = Invoke-RestMethod -Uri $uri -Body $body -Headers $headers -Method $method -ContentType 'application/json' -TimeoutSec 5 -SkipHttpErrorCheck -StatusCodeVariable resCode
 
 					switch ($resCode) {
 						200 {
