@@ -1,30 +1,31 @@
-function Add-VerkadaAccessGroup{
+function Remove-VerkadaAccessGroup{
 	<#
 		.SYNOPSIS
-		Creates an Access group in an organization using https://apidocs.verkada.com/reference/postaccessgroupviewv1
+		Deletes an Access group in an organization using https://apidocs.verkada.com/reference/deleteaccessgroupviewv1
 
 		.DESCRIPTION
-		Create an access group within the given organization using the given name. The name of the access group must be unique within the organization. This returns the Access Group Metadata Object for the created Access Group.
+		Delete an access group with the given group identifier within the given organization.
 		The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
-		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Add-VerkadaAccessGroup.md
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Remove-VerkadaAccessGroup.md
 
 		.EXAMPLE
-		Add-VerkadaAccessGroup -name 'Newgroup'
-		This will add the access group with the name "NewGroup".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		Remove-VerkadaAccessGroup -groupId '2d64e7de-fd95-48be-8b5c-7a23bde94f52'
+		This will delete the Access group with the groupId 2d64e7de-fd95-48be-8b5c-7a23bde94f52.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 		
 		.EXAMPLE
-		Add-VerkadaAccessGroup -name 'NewGroup' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a'
-		This will add the access group with the name "NewGroup".  The org_id and tokens are submitted as parameters in the call.
+		Remove-VerkadaAccessGroup -groupId '2d64e7de-fd95-48be-8b5c-7a23bde94f52' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a'
+		This will delete the Access group with the groupId 2d64e7de-fd95-48be-8b5c-7a23bde94f52.  The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
-	[Alias("Add-VrkdaAcGrp","a-VrkdaAcGrp")]
+	[Alias("Remove-VrkdaAcGrp","rm-VrkdaAcGrp")]
 	param (
-		#The name of the group
-		[Parameter(ValueFromPipelineByPropertyName = $true)]
-		[Alias('group_name','groupName')]
-		[String]$name,
+		#The UUID of the group
+		[Parameter( ValueFromPipelineByPropertyName = $true)]
+		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
+		[Alias('group_id')]
+		[String]$groupId,
 		#The UUID of the organization the user belongs to
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
@@ -48,19 +49,21 @@ function Add-VerkadaAccessGroup{
 	} #end begin
 	
 	process {
-		if ([string]::IsNullOrEmpty($name)){
-			Write-Error "name is required"
+		if ([string]::IsNullOrEmpty($groupId)){
+			Write-Error "groupId is required"
 			return
 		}
 
-		$body_params = @{
-			'name'		= $name
+		$body_params = @{}
+		
+		$query_params = @{
+			'group_id'		= $groupId
 		}
 		
-		$query_params = @{}
-		
 		try {
-			$response = Invoke-VerkadaRestMethod $url $org_id $x_api_key $query_params -body_params $body_params -method POST
+			Invoke-VerkadaRestMethod $url $org_id $x_api_key $query_params -body_params $body_params -method DELETE
+			$response = $query_params | ConvertTo-Json | ConvertFrom-Json
+			$response | Add-Member -NotePropertyName 'status' -NotePropertyValue 'removed'
 			return $response
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {
