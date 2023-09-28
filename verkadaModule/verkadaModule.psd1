@@ -110,8 +110,8 @@ CmdletsToExport = @()
 # VariablesToExport = @()
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-AliasesToExport = 'a-VrkdaAcGrp', 'Add-VrkdaAcGrp', 'ad-VrkdaAcUsrLPR', 
-               'Add-VrkdaAcUsrLPR', 'ad-VrkdaCmdUsr', 'Add-VrkdaCmdUsr', 
+AliasesToExport = 'a-VrkdaAcGrp', 'Add-VrkdaAcGrp', 'a-VrkdaAcUsrLPR', 
+               'Add-VrkdaAcUsrLPR', 'a-VrkdaCmdUsr', 'Add-VrkdaCmdUsr', 
                'Add-VerkadaLPoI', 'd-VrkdaAcUsrCrd', 'Disable-VrkdaAcUsrCrd', 
                'd-VrkdaAcUsrLPR', 'Disable-VrkdaAcUsrLPR', 'e-VrkdaAcUsrCrd', 
                'Enable-VrkdaAcUsrCrd', 'e-VrkdaAcUsrLPR', 'Enable-VrkdaAcUsrLPR', 
