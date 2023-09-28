@@ -69,12 +69,13 @@ PowerShellVersion = '6.1'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = 'Add-VerkadaAccessBadgeToUser', 'Add-VerkadaAccessSiteAdmin', 
-               'Add-VerkadaAccessUser', 'Add-VerkadaAccessUserLicensePlate', 
-               'Add-VerkadaAccessUserPin', 'Add-VerkadaAccessUserToGroup', 
-               'Add-VerkadaCamera', 'Add-VerkadaCommandSite', 
-               'Add-VerkadaCommandUser', 'Add-VerkadaLicensePlateOfInterest', 
-               'Connect-Verkada', 'Disable-VerkadaAccessUserCard', 
+FunctionsToExport = 'Add-VerkadaAccessBadgeToUser', 'Add-VerkadaAccessGroup', 
+               'Add-VerkadaAccessSiteAdmin', 'Add-VerkadaAccessUser', 
+               'Add-VerkadaAccessUserLicensePlate', 'Add-VerkadaAccessUserPin', 
+               'Add-VerkadaAccessUserToGroup', 'Add-VerkadaCamera', 
+               'Add-VerkadaCommandSite', 'Add-VerkadaCommandUser', 
+               'Add-VerkadaLicensePlateOfInterest', 'Connect-Verkada', 
+               'Disable-VerkadaAccessUserCard', 
                'Disable-VerkadaAccessUserLicensePlate', 'Disconnect-Verkada', 
                'Enable-VerkadaAccessUserCard', 
                'Enable-VerkadaAccessUserLicensePlate', 'Find-VerkadaCommandUser', 
@@ -109,13 +110,14 @@ CmdletsToExport = @()
 # VariablesToExport = @()
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-AliasesToExport = 'ad-VrkdaAcUsrLPR', 'Add-VrkdaAcUsrLPR', 'ad-VrkdaCmdUsr', 
-               'Add-VrkdaCmdUsr', 'Add-VerkadaLPoI', 'd-VrkdaAcUsrCrd', 
-               'Disable-VrkdaAcUsrCrd', 'd-VrkdaAcUsrLPR', 'Disable-VrkdaAcUsrLPR', 
-               'e-VrkdaAcUsrCrd', 'Enable-VrkdaAcUsrCrd', 'e-VrkdaAcUsrLPR', 
-               'Enable-VrkdaAcUsrLPR', 'Get-VerkadaCameraSite', 'Get-VrkdaCmdUsr', 
-               'gt-VrkdaCmdUsr', 'Get-VerkadaLPoI', 'Remove-VrkdaAcUsrBtUnlk', 
-               'rm-VrkdaAcUsrBtUnlk', 'Remove-VrkdaAcUsrCrd', 'rm-VrkdaAcUsrCrd', 
+AliasesToExport = 'a-VrkdaAcGrp', 'Add-VrkdaAcGrp', 'ad-VrkdaAcUsrLPR', 
+               'Add-VrkdaAcUsrLPR', 'ad-VrkdaCmdUsr', 'Add-VrkdaCmdUsr', 
+               'Add-VerkadaLPoI', 'd-VrkdaAcUsrCrd', 'Disable-VrkdaAcUsrCrd', 
+               'd-VrkdaAcUsrLPR', 'Disable-VrkdaAcUsrLPR', 'e-VrkdaAcUsrCrd', 
+               'Enable-VrkdaAcUsrCrd', 'e-VrkdaAcUsrLPR', 'Enable-VrkdaAcUsrLPR', 
+               'Get-VerkadaCameraSite', 'Get-VrkdaCmdUsr', 'gt-VrkdaCmdUsr', 
+               'Get-VerkadaLPoI', 'Remove-VrkdaAcUsrBtUnlk', 'rm-VrkdaAcUsrBtUnlk', 
+               'Remove-VrkdaAcUsrCrd', 'rm-VrkdaAcUsrCrd', 
                'Remove-VrkdaAcUsrEntryCo', 'rm-VrkdaAcUsrEntryCo', 
                'Remove-VrkdaAcUsrLPR', 'rm-VrkdaAcUsrLPR', 
                'Remove-VrkdaAcUsrRmtUnlk', 'rm-VrkdaAcUsrRmtUnlk', 
