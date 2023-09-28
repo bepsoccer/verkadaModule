@@ -20,7 +20,7 @@ function Add-VerkadaAccessUserLicensePlate{
 		This will add the license plate ABC123 to the Access user with externalId newUserUPN@contoso.com as a credential and mark it active.  The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
-	[Alias("Add-VrkdaAcUsrLPR","ad-VrkdaAcUsrLPR")]
+	[Alias("Add-VrkdaAcUsrLPR","a-VrkdaAcUsrLPR")]
 	param (
 		#The UUID of the user
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
