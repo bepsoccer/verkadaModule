@@ -16,7 +16,7 @@ function Add-VerkadaCommandUser{
 		This will add the Command user with the name "New User".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 		
 		.EXAMPLE
-		Add-VerkadaCommandUser -firstName 'New' -lastName 'User' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a'
+		Add-VerkadaCommandUser -firstName 'New' -lastName 'User' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token'
 		This will add the Command user with the name "New User".  The org_id and tokens are submitted as parameters in the call.
 		
 		.EXAMPLE
