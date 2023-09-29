@@ -63,7 +63,7 @@ function Set-VerkadaAccessUserEntryCode{
 	
 	process {
 		if ([string]::IsNullOrEmpty($entryCode)) {
-			Write-Error "startDate is missing but is required!"
+			Write-Error "entryCode is missing but is required!"
 			return
 		}
 		if ([string]::IsNullOrEmpty($externalId) -and [string]::IsNullOrEmpty($userId)){
