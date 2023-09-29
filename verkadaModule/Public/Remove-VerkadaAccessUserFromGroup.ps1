@@ -1,25 +1,25 @@
-function Get-VerkadaCommandUser{
+function Remove-VerkadaAccessUserFromGroup{
 	<#
 		.SYNOPSIS
-		 using https://apidocs.verkada.com/reference/getuserviewv1
+		Removes an Access user from an Access group in an organization using https://apidocs.verkada.com/reference/deleteaccessgroupuserviewv1
 
 		.DESCRIPTION
-		Returns a user for an organization based on either provided user ID or an external ID set during creation.
+		Remove an access user from an access group with the Verkada defined group ID and the user defined either by their User ID or their External ID. Both the group ID and the User ID(or External ID) are passed as query parameters in the URL.
 		The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
-		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCommandUser.md
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Remove-VerkadaAccessUserFromGroup.md
 
 		.EXAMPLE
-		Get-VerkadaCommandUser -userId '3651fbcb-f8ba-4248-ad70-3f6512fd7b6c' 
-		This will attempt to get the user details of a user with the userId of '3651fbcb-f8ba-4248-ad70-3f6512fd7b6c'.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
-
+		Remove-VerkadaAccessUserFromGroup -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -groupId '2d64e7de-fd95-48be-8b5c-7a23bde94f52'
+		This will remove the Access user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 from the group with groupId 2d64e7de-fd95-48be-8b5c-7a23bde94f52.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
 		.EXAMPLE
-		Get-VerkadaCommandUser -externalId 'UserUPN@contoso.com' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token'
-		This will attempt to get the user details of a user with the externalId UserUPN@contoso.com.  The org_id and tokens are submitted as parameters in the call.
+		Remove-VerkadaAccessUserFromGroup -externalId 'newUserUPN@contoso.com' -groupId '2d64e7de-fd95-48be-8b5c-7a23bde94f52' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token'
+		This will remove the Access user with externalId newUserUPN@contoso.com from the group with groupId 2d64e7de-fd95-48be-8b5c-7a23bde94f52.  The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
-	[Alias("Get-VrkdaCmdUsr","gt-VrkdaCmdUsr")]
+	[Alias("Remove-VrkdaAcUsrFrGrp","rm-VrkdaAcUsrFrGrp")]
 	param (
 		#The UUID of the user
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
@@ -31,6 +31,11 @@ function Get-VerkadaCommandUser{
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[Alias('external_id')]
 		[String]$externalId,
+		#The UUID of the group
+		[Parameter( ValueFromPipelineByPropertyName = $true)]
+		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
+		[Alias('group_id')]
+		[String]$groupId,
 		#The UUID of the organization the user belongs to
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
@@ -46,7 +51,7 @@ function Get-VerkadaCommandUser{
 	)
 	
 	begin {
-		$url = "https://api.verkada.com/core/v1/user"
+		$url = "https://api.verkada.com/access/v1/access_groups/group/user"
 		#parameter validation
 		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
 		if ([string]::IsNullOrEmpty($x_api_key)) {throw "x_api_key is missing but is required!"}
@@ -54,6 +59,10 @@ function Get-VerkadaCommandUser{
 	} #end begin
 	
 	process {
+		if ([string]::IsNullOrEmpty($groupId)){
+			Write-Error "groupId is required"
+			return
+		}
 		if ([string]::IsNullOrEmpty($externalId) -and [string]::IsNullOrEmpty($userId)){
 			Write-Error "Either externalId or userId required"
 			return
@@ -61,7 +70,9 @@ function Get-VerkadaCommandUser{
 
 		$body_params = @{}
 		
-		$query_params = @{}
+		$query_params = @{
+			'group_id'		= $groupId
+		}
 		if (!([string]::IsNullOrEmpty($userId))){
 			$query_params.user_id = $userId
 		} elseif (!([string]::IsNullOrEmpty($externalId))){
@@ -69,7 +80,9 @@ function Get-VerkadaCommandUser{
 		}
 		
 		try {
-			$response = Invoke-VerkadaRestMethod $url $org_id $x_api_key $query_params -body_params $body_params -method GET
+			Invoke-VerkadaRestMethod $url $org_id $x_api_key $query_params -body_params $body_params -method DELETE
+			$response = $query_params | ConvertTo-Json | ConvertFrom-Json
+			$response | Add-Member -NotePropertyName 'status' -NotePropertyValue 'removed'
 			return $response
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {

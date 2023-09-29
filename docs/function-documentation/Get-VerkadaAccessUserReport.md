@@ -27,19 +27,19 @@ The org_id and reqired tokens can be directly submitted as parameters, but is mu
 
 ### EXAMPLE 1
 ```
-Get-VerkadaAccessUser -userId 'c1cb427f-9ef4-4800-95ec-4a580bfa2bf1' | Get-VerkadaAccessUserReport
+Get-VerkadaAccessUserViaGraphql -userId 'c1cb427f-9ef4-4800-95ec-4a580bfa2bf1' | Get-VerkadaAccessUserReport
 This will get the Acces user object for userId c1cb427f-9ef4-4800-95ec-4a580bfa2bf1 and return the access report for that user.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ### EXAMPLE 2
 ```
-Get-VerkadaAccessUser -userId 'c1cb427f-9ef4-4800-95ec-4a580bfa2bf1' | Get-VerkadaAccessUserReport -beautify | Export-Csv ~/Desktop.ACusersReport.csv -NoTypeInformation
+Get-VerkadaAccessUserViaGraphql -userId 'c1cb427f-9ef4-4800-95ec-4a580bfa2bf1' | Get-VerkadaAccessUserReport -beautify | Export-Csv ~/Desktop.ACusersReport.csv -NoTypeInformation
 This will get the Acces user object for userId c1cb427f-9ef4-4800-95ec-4a580bfa2bf1 and return the access report for that user in a consumeable way for a csv report.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ### EXAMPLE 3
 ```
-Get-VerkadaAccessUser -userId 'c1cb427f-9ef4-4800-95ec-4a580bfa2bf1' | Get-VerkadaAccessUserReport -outReport
+Get-VerkadaAccessUserViaGraphql -userId 'c1cb427f-9ef4-4800-95ec-4a580bfa2bf1' | Get-VerkadaAccessUserReport -outReport
 This will get the Acces user object for userId c1cb427f-9ef4-4800-95ec-4a580bfa2bf1 and return the access report for that user in a pretty HTML file.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 

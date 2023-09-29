@@ -1,25 +1,26 @@
-function Get-VerkadaCommandUser{
+function Add-VerkadaAccessUserLicensePlate{
 	<#
 		.SYNOPSIS
-		 using https://apidocs.verkada.com/reference/getuserviewv1
+		Adds a license plate credential to an Aceess user in an organization using https://apidocs.verkada.com/reference/postlicenseplateviewv1
 
 		.DESCRIPTION
-		Returns a user for an organization based on either provided user ID or an external ID set during creation.
+		Add a license plate credential to a user given a specified user_id or external_id and org_id. License plate object will be passed in the body of the request as a json.
+		We require a string of 6 alphanumeric values. The License Plate Object is returned.
 		The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
-		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCommandUser.md
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Add-VerkadaAccessUserLicensePlate.md
 
 		.EXAMPLE
-		Get-VerkadaCommandUser -userId '3651fbcb-f8ba-4248-ad70-3f6512fd7b6c' 
-		This will attempt to get the user details of a user with the userId of '3651fbcb-f8ba-4248-ad70-3f6512fd7b6c'.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
-
+		Add-VerkadaAccessUserLicensePlate -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -licensePlateNumber 'ABC123'
+		This will add the license plate ABC123 to the Access user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 as a credential.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
 		.EXAMPLE
-		Get-VerkadaCommandUser -externalId 'UserUPN@contoso.com' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token'
-		This will attempt to get the user details of a user with the externalId UserUPN@contoso.com.  The org_id and tokens are submitted as parameters in the call.
+		Add-VerkadaAccessUserLicensePlate -externalId 'newUserUPN@contoso.com' -licensePlateNumber 'ABC123' -name 'Users License Plate' -active $true -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a'
+		This will add the license plate ABC123 to the Access user with externalId newUserUPN@contoso.com as a credential and mark it active.  The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
-	[Alias("Get-VrkdaCmdUsr","gt-VrkdaCmdUsr")]
+	[Alias("Add-VrkdaAcUsrLPR","a-VrkdaAcUsrLPR")]
 	param (
 		#The UUID of the user
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
@@ -31,6 +32,17 @@ function Get-VerkadaCommandUser{
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[Alias('external_id')]
 		[String]$externalId,
+		#The license plate number of the user credential
+		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		[ValidatePattern('^\w{4,}$')]
+		[Alias('license_plate_number')]
+		[string]$licensePlateNumber,
+		#The name of the license plate credential; will default to the plate number
+		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		[string]$name,
+		#Bool value specifying if the license plate credential is currently active. Default value is False.
+		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		[bool]$active=$true,
 		#The UUID of the organization the user belongs to
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
@@ -46,7 +58,7 @@ function Get-VerkadaCommandUser{
 	)
 	
 	begin {
-		$url = "https://api.verkada.com/core/v1/user"
+		$url = "https://api.verkada.com/access/v1/credentials/license_plate"
 		#parameter validation
 		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
 		if ([string]::IsNullOrEmpty($x_api_key)) {throw "x_api_key is missing but is required!"}
@@ -54,12 +66,20 @@ function Get-VerkadaCommandUser{
 	} #end begin
 	
 	process {
+		if ([string]::IsNullOrEmpty($licensePlateNumber)){
+			Write-Error "LicensePlateNumber is required"
+			return
+		}
 		if ([string]::IsNullOrEmpty($externalId) -and [string]::IsNullOrEmpty($userId)){
 			Write-Error "Either externalId or userId required"
 			return
 		}
 
-		$body_params = @{}
+		$body_params = @{
+			'license_plate_number'	= $licensePlateNumber.ToUpper()
+			'active'								= $active
+		}
+		if (!([string]::IsNullOrEmpty($name))){$body_params.name = $name}
 		
 		$query_params = @{}
 		if (!([string]::IsNullOrEmpty($userId))){
@@ -69,7 +89,7 @@ function Get-VerkadaCommandUser{
 		}
 		
 		try {
-			$response = Invoke-VerkadaRestMethod $url $org_id $x_api_key $query_params -body_params $body_params -method GET
+			$response = Invoke-VerkadaRestMethod $url $org_id $x_api_key $query_params -body_params $body_params -method POST
 			return $response
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {

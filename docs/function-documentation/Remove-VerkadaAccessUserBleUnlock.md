@@ -1,38 +1,39 @@
 ---
 external help file: verkadaModule-help.xml
 Module Name: verkadaModule
-online version: https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCommandUser.md
+online version: https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Remove-VerkadaAccessUserBleUnlock.md
 schema: 2.0.0
 ---
 
-# Get-VerkadaCommandUser
+# Remove-VerkadaAccessUserBleUnlock
 
 ## SYNOPSIS
-using https://apidocs.verkada.com/reference/getuserviewv1
+Deactivates a Access User's ability to use Bluetooth Unlock using https://apidocs.verkada.com/reference/putdeactivateblemethodviewv1
 
 ## SYNTAX
 
 ```
-Get-VerkadaCommandUser [[-userId] <String>] [[-externalId] <String>] [[-org_id] <String>]
+Remove-VerkadaAccessUserBleUnlock [[-userId] <String>] [[-externalId] <String>] [[-org_id] <String>]
  [[-x_api_key] <String>] [-errorsToFile] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Returns a user for an organization based on either provided user ID or an external ID set during creation.
+Given the user defined External ID or Verkada defined User ID (but not both), deactivate bluetooth unlock capability for a user.
+Response is updated Access Information Object.
 The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-VerkadaCommandUser -userId '3651fbcb-f8ba-4248-ad70-3f6512fd7b6c' 
-This will attempt to get the user details of a user with the userId of '3651fbcb-f8ba-4248-ad70-3f6512fd7b6c'.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+Remove-VerkadaAccessUserBleUnlock -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3'
+This will deactivate the Access user's Bluetooth unlock ability with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ### EXAMPLE 2
 ```
-Get-VerkadaCommandUser -externalId 'UserUPN@contoso.com' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token'
-This will attempt to get the user details of a user with the externalId UserUPN@contoso.com.  The org_id and tokens are submitted as parameters in the call.
+Remove-VerkadaAccessUserBleUnlock -externalId 'newUserUPN@contoso.com' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token'
+This will deactivate the Access user's Bluetooth unlock ability with externalId newUserUPN@contoso.com.  The org_id and tokens are submitted as parameters in the call.
 ```
 
 ## PARAMETERS
@@ -123,5 +124,5 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCommandUser.md](https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCommandUser.md)
+[https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Remove-VerkadaAccessUserBleUnlock.md](https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Remove-VerkadaAccessUserBleUnlock.md)
 

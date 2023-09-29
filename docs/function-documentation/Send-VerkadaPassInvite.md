@@ -1,38 +1,44 @@
 ---
 external help file: verkadaModule-help.xml
 Module Name: verkadaModule
-online version: https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCommandUser.md
+online version: https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Send-VerkadaPassInvite.md
 schema: 2.0.0
 ---
 
-# Get-VerkadaCommandUser
+# Send-VerkadaPassInvite
 
 ## SYNOPSIS
-using https://apidocs.verkada.com/reference/getuserviewv1
+Send a Verkada Pass email invited to an Access user in an organization using https://apidocs.verkada.com/reference/postsendpassappinviteviewv1
 
 ## SYNTAX
 
 ```
-Get-VerkadaCommandUser [[-userId] <String>] [[-externalId] <String>] [[-org_id] <String>]
+Send-VerkadaPassInvite [[-userId] <String>] [[-externalId] <String>] [-activateBLE] [[-org_id] <String>]
  [[-x_api_key] <String>] [-errorsToFile] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Returns a user for an organization based on either provided user ID or an external ID set during creation.
+Given the user defined External ID or Verkada defined User ID (but not both) and the Organization ID, send out a Pass App invite.
 The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-VerkadaCommandUser -userId '3651fbcb-f8ba-4248-ad70-3f6512fd7b6c' 
-This will attempt to get the user details of a user with the userId of '3651fbcb-f8ba-4248-ad70-3f6512fd7b6c'.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+Send-VerkadaPassInvite -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3'
+This will send an email invite to an Access user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ### EXAMPLE 2
 ```
-Get-VerkadaCommandUser -externalId 'UserUPN@contoso.com' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token'
-This will attempt to get the user details of a user with the externalId UserUPN@contoso.com.  The org_id and tokens are submitted as parameters in the call.
+Send-VerkadaPassInvite -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -activateBLE
+This will send an email invite to an Access user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 and activate BLE unlocks.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+```
+
+### EXAMPLE 3
+```
+Send-VerkadaPassInvite -externalId 'newUserUPN@contoso.com' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token'
+This will send an email invite to an Access user with -externalId 'newUserUPN@contoso.com'.  The org_id and tokens are submitted as parameters in the call.
 ```
 
 ## PARAMETERS
@@ -63,6 +69,21 @@ Aliases: external_id
 Required: False
 Position: 2
 Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -activateBLE
+Switch to also Activate BLE for the user
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
@@ -123,5 +144,5 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCommandUser.md](https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCommandUser.md)
+[https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Send-VerkadaPassInvite.md](https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Send-VerkadaPassInvite.md)
 

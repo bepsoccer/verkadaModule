@@ -1,25 +1,25 @@
-function Get-VerkadaCommandUser{
+function Set-VerkadaAccessUserEntryCode{
 	<#
 		.SYNOPSIS
-		 using https://apidocs.verkada.com/reference/getuserviewv1
+		Sets an entry code for an Access User in an organization using https://apidocs.verkada.com/reference/putaccessuserpinviewv1
 
 		.DESCRIPTION
-		Returns a user for an organization based on either provided user ID or an external ID set during creation.
+		Given the user defined External ID or Verkada defined User ID (but not both), set the entry code for a user. Entry code value will be passed as a parameter in a json payload.Returns the updated Access Information Object.
 		The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
-		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCommandUser.md
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Set-VerkadaAccessUserEntryCode.md
 
 		.EXAMPLE
-		Get-VerkadaCommandUser -userId '3651fbcb-f8ba-4248-ad70-3f6512fd7b6c' 
-		This will attempt to get the user details of a user with the userId of '3651fbcb-f8ba-4248-ad70-3f6512fd7b6c'.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
-
+		Set-VerkadaAccessUserEntryCode -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -entryCode '12345'
+		This will set an entry code of 12345 to the user specified.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
 		.EXAMPLE
-		Get-VerkadaCommandUser -externalId 'UserUPN@contoso.com' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token'
-		This will attempt to get the user details of a user with the externalId UserUPN@contoso.com.  The org_id and tokens are submitted as parameters in the call.
+		Set-VerkadaAccessUserEntryCode -externalId 'newUserUPN@contoso.com' -entryCode '12345' -x_api_key 'sd78ds-uuid-of-verkada-token'
+		This will set an entry code of 12345 to the user specified.  The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
-	[Alias("Get-VrkdaCmdUsr","gt-VrkdaCmdUsr")]
+	[Alias("Set-VrkdaAcUsrEntryCo","st-VrkdaAcUsrEntryCo")]
 	param (
 		#The UUID of the user
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
@@ -31,6 +31,14 @@ function Get-VerkadaCommandUser{
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[Alias('external_id')]
 		[String]$externalId,
+		#The Access entry code
+		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		[ValidatePattern('^\d{4,16}$')]
+		[Alias('entry_code')]
+		[string]$entryCode,
+		#The flag that states whether or not the client wants to apply the given entry code to the given user even if the entry code is already in use by another user. This will reset the other user's entry code
+		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		[bool]$override=$false,
 		#The UUID of the organization the user belongs to
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
@@ -46,7 +54,7 @@ function Get-VerkadaCommandUser{
 	)
 	
 	begin {
-		$url = "https://api.verkada.com/core/v1/user"
+		$url = "https://api.verkada.com/access/v1/access_users/user/entry_code"
 		#parameter validation
 		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
 		if ([string]::IsNullOrEmpty($x_api_key)) {throw "x_api_key is missing but is required!"}
@@ -54,14 +62,22 @@ function Get-VerkadaCommandUser{
 	} #end begin
 	
 	process {
+		if ([string]::IsNullOrEmpty($entryCode)) {
+			Write-Error "entryCode is missing but is required!"
+			return
+		}
 		if ([string]::IsNullOrEmpty($externalId) -and [string]::IsNullOrEmpty($userId)){
 			Write-Error "Either externalId or userId required"
 			return
 		}
 
-		$body_params = @{}
+		$body_params = @{
+			'entry_code'	= $entryCode
+		}
 		
-		$query_params = @{}
+		$query_params = @{
+			'override'		= $override
+		}
 		if (!([string]::IsNullOrEmpty($userId))){
 			$query_params.user_id = $userId
 		} elseif (!([string]::IsNullOrEmpty($externalId))){
@@ -69,7 +85,7 @@ function Get-VerkadaCommandUser{
 		}
 		
 		try {
-			$response = Invoke-VerkadaRestMethod $url $org_id $x_api_key $query_params -body_params $body_params -method GET
+			$response = Invoke-VerkadaRestMethod $url $org_id $x_api_key $query_params -body_params $body_params -method PUT
 			return $response
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {

@@ -1,67 +1,54 @@
 ---
 external help file: verkadaModule-help.xml
 Module Name: verkadaModule
-online version: https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCommandUser.md
+online version: https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Add-VerkadaAccessGroup.md
 schema: 2.0.0
 ---
 
-# Get-VerkadaCommandUser
+# Add-VerkadaAccessGroup
 
 ## SYNOPSIS
-using https://apidocs.verkada.com/reference/getuserviewv1
+Creates an Access group in an organization using https://apidocs.verkada.com/reference/postaccessgroupviewv1
 
 ## SYNTAX
 
 ```
-Get-VerkadaCommandUser [[-userId] <String>] [[-externalId] <String>] [[-org_id] <String>]
- [[-x_api_key] <String>] [-errorsToFile] [<CommonParameters>]
+Add-VerkadaAccessGroup [[-name] <String>] [[-org_id] <String>] [[-x_api_key] <String>] [-errorsToFile]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Returns a user for an organization based on either provided user ID or an external ID set during creation.
+Create an access group within the given organization using the given name.
+The name of the access group must be unique within the organization.
+This returns the Access Group Metadata Object for the created Access Group.
 The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-VerkadaCommandUser -userId '3651fbcb-f8ba-4248-ad70-3f6512fd7b6c' 
-This will attempt to get the user details of a user with the userId of '3651fbcb-f8ba-4248-ad70-3f6512fd7b6c'.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+Add-VerkadaAccessGroup -name 'Newgroup'
+This will add the access group with the name "NewGroup".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ### EXAMPLE 2
 ```
-Get-VerkadaCommandUser -externalId 'UserUPN@contoso.com' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token'
-This will attempt to get the user details of a user with the externalId UserUPN@contoso.com.  The org_id and tokens are submitted as parameters in the call.
+Add-VerkadaAccessGroup -name 'NewGroup' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token'
+This will add the access group with the name "NewGroup".  The org_id and tokens are submitted as parameters in the call.
 ```
 
 ## PARAMETERS
 
-### -userId
-The UUID of the user
+### -name
+The name of the group
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: user_id
+Aliases: group_name, groupName
 
 Required: False
 Position: 1
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -externalId
-unique identifier managed externally provided by the consumer
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases: external_id
-
-Required: False
-Position: 2
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -76,7 +63,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 3
+Position: 2
 Default value: $Global:verkadaConnection.org_id
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -91,7 +78,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 4
+Position: 3
 Default value: $Global:verkadaConnection.token
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -123,5 +110,5 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCommandUser.md](https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCommandUser.md)
+[https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Add-VerkadaAccessGroup.md](https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Add-VerkadaAccessGroup.md)
 

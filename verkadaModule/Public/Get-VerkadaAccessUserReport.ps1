@@ -11,15 +11,15 @@ function Get-VerkadaAccessUserReport{
 		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaAccessUserReport.md
 
 		.EXAMPLE
-		Get-VerkadaAccessUser -userId 'c1cb427f-9ef4-4800-95ec-4a580bfa2bf1' | Get-VerkadaAccessUserReport
+		Get-VerkadaAccessUserViaGraphql -userId 'c1cb427f-9ef4-4800-95ec-4a580bfa2bf1' | Get-VerkadaAccessUserReport
 		This will get the Acces user object for userId c1cb427f-9ef4-4800-95ec-4a580bfa2bf1 and return the access report for that user.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Get-VerkadaAccessUser -userId 'c1cb427f-9ef4-4800-95ec-4a580bfa2bf1' | Get-VerkadaAccessUserReport -beautify | Export-Csv ~/Desktop.ACusersReport.csv -NoTypeInformation
+		Get-VerkadaAccessUserViaGraphql -userId 'c1cb427f-9ef4-4800-95ec-4a580bfa2bf1' | Get-VerkadaAccessUserReport -beautify | Export-Csv ~/Desktop.ACusersReport.csv -NoTypeInformation
 		This will get the Acces user object for userId c1cb427f-9ef4-4800-95ec-4a580bfa2bf1 and return the access report for that user in a consumeable way for a csv report.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Get-VerkadaAccessUser -userId 'c1cb427f-9ef4-4800-95ec-4a580bfa2bf1' | Get-VerkadaAccessUserReport -outReport
+		Get-VerkadaAccessUserViaGraphql -userId 'c1cb427f-9ef4-4800-95ec-4a580bfa2bf1' | Get-VerkadaAccessUserReport -outReport
 		This will get the Acces user object for userId c1cb427f-9ef4-4800-95ec-4a580bfa2bf1 and return the access report for that user in a pretty HTML file.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE

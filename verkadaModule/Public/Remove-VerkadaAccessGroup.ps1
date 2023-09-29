@@ -1,29 +1,25 @@
-function Get-VerkadaAccessGroup{
+function Remove-VerkadaAccessGroup{
 	<#
 		.SYNOPSIS
-		Gets an Access group in an organization using https://apidocs.verkada.com/reference/getaccessgroupviewv1
+		Deletes an Access group in an organization using https://apidocs.verkada.com/reference/deleteaccessgroupviewv1
 
 		.DESCRIPTION
-		Retrieves an access group specified by its Verkada-defined unique identifier(Group ID). The response is the Access Group Metadata Object for the desired Access Group.
+		Delete an access group with the given group identifier within the given organization.
 		The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
-		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaAccessGroup.md
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Remove-VerkadaAccessGroup.md
 
 		.EXAMPLE
-		Get-VerkadaAccessGroup -groupId '7858d17a-3f72-4506-8532-a4b6ba233c5e'
-		This will return the Access Group with userId "7858d17a-3f72-4506-8532-a4b6ba233c5e".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
-
+		Remove-VerkadaAccessGroup -groupId '2d64e7de-fd95-48be-8b5c-7a23bde94f52'
+		This will delete the Access group with the groupId 2d64e7de-fd95-48be-8b5c-7a23bde94f52.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
 		.EXAMPLE
-		Get-VerkadaAccessGroup -groupId '7858d17a-3f72-4506-8532-a4b6ba233c5e' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token'
-		This will return the Access Group with userId "7858d17a-3f72-4506-8532-a4b6ba233c5e".  The org_id and tokens are submitted as parameters in the call.
-
-		.EXAMPLE
-		Read-VerkadaAccessGroups | Where-Object {$_.name -eq "Executive Access"} | Get-VerkadaAccessGroup
-		This will return the Access Group named "Executive Access".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		Remove-VerkadaAccessGroup -groupId '2d64e7de-fd95-48be-8b5c-7a23bde94f52' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token'
+		This will delete the Access group with the groupId 2d64e7de-fd95-48be-8b5c-7a23bde94f52.  The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
-	[Alias("Get-VrkdaAcGrp","gt-VrkdaAcGrp")]
+	[Alias("Remove-VrkdaAcGrp","rm-VrkdaAcGrp")]
 	param (
 		#The UUID of the group
 		[Parameter( ValueFromPipelineByPropertyName = $true)]
@@ -54,9 +50,10 @@ function Get-VerkadaAccessGroup{
 	
 	process {
 		if ([string]::IsNullOrEmpty($groupId)){
-			Write-Error "Either name or groupId is required"
+			Write-Error "groupId is required"
 			return
 		}
+
 		$body_params = @{}
 		
 		$query_params = @{
@@ -64,7 +61,9 @@ function Get-VerkadaAccessGroup{
 		}
 		
 		try {
-			$response = Invoke-VerkadaRestMethod $url $org_id $x_api_key $query_params -body_params $body_params -method GET
+			Invoke-VerkadaRestMethod $url $org_id $x_api_key $query_params -body_params $body_params -method DELETE
+			$response = $query_params | ConvertTo-Json | ConvertFrom-Json
+			$response | Add-Member -NotePropertyName 'status' -NotePropertyValue 'removed'
 			return $response
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {

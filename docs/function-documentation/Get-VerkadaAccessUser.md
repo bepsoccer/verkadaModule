@@ -8,35 +8,64 @@ schema: 2.0.0
 # Get-VerkadaAccessUser
 
 ## SYNOPSIS
-Gets an Access User in an organization by userId
+Gets an Access User in an organization using https://apidocs.verkada.com/reference/getaccessuserviewv1
 
 ## SYNTAX
 
 ```
-Get-VerkadaAccessUser [[-org_id] <String>] [-userId] <String> [-x_verkada_token <String>]
- [-x_verkada_auth <String>] [-usr <String>] [<CommonParameters>]
+Get-VerkadaAccessUser [[-userId] <String>] [[-externalId] <String>] [[-org_id] <String>]
+ [[-x_api_key] <String>] [-errorsToFile] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-This function is used to get all the details about an indivual Access user in an org.
-This function is used to rename a camera or cameras in a Verkada org.
-The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
+Given the Verkada created User ID or the user defined External ID, retrieve the Access Object Information for the specified user.
+The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-VerkadaAccessUser -userId 'aefrfefb-3429-39ec-b042-userAC'
-This will retrieve the user with userId aefrfefb-3429-39ec-b042-userAC.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+Get-VerkadaAccessUser -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3'
+This will retrieve the Access user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ### EXAMPLE 2
 ```
-Get-VerkadaAccessUser -userId 'aefrfefb-3429-39ec-b042-userAC' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc' -usr 'a099bfe6-34ff-4976-9d53-ac68342d2b60'
-This will retrieve the user with userId aefrfefb-3429-39ec-b042-userAC.  The org_id and tokens are submitted as parameters in the call.
+Get-VerkadaAccessUser -externalId 'newUserUPN@contoso.com' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token'
+This will retrieve the Access user with externalId newUserUPN@contoso.com.  The org_id and tokens are submitted as parameters in the call.
 ```
 
 ## PARAMETERS
+
+### -userId
+The UUID of the user
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases: user_id
+
+Required: False
+Position: 1
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -externalId
+unique identifier managed externally provided by the consumer
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases: external_id
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
 
 ### -org_id
 The UUID of the organization the user belongs to
@@ -47,29 +76,14 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 1
+Position: 3
 Default value: $Global:verkadaConnection.org_id
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -userId
-The UUID of the user
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 2
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -x_verkada_token
-The Verkada(CSRF) token of the user running the command
+### -x_api_key
+The public API key to be used for calls that hit the public API gateway
 
 ```yaml
 Type: String
@@ -77,38 +91,23 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
-Default value: $Global:verkadaConnection.csrfToken
+Position: 4
+Default value: $Global:verkadaConnection.token
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -x_verkada_auth
-The Verkada Auth(session auth) token of the user running the command
+### -errorsToFile
+Switch to write errors to file
 
 ```yaml
-Type: String
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 
 Required: False
 Position: Named
-Default value: $Global:verkadaConnection.userToken
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -usr
-The UUID of the user account making the request
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: $Global:verkadaConnection.usr
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
