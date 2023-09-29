@@ -58,7 +58,10 @@ function Set-VerkadaAccessUserEndDate{
 	} #end begin
 	
 	process {
-		if ([string]::IsNullOrEmpty($endDate)) {throw "endDate is missing but is required!"}
+		if ([string]::IsNullOrEmpty($endDate)) {
+			Write-Error "endDate is missing but is required!"
+			return
+		}
 		if ([string]::IsNullOrEmpty($externalId) -and [string]::IsNullOrEmpty($userId)){
 			Write-Error "Either externalId or userId required"
 			return
