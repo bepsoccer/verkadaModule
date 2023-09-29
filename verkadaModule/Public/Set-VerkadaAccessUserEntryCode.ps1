@@ -75,13 +75,14 @@ function Set-VerkadaAccessUserEntryCode{
 			'entry_code'	= $entryCode
 		}
 		
-		$query_params = @{}
+		$query_params = @{
+			'override'		= $override
+		}
 		if (!([string]::IsNullOrEmpty($userId))){
 			$query_params.user_id = $userId
 		} elseif (!([string]::IsNullOrEmpty($externalId))){
 			$query_params.external_id = $externalId
 		}
-		$query_params.override = $override
 		
 		try {
 			$response = Invoke-VerkadaRestMethod $url $org_id $x_api_key $query_params -body_params $body_params -method PUT
