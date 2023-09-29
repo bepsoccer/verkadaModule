@@ -38,7 +38,7 @@ function Add-VerkadaAccessBadgeToUser
 		[String]$userId,
 		#The card type of the card being added
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
-		[ValidateSet('HID','HID33DSX','HID33RS2','HID34','HID36Keyscan','HID37wFacilityCode','HID37woFacilityCode','Corporate1000_35','Corporate1000_48','CasiRusco','MiFareClassic1K_CSN','DESFire','PointGuardMDI37','GProxII36','KantechXSF','Schlage34','HID36Simplex','Kastle32','RBH50')]
+		[ValidateSet('HID','HID37wFacilityCode','HID37woFacilityCode','HID34','CasiRusco','Corporate1000_35','Corporate1000_48','iClass','DESFire','VerkadaDESFire','MiFareClassic1K_CSN','MiFareClassic4K_CSN','MDCCustom_64','HID36Keyscan','HID33DSX','HID33RS2','HID36Simplex','Cansec37','CreditCardBin','KantechXSF','Schlage34','Schlage37x','RBH50','GProxII36','AMAG32','Securitas37','Kastle32','PointGuardMDI37','Blackboard64','IDm64bit','Continental36','AWID34','HIDInfinity37')]
 		[String]$cardType,
 		#The card number of the card being added
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'cardNumber')]
