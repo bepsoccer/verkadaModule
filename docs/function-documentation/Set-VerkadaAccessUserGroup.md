@@ -1,38 +1,39 @@
 ---
 external help file: verkadaModule-help.xml
 Module Name: verkadaModule
-online version: https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCommandUser.md
+online version: https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Set-VerkadaAccessUserGroup.md
 schema: 2.0.0
 ---
 
-# Get-VerkadaCommandUser
+# Set-VerkadaAccessUserGroup
 
 ## SYNOPSIS
-using https://apidocs.verkada.com/reference/getuserviewv1
+Adds an Access user to an Access group in an organization using https://apidocs.verkada.com/reference/putaccessgroupuserviewv1
 
 ## SYNTAX
 
 ```
-Get-VerkadaCommandUser [[-userId] <String>] [[-externalId] <String>] [[-org_id] <String>]
- [[-x_api_key] <String>] [-errorsToFile] [<CommonParameters>]
+Set-VerkadaAccessUserGroup [[-userId] <String>] [[-externalId] <String>] [[-groupId] <String>]
+ [[-org_id] <String>] [[-x_api_key] <String>] [-errorsToFile] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Returns a user for an organization based on either provided user ID or an external ID set during creation.
+Add an access user to an access group with the Verkada defined Group ID and either the user defined External ID or the Verkada defined User ID.The Group ID is passed in as query parameter in the URL.
+The External ID or Verkada User ID(but not both) is passed in the json object in the body of the request.
 The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Get-VerkadaCommandUser -userId '3651fbcb-f8ba-4248-ad70-3f6512fd7b6c' 
-This will attempt to get the user details of a user with the userId of '3651fbcb-f8ba-4248-ad70-3f6512fd7b6c'.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+Set-VerkadaAccessUserGroup -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -groupId '2d64e7de-fd95-48be-8b5c-7a23bde94f52'
+This adds the Access user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 to Access group with groupId 2d64e7de-fd95-48be-8b5c-7a23bde94f52.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ### EXAMPLE 2
 ```
-Get-VerkadaCommandUser -externalId 'UserUPN@contoso.com' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token'
-This will attempt to get the user details of a user with the externalId UserUPN@contoso.com.  The org_id and tokens are submitted as parameters in the call.
+Set-VerkadaAccessUserGroup -externalId 'newUserUPN@contoso.com' -groupId '2d64e7de-fd95-48be-8b5c-7a23bde94f52' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token'
+This adds the Access user uwith xternalId newUserUPN@contoso.com to Access group with groupId 2d64e7de-fd95-48be-8b5c-7a23bde94f52.  The org_id and tokens are submitted as parameters in the call.
 ```
 
 ## PARAMETERS
@@ -67,6 +68,21 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
+### -groupId
+The UUID of the group
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases: group_id
+
+Required: False
+Position: 3
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
 ### -org_id
 The UUID of the organization the user belongs to
 
@@ -76,7 +92,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 3
+Position: 4
 Default value: $Global:verkadaConnection.org_id
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -91,7 +107,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 4
+Position: 5
 Default value: $Global:verkadaConnection.token
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -123,5 +139,5 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCommandUser.md](https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCommandUser.md)
+[https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Set-VerkadaAccessUserGroup.md](https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Set-VerkadaAccessUserGroup.md)
 
