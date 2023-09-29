@@ -1,25 +1,29 @@
-function Get-VerkadaCommandUser{
+function Set-VerkadaAccessUserBleUnlock{
 	<#
 		.SYNOPSIS
-		 using https://apidocs.verkada.com/reference/getuserviewv1
+		Activates an Access User's ability to use Bluetooth Unlock using https://apidocs.verkada.com/reference/putactivateblemethodviewv1
 
 		.DESCRIPTION
-		Returns a user for an organization based on either provided user ID or an external ID set during creation.
+		Given the user defined External ID or Verkada defined User ID (but not both), activate bluetooth unlock capability for a user. Response is updated Access Information Object.
 		The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
-		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaCommandUser.md
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Set-VerkadaAccessUserBleUnlock.md
 
 		.EXAMPLE
-		Get-VerkadaCommandUser -userId '3651fbcb-f8ba-4248-ad70-3f6512fd7b6c' 
-		This will attempt to get the user details of a user with the userId of '3651fbcb-f8ba-4248-ad70-3f6512fd7b6c'.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		Set-VerkadaAccessUserBleUnlock -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3'
+		This will activate the Access user's Bluetooth unlock ability with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Get-VerkadaCommandUser -externalId 'UserUPN@contoso.com' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token'
-		This will attempt to get the user details of a user with the externalId UserUPN@contoso.com.  The org_id and tokens are submitted as parameters in the call.
+		Set-VerkadaAccessUserBleUnlock -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -sendPassInvite
+		This will activate the Access user's Bluetooth unlock ability with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 and send an email invite for the Pass app.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		
+		.EXAMPLE
+		Set-VerkadaAccessUserBleUnlock -externalId 'newUserUPN@contoso.com' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token'
+		This will activate the Access user's Bluetooth unlock ability with externalId newUserUPN@contoso.com.  The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
-	[Alias("Get-VrkdaCmdUsr","gt-VrkdaCmdUsr")]
+	[Alias("Set-VrkdaAcUsrBtUnlk","st-VrkdaAcUsrBtUnlk")]
 	param (
 		#The UUID of the user
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
@@ -31,6 +35,9 @@ function Get-VerkadaCommandUser{
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[Alias('external_id')]
 		[String]$externalId,
+		#Switch to also send Pass invite
+		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		[switch]$sendPassInvite,
 		#The UUID of the organization the user belongs to
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
@@ -46,7 +53,7 @@ function Get-VerkadaCommandUser{
 	)
 	
 	begin {
-		$url = "https://api.verkada.com/core/v1/user"
+		$url = "https://api.verkada.com/access/v1/access_users/user/ble/activate"
 		#parameter validation
 		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
 		if ([string]::IsNullOrEmpty($x_api_key)) {throw "x_api_key is missing but is required!"}
@@ -69,7 +76,22 @@ function Get-VerkadaCommandUser{
 		}
 		
 		try {
-			$response = Invoke-VerkadaRestMethod $url $org_id $x_api_key $query_params -body_params $body_params -method GET
+			$response = Invoke-VerkadaRestMethod $url $org_id $x_api_key $query_params -body_params $body_params -method PUT
+			if($sendPassInvite.IsPresent){
+				if (!([string]::IsNullOrEmpty($userId))){
+					$sendingResponse = Send-VerkadaPassInvite -org_id $org_id -x_api_key $x_api_key -userId $userId -errorsToFile
+				} elseif (!([string]::IsNullOrEmpty($externalId))){
+					$sendingResponse = Send-VerkadaPassInvite -org_id $org_id -x_api_key $x_api_key -externalId $externalId -errorsToFile
+				}
+				if($sendingResponse.invite_sent -eq $true){
+					$invite = $true
+				}  else {
+					$invite = $sendingResponse
+				}
+			} else {
+				$invite = $false
+			}
+			$response | Add-Member -NotePropertyName 'invite_sent' -NotePropertyValue $invite
 			return $response
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {
