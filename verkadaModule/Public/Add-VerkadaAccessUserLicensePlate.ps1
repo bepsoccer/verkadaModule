@@ -42,7 +42,7 @@ function Add-VerkadaAccessUserLicensePlate{
 		[string]$name,
 		#Bool value specifying if the license plate credential is currently active. Default value is False.
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
-		[bool]$active=$false,
+		[bool]$active=$true,
 		#The UUID of the organization the user belongs to
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
