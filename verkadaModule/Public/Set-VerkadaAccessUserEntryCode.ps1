@@ -1,25 +1,25 @@
-function Set-VerkadaAccessUserEndDate{
+function Set-VerkadaAccessUserEntryCode{
 	<#
 		.SYNOPSIS
-		Sets the end date for an Access user's access in an organization using https://apidocs.verkada.com/reference/putaccessenddateviewv1
+		Sets an entry code for an Access User in an organization using https://apidocs.verkada.com/reference/putaccessuserpinviewv1
 
 		.DESCRIPTION
-		Given the user defined External ID or Verkada defined User ID (but not both), set the end date for an access users' credentials to become invalid. After this time, all methods of access will be revoked. End date value will be passed as a parameter in a json payload. Returns the updated Access Information Object.
+		Given the user defined External ID or Verkada defined User ID (but not both), set the entry code for a user. Entry code value will be passed as a parameter in a json payload.Returns the updated Access Information Object.
 		The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
-		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Set-VerkadaAccessUserEndDate.md
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Set-VerkadaAccessUserEntryCode.md
 
 		.EXAMPLE
-		Set-VerkadaAccessUserEndDate -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -endDate '11/28/2025 08:00 AM'
-		This sets the Access user's access to end at 8am on Nov 28, 2025 with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		Set-VerkadaAccessUserEntryCode -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -entryCode '12345'
+		This will set an entry code of 12345 to the user specified.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 		
 		.EXAMPLE
-		Set-VerkadaAccessUserEndDate -externalId 'newUserUPN@contoso.com' -endDate (Get-Date) -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token'
-		This sets the Access user's access to end immediately since you are specifiying the current date and time with externalId newUserUPN@contoso.com.  The org_id and tokens are submitted as parameters in the call.
+		Set-VerkadaAccessUserEntryCode -externalId 'newUserUPN@contoso.com' -entryCode '12345' -x_api_key 'sd78ds-uuid-of-verkada-token'
+		This will set an entry code of 12345 to the user specified.  The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
-	[Alias("Set-VrkdaAcUsrEndDt","st-VrkdaAcUsrEndDt")]
+	[Alias("Set-VrkdaAcUsrEntryCo","st-VrkdaAcUsrEntryCo")]
 	param (
 		#The UUID of the user
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
@@ -31,10 +31,14 @@ function Set-VerkadaAccessUserEndDate{
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[Alias('external_id')]
 		[String]$externalId,
-		#The Date/Time the user's Access ends
+		#The Access entry code
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
-		[Alias('end_date')]
-		[datetime]$endDate,
+		[ValidatePattern('^\d{4,16}$')]
+		[Alias('entry_code')]
+		[string]$entryCode,
+		#The flag that states whether or not the client wants to apply the given entry code to the given user even if the entry code is already in use by another user. This will reset the other user's entry code
+		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		[bool]$override=$false,
 		#The UUID of the organization the user belongs to
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
@@ -50,7 +54,7 @@ function Set-VerkadaAccessUserEndDate{
 	)
 	
 	begin {
-		$url = "https://api.verkada.com/access/v1/access_users/user/end_date"
+		$url = "https://api.verkada.com/access/v1/access_users/user/entry_code"
 		#parameter validation
 		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
 		if ([string]::IsNullOrEmpty($x_api_key)) {throw "x_api_key is missing but is required!"}
@@ -58,8 +62,8 @@ function Set-VerkadaAccessUserEndDate{
 	} #end begin
 	
 	process {
-		if ([string]::IsNullOrEmpty($endDate)) {
-			Write-Error "endDate is missing but is required!"
+		if ([string]::IsNullOrEmpty($entryCode)) {
+			Write-Error "startDate is missing but is required!"
 			return
 		}
 		if ([string]::IsNullOrEmpty($externalId) -and [string]::IsNullOrEmpty($userId)){
@@ -67,10 +71,8 @@ function Set-VerkadaAccessUserEndDate{
 			return
 		}
 
-		[string]$stringEndDate = [math]::round((New-TimeSpan -Start (Get-Date -Date "01/01/1970") -End (Get-Date $endDate)).TotalSeconds)
-		
 		$body_params = @{
-			'end_date'	= $stringEndDate
+			'entry_code'	= $entryCode
 		}
 		
 		$query_params = @{}
@@ -79,6 +81,7 @@ function Set-VerkadaAccessUserEndDate{
 		} elseif (!([string]::IsNullOrEmpty($externalId))){
 			$query_params.external_id = $externalId
 		}
+		$query_params.override = $override
 		
 		try {
 			$response = Invoke-VerkadaRestMethod $url $org_id $x_api_key $query_params -body_params $body_params -method PUT
