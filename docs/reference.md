@@ -69,3 +69,4 @@
 * [Set-VerkadaCommandUser](function-documentation/Set-VerkadaCommandUser.md)
 * [Set-VerkadaLicensePlateOfInterest](function-documentation/Set-VerkadaLicensePlateOfInterest.md)
 * [Set-VerkadaSitePermissions](function-documentation/Set-VerkadaSitePermissions.md)
+* [Test-VerkadaAccessProfilePictureUrl](function-documentation/Test-VerkadaAccessProfilePictureUrl.md)
