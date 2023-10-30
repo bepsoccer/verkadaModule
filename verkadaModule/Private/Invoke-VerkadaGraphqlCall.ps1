@@ -84,7 +84,7 @@ function Invoke-VerkadaGraphqlCall
 			do {
 				try {
 					$bodyJson = $body | ConvertTo-Json -depth 100 -Compress
-					$response = Invoke-RestMethod -Uri $uri -Body $bodyJson -ContentType 'application/json' -WebSession $session -Method $method -TimeoutSec 120
+					$response = Invoke-RestMethod -Uri $uri -Body $bodyJson -ContentType 'application/json' -WebSession $session -Method $method -TimeoutSec 120 -RetryIntervalSec 2 -MaximumRetryCount 3
 					if ($pagination.IsPresent) {
 						$records += $response.data.($propertyName).($propertyName)
 						$body.variables.pagination.pageToken = $response.data.($propertyName).nextPageToken
