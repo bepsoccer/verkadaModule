@@ -25,8 +25,8 @@ Connect-Verkada [-org_id] <String> [[-x_api_key] <String>] [-userToken] <String>
 
 ### UnPwd
 ```
-Connect-Verkada [-org_id] <String> [[-x_api_key] <String>] -userName <String> [-Password] [-otp <String>]
- [<CommonParameters>]
+Connect-Verkada [-org_id] <String> [[-x_api_key] <String>] -userName <String> [-Password]
+ [-MyPwd <SecureString>] [-otp <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -48,8 +48,8 @@ This will authenticate user admin.user@contoso.com by prompting for the password
 
 ### EXAMPLE 3
 ```
-Connect-Verkada '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -userName "admin.user@contoso.com" -otp '123456' -Password
-This will authenticate user admin.user@contoso.com with a otp token by prompting for the password(stored as a secure string) and upon success store the org_id 7cd47706-f51b-4419-8675-3b9f0ce7c12d and the returned tokens.
+Connect-Verkada '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -userName "admin.user@contoso.com" -otp '123456' -MyPwd $yourPwd(seure string)
+This will authenticate user admin.user@contoso.com with a otp token and a secure string variable stored password([secureString]$yourPwd) and upon success store the org_id 7cd47706-f51b-4419-8675-3b9f0ce7c12d and the returned tokens.
 ```
 
 ### EXAMPLE 4
@@ -149,9 +149,24 @@ Type: SwitchParameter
 Parameter Sets: UnPwd
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -MyPwd
+The secureString admin password to be used to obtain needed session and auth tokens
+
+```yaml
+Type: SecureString
+Parameter Sets: UnPwd
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
