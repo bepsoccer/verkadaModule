@@ -14,7 +14,8 @@ Gathers all Access Users in an organization
 
 ```
 Read-VerkadaAccessUsers [-org_id <String>] [[-query] <Object>] [[-variables] <Object>]
- [-x_verkada_token <String>] [-x_verkada_auth <String>] [-usr <String>] [-refresh] [<CommonParameters>]
+ [-x_verkada_token <String>] [-x_verkada_auth <String>] [-usr <String>] [-refresh] [-minimal]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -135,6 +136,21 @@ Accept wildcard characters: False
 
 ### -refresh
 Switch to force a refreshed list of users from Command
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -minimal
+Switch to retrieve the list of users from Command with minimal user profile information
 
 ```yaml
 Type: SwitchParameter

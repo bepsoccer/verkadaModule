@@ -51,7 +51,10 @@ function Read-VerkadaAccessUsers{
 		[string]$usr = $Global:verkadaConnection.usr,
 		#Switch to force a refreshed list of users from Command
 		[Parameter()]
-		[switch]$refresh
+		[switch]$refresh,
+		#Switch to retrieve the list of users from Command with minimal user profile information
+		[Parameter()]
+		[switch]$minimal
 	)
 	
 	begin {
@@ -63,7 +66,36 @@ function Read-VerkadaAccessUsers{
 
 		$url = "https://vgateway.command.verkada.com/graphql"
 
-		if ([string]::IsNullOrEmpty($query)){
+		if($minimal.IsPresent){
+			$query = 'query GetAccessUserProfile($filter: UsersFilter!, $pagination: PageOptions) {
+		users(filter: $filter, pagination: $pagination) {
+						nextPageToken
+						users {
+						...AccessUserProfile
+						}
+				}
+}
+fragment AccessUserProfile on User {
+		...AccessUser
+}
+fragment AccessUser on User {
+		...AccessUserBasic
+		accessCards {
+				active
+				cardId
+				cardType
+				modified
+		}
+}
+fragment AccessUserBasic on User {
+		userId
+		name
+		email
+		created
+		modified
+}'
+		}
+		elseif ([string]::IsNullOrEmpty($query)){
 			$queryBase = 'query GetAccessUserProfile($filter: UsersFilter!, $pagination: PageOptions) {
 		users(filter: $filter, pagination: $pagination) {
 						nextPageToken
