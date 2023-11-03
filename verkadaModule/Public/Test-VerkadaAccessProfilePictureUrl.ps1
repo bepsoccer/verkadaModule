@@ -85,11 +85,7 @@ function Test-VerkadaAccessProfilePictureUrl{
 			$response = $res | ConvertTo-Json -Depth 100 | ConvertFrom-Json
 			return $response
 		}
-		catch [Microsoft.PowerShell.Commands.HttpResponseException] {
-			$err = $_.ErrorDetails | ConvertFrom-Json
-			$errorMes = $_ | Convertto-Json -WarningAction SilentlyContinue
-			$err | Add-Member -NotePropertyName StatusCode -NotePropertyValue (($errorMes | ConvertFrom-Json -Depth 100 -WarningAction SilentlyContinue).Exception.Response.StatusCode) -Force
-			
+		catch [Microsoft.PowerShell.Commands.HttpResponseException] {	
 			$res.userId = $userId
 			$res.email = $email
 			$res.firstName = $firstName
