@@ -23,6 +23,9 @@ function Invoke-VerkadaCommandCall
 		#HTTP method required
 		[Parameter()]
 		[String]$method = 'GET',
+		#ContentType
+		[Parameter()]
+		[String]$contentType = 'application/json',
 		#The UUID of the user account making the request
 		[Parameter(Mandatory = $true)]
 		[ValidateNotNullOrEmpty()]
@@ -92,13 +95,15 @@ function Invoke-VerkadaCommandCall
 		}
 
 		$uri = $url
-		$bodyJson = $body | ConvertTo-Json -depth 100 -Compress
+		if ($contentType -eq 'application/json'){
+			$body = $body | ConvertTo-Json -depth 100 -Compress
+		}
 
 		$loop = $false
 		$rt = 0
 		do {
 			try {
-				$response = Invoke-RestMethod -Uri $uri -Body $bodyJson -ContentType 'application/json' -WebSession $session -Method $method -Headers $headers -TimeoutSec 120
+				$response = Invoke-RestMethod -Uri $uri -Body $body -ContentType $contentType -WebSession $session -Method $method -Headers $headers -TimeoutSec 120
 				
 				$loop = $true
 				return $response
