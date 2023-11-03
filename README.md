@@ -24,7 +24,7 @@ To connect via both(commonly needed) use:
 
 `Connect-Verkada -org_id [your org_id] -x_api_key [your API Token] -userName [your username] -Password`
 
-To connect via both for unattentended use you can now submit your password without prompt.  This requires that you first store the password as a SecureString variable and pass that to the -MyPwd parameter:
+To connect via both for unattentended use you can now submit your password without prompt.  This requires that you first store the password as a SecureString variable and pass that to the MyPwd parameter:
 
 `Connect-Verkada -org_id [your org_id] -x_api_key [your API Token] -userName [your username] -MyPwd $yourPwd`
 

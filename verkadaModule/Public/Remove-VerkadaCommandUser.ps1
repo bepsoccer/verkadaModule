@@ -69,7 +69,9 @@ function Remove-VerkadaCommandUser{
 		}
 		
 		try {
-			$response = Invoke-VerkadaRestMethod $url $org_id $x_api_key $query_params -body_params $body_params -method DELETE
+			Invoke-VerkadaRestMethod $url $org_id $x_api_key $query_params -body_params $body_params -method DELETE
+			$response = $query_params | ConvertTo-Json | ConvertFrom-Json
+			$response | Add-Member -NotePropertyName 'status' -NotePropertyValue 'deleted'
 			return $response
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {
