@@ -13,8 +13,8 @@ Used to build an Invoke-RestMethod call for Verkada's private API enpoints
 ## SYNTAX
 
 ```
-Invoke-VerkadaCommandCall [-url] <String> [-org_id] <String> [-body] <Object> [-method <String>] -usr <String>
- -x_verkada_token <String> -x_verkada_auth <String> [<CommonParameters>]
+Invoke-VerkadaCommandCall [-url] <String> [-org_id] <String> [-body] <Object> [-method <String>]
+ [-contentType <String>] -usr <String> -x_verkada_token <String> -x_verkada_auth <String> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -87,6 +87,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: GET
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -contentType
+ContentType
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: Application/json
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

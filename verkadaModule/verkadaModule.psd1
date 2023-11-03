@@ -12,7 +12,7 @@
 RootModule = 'verkadaModule.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.6.5'
+ModuleVersion = '0.6.6'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Desktop', 'Core'
@@ -96,12 +96,14 @@ FunctionsToExport = 'Add-VerkadaAccessBadgeToUser', 'Add-VerkadaAccessGroup',
                'Remove-VerkadaAccessUserEntryCode', 
                'Remove-VerkadaAccessUserFromGroup', 
                'Remove-VerkadaAccessUserLicensePlate', 
+               'Remove-VerkadaAccessUserProfilePicture', 
                'Remove-VerkadaAccessUserRemoteUnlock', 'Remove-VerkadaCommandUser', 
                'Remove-VerkadaLicensePlateOfInterest', 'Send-VerkadaPassInvite', 
                'Set-VerkadaAccessUserBleUnlock', 'Set-VerkadaAccessUserEmail', 
                'Set-VerkadaAccessUserEmployementDetail', 
                'Set-VerkadaAccessUserEndDate', 'Set-VerkadaAccessUserEntryCode', 
-               'Set-VerkadaAccessUserGroup', 'Set-VerkadaAccessUserRemoteUnlock', 
+               'Set-VerkadaAccessUserGroup', 'Set-VerkadaAccessUserProfilePicture', 
+               'Set-VerkadaAccessUserRemoteUnlock', 
                'Set-VerkadaAccessUserStartDate', 'Set-VerkadaCameraName', 
                'Set-VerkadaCameraSite', 'Set-VerkadaCloudBackupSettings', 
                'Set-VerkadaCommandPermissions', 'Set-VerkadaCommandUser', 
@@ -129,12 +131,14 @@ AliasesToExport = 'a-VrkdaAcGrp', 'Add-VrkdaAcGrp', 'a-VrkdaAcUsrCrd',
                'Remove-VrkdaAcUsrEntryCo', 'rm-VrkdaAcUsrEntryCo', 
                'Remove-VrkdaAcUsrFrGrp', 'rm-VrkdaAcUsrFrGrp', 
                'Remove-VrkdaAcUsrLPR', 'rm-VrkdaAcUsrLPR', 
+               'Remove-VrkdaAcUsrPrflPic', 'rm-VrkdaAcUsrPrflPic', 
                'Remove-VrkdaAcUsrRmtUnlk', 'rm-VrkdaAcUsrRmtUnlk', 
                'Remove-VrkdaCmdUsr', 'rm-VrkdaCmdUsr', 'Remove-VerkadaLPoI', 
                'sd-VrkdaPssInv', 'Send-VrkdaPssInv', 'Set-VrkdaAcUsrBtUnlk', 
                'st-VrkdaAcUsrBtUnlk', 'Set-VrkdaAcUsrEndDt', 'st-VrkdaAcUsrEndDt', 
                'Set-VrkdaAcUsrEntryCo', 'st-VrkdaAcUsrEntryCo', 'Set-VrkdaAcUsrGrp', 
-               'st-VrkdaAcUsrGrp', 'Set-VrkdaAcUsrRmtUnlk', 'st-VrkdaAcUsrRmtUnlk', 
+               'st-VrkdaAcUsrGrp', 's-VrkdaAcUsrPrflPic', 'Set-VrkdaAcUsrPrflPic', 
+               'Set-VrkdaAcUsrRmtUnlk', 'st-VrkdaAcUsrRmtUnlk', 
                'Set-VrkdaAcUsrStrtDt', 'st-VrkdaAcUsrStrtDt', 'Set-VrkdaCmdUsr', 
                'st-VrkdaCmdUsr', 'Set-VerkadaLPoI', 't-VrkdaAcPrflPicUrl'
 
