@@ -2,6 +2,9 @@ name: Versioning and Documentation
 on:
   push:
     branches: [ "dev" ]
+    paths-ignore:
+      - 'docs/**'
+      - 'README.md'
   pull_request_target:
     types:
       - closed 
