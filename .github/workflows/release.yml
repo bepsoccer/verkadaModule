@@ -4,6 +4,9 @@ on:
     types:
       - closed
     branches: [ "master" ]
+    paths-ignore:
+      - 'docs/**'
+      - 'README.md'
   workflow_dispatch:
 env:
   PROJECT: verkadaModule
