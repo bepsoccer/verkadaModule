@@ -10,7 +10,7 @@ Import-Module ActiveDirectory
 
 #set Initial Verkada variables
 $VKD_User = '[verkada admin username]'
-$VKD_API_Key = Get-Secret -Name VrkdApiKey -AsPlainText #this can be done a myriad of ways but needs to be a secure string.  SecretStore is a microsoft provided secret store, but others are available
+$VKD_API_Key = Get-Secret -Name VrkdApiKey -AsPlainText #this can be done a myriad of ways.  SecretStore is a microsoft provided secret store, but others are available
 $VKD_ORG_ID = '[your ORG ID]'
 # Set login password
 $Secure_String_Pwd = Get-Secret -Name VrkdPwd #this can be done a myriad of ways but needs to be a secure string.  SecretStore is a microsoft provided secret store, but others are available

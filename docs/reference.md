@@ -1,5 +1,7 @@
 # Verkada PowerShell module
+
 ## Command Documentation
+
 * [Add-VerkadaAccessBadgeToUser](function-documentation/Add-VerkadaAccessBadgeToUser.md)
 * [Add-VerkadaAccessGroup](function-documentation/Add-VerkadaAccessGroup.md)
 * [Add-VerkadaAccessSiteAdmin](function-documentation/Add-VerkadaAccessSiteAdmin.md)
