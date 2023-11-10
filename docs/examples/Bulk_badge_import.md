@@ -4,6 +4,10 @@ Say you need to bulk import badges for users, even multiple badges per user.  Fi
 
 ```powershell
 Connect-Verkada -org_id [your_orgId] -x_api_key (Get-Secret -Name VrkdApiKey -AsPlainText) -UserName [your_username] -MyPwd (Get-Secret -Name VrkdUsrPwd)
+
+#or for simplicity when not using secrets.  This will prompt you to input your password (don't submit it as a parameter)
+
+Connect-Verkada -org_id [your_orgId] -x_api_key [your_api_key] -UserName [your_username] -password
 ```
 
 From here we need a csv (or however you want to bring in the data) with a line for each badge you want to import.  The headers required are userId, cardType, facilityCode, and cardNumber.  ***Note: Some card types require different fields, but that is outside of the scope of this example.***
