@@ -1,4 +1,6 @@
-# [Start with Microsoft's SecretStore](https://learn.microsoft.com/en-us/powershell/utility-modules/secretmanagement/how-to/using-secrets-in-automation?view=ps-modules)
+# Working with SecretStore
+
+[Start with Microsoft's SecretStore](https://learn.microsoft.com/en-us/powershell/utility-modules/secretmanagement/how-to/using-secrets-in-automation?view=ps-modules)
 
 If you need to retrieve an API key and submit it as plain text.
 
