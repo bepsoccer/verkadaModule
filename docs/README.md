@@ -1,6 +1,6 @@
-# Verkada PowerShell module
+# How-to
 
-## [Function documentation](reference.md)
+## [Function List](reference.md)
 
 ## Common Tasks
 
