@@ -1,5 +1,5 @@
-# Functions
-
+# Verkada PowerShell module
+## Command Documentation
 * [Add-VerkadaAccessBadgeToUser](function-documentation/Add-VerkadaAccessBadgeToUser.md)
 * [Add-VerkadaAccessGroup](function-documentation/Add-VerkadaAccessGroup.md)
 * [Add-VerkadaAccessSiteAdmin](function-documentation/Add-VerkadaAccessSiteAdmin.md)
@@ -72,3 +72,4 @@
 * [Set-VerkadaLicensePlateOfInterest](function-documentation/Set-VerkadaLicensePlateOfInterest.md)
 * [Set-VerkadaSitePermissions](function-documentation/Set-VerkadaSitePermissions.md)
 * [Test-VerkadaAccessProfilePictureUrl](function-documentation/Test-VerkadaAccessProfilePictureUrl.md)
+* [Unlock-VerkadaAccessDoor](function-documentation/Unlock-VerkadaAccessDoor.md)
