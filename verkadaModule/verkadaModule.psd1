@@ -12,7 +12,7 @@
 RootModule = 'verkadaModule.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.6.6'
+ModuleVersion = '0.6.7'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Desktop', 'Core'
@@ -83,17 +83,17 @@ FunctionsToExport = 'Add-VerkadaAccessBadgeToUser', 'Add-VerkadaAccessGroup',
                'Get-VerkadaAccessDoorConfigReport', 'Get-VerkadaAccessDoors', 
                'Get-VerkadaAccessDoorSchedules', 'Get-VerkadaAccessGroup', 
                'Get-VerkadaAccessLevels', 'Get-VerkadaAccessSite', 
-               'Get-VerkadaAccessUser', 'Get-VerkadaAccessUserReport copy', 
-               'Get-VerkadaAccessUserReport', 'Get-VerkadaAccessUserViaGraphql', 
-               'Get-VerkadaAlarmsSiteConfig', 'Get-VerkadaAlarmsSiteContacts', 
-               'Get-VerkadaCameraConfig', 'Get-VerkadaCameraGroup', 
-               'Get-VerkadaCameras', 'Get-VerkadaCloudBackupSettings', 
-               'Get-VerkadaCommandUser', 'Get-VerkadaLicensePlatesOfInterest', 
-               'Read-VerkadaAccessEntities', 'Read-VerkadaAccessGroups', 
-               'Read-VerkadaAccessSchedules', 'Read-VerkadaAccessUsers', 
-               'Read-VerkadaAlarmsSites', 'Read-VerkadaCommandUsers', 
-               'Remove-VerkadaAccessGroup', 'Remove-VerkadaAccessUserBleUnlock', 
-               'Remove-VerkadaAccessUserCard', 'Remove-VerkadaAccessUserEntryCode', 
+               'Get-VerkadaAccessUser', 'Get-VerkadaAccessUserReport', 
+               'Get-VerkadaAccessUserViaGraphql', 'Get-VerkadaAlarmsSiteConfig', 
+               'Get-VerkadaAlarmsSiteContacts', 'Get-VerkadaCameraConfig', 
+               'Get-VerkadaCameraGroup', 'Get-VerkadaCameras', 
+               'Get-VerkadaCloudBackupSettings', 'Get-VerkadaCommandUser', 
+               'Get-VerkadaLicensePlatesOfInterest', 'Read-VerkadaAccessEntities', 
+               'Read-VerkadaAccessGroups', 'Read-VerkadaAccessSchedules', 
+               'Read-VerkadaAccessUsers', 'Read-VerkadaAlarmsSites', 
+               'Read-VerkadaCommandUsers', 'Remove-VerkadaAccessGroup', 
+               'Remove-VerkadaAccessUserBleUnlock', 'Remove-VerkadaAccessUserCard', 
+               'Remove-VerkadaAccessUserEntryCode', 
                'Remove-VerkadaAccessUserFromGroup', 
                'Remove-VerkadaAccessUserLicensePlate', 
                'Remove-VerkadaAccessUserProfilePicture', 
