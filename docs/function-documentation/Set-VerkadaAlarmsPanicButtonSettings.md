@@ -13,7 +13,7 @@ This is used to set the various settings of a Verkada Alarms panic button
 ## SYNTAX
 
 ```
-Set-VerkadaAlarmsPanicButtonSettings [-deviceId] <String> [[-panicPressType] <String>]
+Set-VerkadaAlarmsPanicButtonSettings [-deviceId] <String> [[-name] <String>] [[-panicPressType] <String>]
  [[-enableMobileMode] <Boolean>] [[-isSilent] <Boolean>] [[-isMuted] <Boolean>] [[-tamperIsMuted] <Boolean>]
  [[-org_id] <String>] [[-x_verkada_token] <String>] [[-x_verkada_auth] <String>] [[-usr] <String>]
  [<CommonParameters>]
@@ -55,6 +55,21 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
+### -name
+The new name for the panic button
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
 ### -panicPressType
 The panicPressType setting
 
@@ -64,7 +79,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 2
+Position: 3
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -79,7 +94,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 3
+Position: 4
 Default value: False
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -94,7 +109,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 4
+Position: 5
 Default value: False
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -109,7 +124,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 5
+Position: 6
 Default value: False
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -124,7 +139,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 6
+Position: 7
 Default value: False
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -139,7 +154,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 7
+Position: 8
 Default value: $Global:verkadaConnection.org_id
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -154,7 +169,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 8
+Position: 9
 Default value: $Global:verkadaConnection.csrfToken
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -169,7 +184,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 9
+Position: 10
 Default value: $Global:verkadaConnection.userToken
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -184,7 +199,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 10
+Position: 11
 Default value: $Global:verkadaConnection.usr
 Accept pipeline input: False
 Accept wildcard characters: False
