@@ -28,14 +28,14 @@ The org_id and reqired tokens can be directly submitted as parameters, but is mu
 
 ### EXAMPLE 1
 ```
-Set-VerkadaAlarmsPanicButtonSettings -deviceId 'cd1f1bb9-c8b9-40b9-ab14-546a93d952cf' -panicPressType 'long'
-Sets the panic button press type to long for the panic button with deviceId cd1f1bb9-c8b9-40b9-ab14-546a93d952cf.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+Set-VerkadaAlarmsPanicButtonSettings -deviceId 'cd1f1bb9-c8b9-40b9-ab14-546a93d952cf' -panicPressType 'long' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc' -usr 'a099bfe6-34ff-4976-9d53-ac68342d2b60'
+Sets the panic button press type to long for the panic button with deviceId cd1f1bb9-c8b9-40b9-ab14-546a93d952cf.  The org_id and tokens are submitted as parameters in the call.
 ```
 
 ### EXAMPLE 2
 ```
 Get-VerkadaAlarmsDevices | Select-Object -ExpandProperty panicButton | Set-VerkadaAlarmsPanicButtonSettings -tamperIsMuted $true
-Sets all the panic buttons in an org to mute tamper events. The org_id and tokens are submitted as parameters in the call.
+Sets all the panic buttons in an org to mute tamper events. The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ## PARAMETERS

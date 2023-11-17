@@ -12,7 +12,7 @@
 RootModule = 'verkadaModule.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.6.9'
+ModuleVersion = '0.6.10'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Desktop', 'Core'
@@ -99,6 +99,7 @@ FunctionsToExport = 'Add-VerkadaAccessBadgeToUser', 'Add-VerkadaAccessGroup',
                'Remove-VerkadaAccessUserProfilePicture', 
                'Remove-VerkadaAccessUserRemoteUnlock', 'Remove-VerkadaCommandUser', 
                'Remove-VerkadaLicensePlateOfInterest', 'Send-VerkadaPassInvite', 
+               'Set-VerkadaAccessDoorScheduleOverride', 
                'Set-VerkadaAccessUserBleUnlock', 'Set-VerkadaAccessUserEmail', 
                'Set-VerkadaAccessUserEmployementDetail', 
                'Set-VerkadaAccessUserEndDate', 'Set-VerkadaAccessUserEntryCode', 
@@ -136,10 +137,11 @@ AliasesToExport = 'a-VrkdaAcGrp', 'Add-VrkdaAcGrp', 'a-VrkdaAcUsrCrd',
                'Remove-VrkdaAcUsrPrflPic', 'rm-VrkdaAcUsrPrflPic', 
                'Remove-VrkdaAcUsrRmtUnlk', 'rm-VrkdaAcUsrRmtUnlk', 
                'Remove-VrkdaCmdUsr', 'rm-VrkdaCmdUsr', 'Remove-VerkadaLPoI', 
-               'sd-VrkdaPssInv', 'Send-VrkdaPssInv', 'Set-VrkdaAcUsrBtUnlk', 
-               'st-VrkdaAcUsrBtUnlk', 'Set-VrkdaAcUsrEndDt', 'st-VrkdaAcUsrEndDt', 
-               'Set-VrkdaAcUsrEntryCo', 'st-VrkdaAcUsrEntryCo', 'Set-VrkdaAcUsrGrp', 
-               'st-VrkdaAcUsrGrp', 's-VrkdaAcUsrPrflPic', 'Set-VrkdaAcUsrPrflPic', 
+               'sd-VrkdaPssInv', 'Send-VrkdaPssInv', 's-VrkdAcDrSchOvrd', 
+               'Set-VrkdAcDrSchOvrd', 'Set-VrkdaAcUsrBtUnlk', 'st-VrkdaAcUsrBtUnlk', 
+               'Set-VrkdaAcUsrEndDt', 'st-VrkdaAcUsrEndDt', 'Set-VrkdaAcUsrEntryCo', 
+               'st-VrkdaAcUsrEntryCo', 'Set-VrkdaAcUsrGrp', 'st-VrkdaAcUsrGrp', 
+               's-VrkdaAcUsrPrflPic', 'Set-VrkdaAcUsrPrflPic', 
                'Set-VrkdaAcUsrRmtUnlk', 'st-VrkdaAcUsrRmtUnlk', 
                'Set-VrkdaAcUsrStrtDt', 'st-VrkdaAcUsrStrtDt', 's-VrkdAlrmPancSetgs', 
                'Set-VrkdAlrmPancSetgs', 'Set-VrkdaCmdUsr', 'st-VrkdaCmdUsr', 
