@@ -1,10 +1,10 @@
 function Set-VerkadaAlarmsPanicButtonSettings{
 	<#
 		.SYNOPSIS
-		This is used to set the various settings of a Verkada Alarms panic button
+		This is used to set the various settings of a Verkada Alarms BR33 panic button
 
 		.DESCRIPTION
-		This will set the settings of a Verkada Alarms wireless panic button in an organization.  This can be used to set the press type, the mobile mode, silent mode, mute device, and mute tamper events settings.
+		This will set the settings of a Verkada Alarms wireless BR33 panic button in an organization.  This can be used to set the press type, mobile mode, silent mode, mute device, and mute tamper events settings.
 		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
@@ -12,16 +12,16 @@ function Set-VerkadaAlarmsPanicButtonSettings{
 
 		.EXAMPLE
 		Set-VerkadaAlarmsPanicButtonSettings -deviceId 'cd1f1bb9-c8b9-40b9-ab14-546a93d952cf' -panicPressType 'long' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc' -usr 'a099bfe6-34ff-4976-9d53-ac68342d2b60'
-		Sets the panic button press type to long for the panic button with deviceId cd1f1bb9-c8b9-40b9-ab14-546a93d952cf.  The org_id and tokens are submitted as parameters in the call.
+		Sets the BR33 panic button press type to long for the panic button with deviceId cd1f1bb9-c8b9-40b9-ab14-546a93d952cf.  The org_id and tokens are submitted as parameters in the call.
 
 		.EXAMPLE
 		Get-VerkadaAlarmsDevices | Select-Object -ExpandProperty panicButton | Set-VerkadaAlarmsPanicButtonSettings -tamperIsMuted $true
-		Sets all the panic buttons in an org to mute tamper events. The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		Sets all the BR33 panic buttons in an org to mute tamper events. The org_id and tokens will be populated from the cached created by Connect-Verkada.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
-	[Alias("Set-VrkdAlrmPancSetgs","s-VrkdAlrmPancSetgs")]
+	[Alias("Set-VrkdAlrmPancSetgs","s-VrkdAlrmPancSetgs","s-VrkdAlrmBr33Setgs")]
 	param (
-		#The UUID of the panic button
+		#The UUID of the BR33 panic button
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[Alias("device_id")]
