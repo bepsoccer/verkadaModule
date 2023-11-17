@@ -1,46 +1,64 @@
-function Set-VerkadaAlarmsPanicButtonSettings{
+function Set-VerkadaAlarmsDoorSensorSettings{
 	<#
 		.SYNOPSIS
-		This is used to set the various settings of a Verkada Alarms BR33 panic button
+		This is used to set the various settings of a Verkada Alarms BR31 door sensor
 
 		.DESCRIPTION
-		This will set the settings of a Verkada Alarms wireless BR33 panic button in an organization.  This can be used to set the press type, mobile mode, silent mode, mute device, and mute tamper events settings.
+		This will set the settings of a Verkada Alarms wireless BR31 door sensor in an organization.  This can be used to set the contact type, sensitivity, universal transmitter mode, normal state, door held open delay, panic mode, no entry delay, mute device, and mute tamper events settings.
 		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
-		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Set-VerkadaAlarmsPanicButtonSettings.md
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Set-VerkadaAlarmsDoorSensorSettings.md
 
 		.EXAMPLE
-		Set-VerkadaAlarmsPanicButtonSettings -deviceId 'cd1f1bb9-c8b9-40b9-ab14-546a93d952cf' -panicPressType 'long' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc' -usr 'a099bfe6-34ff-4976-9d53-ac68342d2b60'
-		Sets the BR33 panic button press type to long for the panic button with deviceId cd1f1bb9-c8b9-40b9-ab14-546a93d952cf.  The org_id and tokens are submitted as parameters in the call.
+		Set-VerkadaAlarmsDoorSensorSettings -deviceId 'f9974146-e7c5-496c-b9b6-3774ca16e74a' -contactSensorType 'window' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc' -usr 'a099bfe6-34ff-4976-9d53-ac68342d2b60'
+		Sets the BR31 door sensor type to window with deviceId f9974146-e7c5-496c-b9b6-3774ca16e74a.  The org_id and tokens are submitted as parameters in the call.
 
 		.EXAMPLE
-		Get-VerkadaAlarmsDevices | Select-Object -ExpandProperty panicButton | Set-VerkadaAlarmsPanicButtonSettings -tamperIsMuted $true
-		Sets all the BR33 panic buttons in an org to mute tamper events. The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		Get-VerkadaAlarmsDevices | Select-Object -ExpandProperty doorContactSensor | Set-VerkadaAlarmsDoorSensorSettings -tamperIsMuted $true -sensitivity 'low'
+		Sets all BR31 door sensors in an org to mute tamper events and set the sensativity to low. The org_id and tokens will be populated from the cached created by Connect-Verkada.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
-	[Alias("Set-VrkdAlrmPancSetgs","s-VrkdAlrmPancSetgs","s-VrkdAlrmBr33Setgs")]
+	[Alias("Set-VrkdAlrmDrSenSetgs","s-VrkdAlrmDrSenSetgs","s-VrkdAlrmBr31Setgs")]
 	param (
-		#The UUID of the BR33 panic button
+		#The UUID of the BR31 door sensor
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[Alias("device_id")]
 		[String]$deviceId,
-		#The new name for the panic button
+		#The new name for the door sensor
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
 		[String]$name,
-		#The panicPressType setting
+		#The contactSensorType setting
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
-		[ValidateSet('single','long','double','triple')]
-		[String]$panicPressType,
-		#The enableMobileMode setting
+		[ValidateSet('door','window')]
+		[String]$contactSensorType,
+		#The sensitivity setting
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
-		[bool]$enableMobileMode,
-		#The isSilent setting
+		[ValidateNotNullOrEmpty()]
+		[ValidateSet('low','medium','high')]
+		[String]$sensitivity,
+		#The enable(universal)TransmitterMode setting
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
-		[bool]$isSilent,
+		[bool]$enableTransmitterMode,
+		#The normal state setting
+		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		[ValidateNotNullOrEmpty()]
+		[ValidateSet('open','closed')]
+		[String]$transmitterModeNormalState,
+		#The oorHeldOpenTimeout(Door Held Open Delay) setting
+		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		[ValidateNotNullOrEmpty()]
+		[ValidateSet(0, 30, 60, 300, 600)]
+		[int]$doorHeldOpenTimeout,
+		#The isPanic(Panic Mode) setting
+		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		[bool]$isPanic,
+		#The isImmediate(No Entry Delay) setting
+		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		[bool]$isImmediate,
 		#The isMuted setting
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[bool]$isMuted,
@@ -81,12 +99,16 @@ function Set-VerkadaAlarmsPanicButtonSettings{
 	process {
 		$body = @{
 			"deviceId"		= $deviceId
-			"deviceType"	= "panicButton"
+			"deviceType"	= "doorContactSensor"
 		}
 		if (!([string]::IsNullOrEmpty($name))){$body.name = $name}
-		if (!([string]::IsNullOrEmpty($panicPressType))){$body.panicPressType = $panicPressType}
-		if (!([string]::IsNullOrEmpty($enableMobileMode))){$body.enableMobileMode = $enableMobileMode}
-		if (!([string]::IsNullOrEmpty($isSilent))){$body.isSilent = $isSilent}
+		if (!([string]::IsNullOrEmpty($contactSensorType))){$body.contactSensorType = $contactSensorType}
+		if (!([string]::IsNullOrEmpty($sensitivity))){$body.sensitivity = $sensitivity}
+		if (!([string]::IsNullOrEmpty($enableTransmitterMode))){$body.enableTransmitterMode = $enableTransmitterMode}
+		if (!([string]::IsNullOrEmpty($transmitterModeNormalState))){$body.transmitterModeNormalState = $transmitterModeNormalState}
+		if (!([string]::IsNullOrEmpty($doorHeldOpenTimeout))){$body.doorHeldOpenTimeout = $doorHeldOpenTimeout}
+		if (!([string]::IsNullOrEmpty($isPanic))){$body.isPanic = $isPanic}
+		if (!([string]::IsNullOrEmpty($isImmediate))){$body.isImmediate = $isImmediate}
 		if (!([string]::IsNullOrEmpty($isMuted))){$body.isMuted = $isMuted}
 		if (!([string]::IsNullOrEmpty($tamperIsMuted))){$body.tamperIsMuted = $tamperIsMuted}
 
@@ -101,7 +123,7 @@ function Set-VerkadaAlarmsPanicButtonSettings{
 			$errorMes = $_ | Convertto-Json -WarningAction SilentlyContinue
 			$err | Add-Member -NotePropertyName StatusCode -NotePropertyValue (($errorMes | ConvertFrom-Json -Depth 100 -WarningAction SilentlyContinue).Exception.Response.StatusCode) -Force
 
-			Write-Host "Panic button settings not set because: $($err.StatusCode) - $($err.message)" -ForegroundColor Red
+			Write-Host "Door sensor settings not set because: $($err.StatusCode) - $($err.message)" -ForegroundColor Red
 			Return
 		}
 	} #end process

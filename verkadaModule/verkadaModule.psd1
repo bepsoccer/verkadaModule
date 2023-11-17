@@ -12,7 +12,7 @@
 RootModule = 'verkadaModule.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.6.10'
+ModuleVersion = '0.6.11'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Desktop', 'Core'
@@ -106,6 +106,7 @@ FunctionsToExport = 'Add-VerkadaAccessBadgeToUser', 'Add-VerkadaAccessGroup',
                'Set-VerkadaAccessUserGroup', 'Set-VerkadaAccessUserProfilePicture', 
                'Set-VerkadaAccessUserRemoteUnlock', 
                'Set-VerkadaAccessUserStartDate', 
+               'Set-VerkadaAlarmsDoorSensorSettings', 
                'Set-VerkadaAlarmsPanicButtonSettings', 'Set-VerkadaCameraName', 
                'Set-VerkadaCameraSite', 'Set-VerkadaCloudBackupSettings', 
                'Set-VerkadaCommandPermissions', 'Set-VerkadaCommandUser', 
@@ -143,10 +144,11 @@ AliasesToExport = 'a-VrkdaAcGrp', 'Add-VrkdaAcGrp', 'a-VrkdaAcUsrCrd',
                'st-VrkdaAcUsrEntryCo', 'Set-VrkdaAcUsrGrp', 'st-VrkdaAcUsrGrp', 
                's-VrkdaAcUsrPrflPic', 'Set-VrkdaAcUsrPrflPic', 
                'Set-VrkdaAcUsrRmtUnlk', 'st-VrkdaAcUsrRmtUnlk', 
-               'Set-VrkdaAcUsrStrtDt', 'st-VrkdaAcUsrStrtDt', 's-VrkdAlrmPancSetgs', 
-               'Set-VrkdAlrmPancSetgs', 'Set-VrkdaCmdUsr', 'st-VrkdaCmdUsr', 
-               'Set-VerkadaLPoI', 't-VrkdaAcPrflPicUrl', 'uk-VrkdAcDoor', 
-               'Unlock-VrkdAcDoor'
+               'Set-VrkdaAcUsrStrtDt', 'st-VrkdaAcUsrStrtDt', 's-VrkdAlrmBr31Setgs', 
+               's-VrkdAlrmDrSenSetgs', 'Set-VrkdAlrmDrSenSetgs', 
+               's-VrkdAlrmBr33Setgs', 's-VrkdAlrmPancSetgs', 'Set-VrkdAlrmPancSetgs', 
+               'Set-VrkdaCmdUsr', 'st-VrkdaCmdUsr', 'Set-VerkadaLPoI', 
+               't-VrkdaAcPrflPicUrl', 'uk-VrkdAcDoor', 'Unlock-VrkdAcDoor'
 
 # DSC resources to export from this module
 # DscResourcesToExport = @()
