@@ -56,6 +56,7 @@
 * [Remove-VerkadaCommandUser](function-documentation/Remove-VerkadaCommandUser.md)
 * [Remove-VerkadaLicensePlateOfInterest](function-documentation/Remove-VerkadaLicensePlateOfInterest.md)
 * [Send-VerkadaPassInvite](function-documentation/Send-VerkadaPassInvite.md)
+* [Set-VerkadaAccessDoorScheduleOverride](function-documentation/Set-VerkadaAccessDoorScheduleOverride.md)
 * [Set-VerkadaAccessUserBleUnlock](function-documentation/Set-VerkadaAccessUserBleUnlock.md)
 * [Set-VerkadaAccessUserEmail](function-documentation/Set-VerkadaAccessUserEmail.md)
 * [Set-VerkadaAccessUserEmployementDetail](function-documentation/Set-VerkadaAccessUserEmployementDetail.md)
