@@ -26,6 +26,10 @@ function Set-VerkadaAlarmsPanicButtonSettings{
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[Alias("device_id")]
 		[String]$deviceId,
+		#The new name for the panic button
+		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		[ValidateNotNullOrEmpty()]
+		[String]$name,
 		#The panicPressType setting
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
@@ -79,6 +83,7 @@ function Set-VerkadaAlarmsPanicButtonSettings{
 			"deviceId"		= $deviceId
 			"deviceType"	= "panicButton"
 		}
+		if (!([string]::IsNullOrEmpty($name))){$body.name = $name}
 		if (!([string]::IsNullOrEmpty($panicPressType))){$body.panicPressType = $panicPressType}
 		if (!([string]::IsNullOrEmpty($enableMobileMode))){$body.enableMobileMode = $enableMobileMode}
 		if (!([string]::IsNullOrEmpty($isSilent))){$body.isSilent = $isSilent}
