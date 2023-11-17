@@ -66,6 +66,7 @@
 * [Set-VerkadaAccessUserProfilePicture](function-documentation/Set-VerkadaAccessUserProfilePicture.md)
 * [Set-VerkadaAccessUserRemoteUnlock](function-documentation/Set-VerkadaAccessUserRemoteUnlock.md)
 * [Set-VerkadaAccessUserStartDate](function-documentation/Set-VerkadaAccessUserStartDate.md)
+* [Set-VerkadaAlarmsDoorSensorSettings](function-documentation/Set-VerkadaAlarmsDoorSensorSettings.md)
 * [Set-VerkadaAlarmsPanicButtonSettings](function-documentation/Set-VerkadaAlarmsPanicButtonSettings.md)
 * [Set-VerkadaCameraName](function-documentation/Set-VerkadaCameraName.md)
 * [Set-VerkadaCameraSite](function-documentation/Set-VerkadaCameraSite.md)
