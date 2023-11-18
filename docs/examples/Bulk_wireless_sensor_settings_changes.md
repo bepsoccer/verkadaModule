@@ -12,7 +12,7 @@ Then gather a list of all the deviceId's of the panic buttons in the org and pip
 Get-VerkadaAlarmsDevices | Select-Object -ExpandProperty panicButton | Set-VerkadaAlarmsPanicButtonSettings  -panicPressType 'triple'
 ```
 
-If you wanted to change the sensativity of all the door contact sensors in the site name 'My Alarm Site' to be high you would similarly gather the list necessary and pipe it into the function to chnage door contact senor settings.
+If you wanted to change the sensativity of all the door contact sensors in the site named 'My Alarm Site' to be high you would similarly gather the list necessary and pipe it into the function to change door contact senor settings.
 
 ```powershell
 #gather the siteId(zoneId) of our alarm site
