@@ -32,11 +32,11 @@ function Add-VerkadaAccessUser
 		This will add the access user with the name "New User" and email newUser@contoso.com in department defined as sales with departmnetId of US-Sales with the appropriate employeeID, Title, and Company.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 		
 		.EXAMPLE
-		Add-VerkadaAccessUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com' -includeBadge -cardType 'HID' -facilityCode 111 -cardNumber 55555 -pinCode '12345'
+		Add-VerkadaAccessUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com' -cardType 'HID' -facilityCode 111 -cardNumber 55555 -pinCode '12345'
 		This will add the access user with the name "New User" and email newUser@contoso.com with an HID badge 111-55555 and a pin code of 12345.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 		
 		.EXAMPLE
-		Add-VerkadaAccessUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com' -includeBadge -cardType 'HID' -facilityCode 111 -cardNumber 55555 -groupId 'df76sd-dsc-group1','dsf987-daf-group2'
+		Add-VerkadaAccessUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com' -cardType 'HID' -facilityCode 111 -cardNumber 55555 -groupId 'df76sd-dsc-group1','dsf987-daf-group2'
 		This will add the access user with the name "New User" and email newUser@contoso.com with an HID badge 111-55555 and in groups df76sd-dsc-group1 and dsf987-daf-group2.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 	#>
 
