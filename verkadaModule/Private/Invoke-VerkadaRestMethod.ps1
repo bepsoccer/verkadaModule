@@ -142,7 +142,7 @@ function Invoke-VerkadaRestMethod
 					$response = Invoke-RestMethod -Uri $uri -Body $body -Headers $headers -Method $method -ContentType 'application/json' -TimeoutSec 5 -SkipHttpErrorCheck -StatusCodeVariable resCode
 
 					switch ($resCode) {
-						200 {
+						{($_ -eq 200) -or ($_ -eq 201)} {
 							$loop = $true
 							return $response
 						}
