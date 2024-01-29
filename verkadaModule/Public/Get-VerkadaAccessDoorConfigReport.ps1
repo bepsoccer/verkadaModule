@@ -90,7 +90,7 @@ function Get-VerkadaAccessDoorConfigReport{
 				}
 				$group.($group.psobject.Properties.name) = $temp2
 			}
-			return $temp | ConvertTo-Json -Depth 10 -Compress
+			return $temp | ConvertTo-Json -Depth 10
 		}
 		
 		function groupRemoveProp {
