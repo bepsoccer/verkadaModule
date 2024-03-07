@@ -30,7 +30,7 @@ CompanyName = 'Verkada'
 Copyright = '(c) Brad Parker. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = 'Verkada Module'
+Description = "This is a community project that provides an easier way to interact with Verkada Command's various endpoints in a programatic way for ad-hoc tasks."
 
 # Minimum version of the PowerShell engine required by this module
 PowerShellVersion = '6.1'
