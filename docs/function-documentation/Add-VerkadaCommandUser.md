@@ -16,7 +16,8 @@ Adds a user to Verkada Command using https://apidocs.verkada.com/reference/postu
 Add-VerkadaCommandUser [[-email] <String>] [[-firstName] <String>] [[-middleName] <String>]
  [[-lastName] <String>] [[-externalId] <String>] [[-companyName] <String>] [[-department] <String>]
  [[-departmentId] <String>] [[-employeeId] <String>] [[-employeeType] <String>] [[-employeeTitle] <String>]
- [[-phone] <String>] [[-org_id] <String>] [[-x_api_key] <String>] [-errorsToFile] [<CommonParameters>]
+ [[-phone] <String>] [[-org_id] <String>] [[-x_api_key] <String>] [-errorsToFile]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -287,6 +288,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

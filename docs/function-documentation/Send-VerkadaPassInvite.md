@@ -14,7 +14,7 @@ Send a Verkada Pass email invited to an Access user in an organization using htt
 
 ```
 Send-VerkadaPassInvite [[-userId] <String>] [[-externalId] <String>] [-activateBLE] [[-org_id] <String>]
- [[-x_api_key] <String>] [-errorsToFile] [<CommonParameters>]
+ [[-x_api_key] <String>] [-errorsToFile] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -129,6 +129,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

@@ -13,7 +13,7 @@ Removes cached credentials for Verkada's API Enpoints
 ## SYNTAX
 
 ```
-Disconnect-Verkada [[-org_id] <String>] [<CommonParameters>]
+Disconnect-Verkada [[-org_id] <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -38,6 +38,21 @@ Aliases:
 
 Required: False
 Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

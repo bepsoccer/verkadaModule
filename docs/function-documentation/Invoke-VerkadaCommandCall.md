@@ -14,7 +14,8 @@ Used to build an Invoke-RestMethod call for Verkada's private API enpoints
 
 ```
 Invoke-VerkadaCommandCall [-url] <String> [-org_id] <String> [-body] <Object> [-method <String>]
- [-contentType <String>] -usr <String> -x_verkada_token <String> -x_verkada_auth <String> [<CommonParameters>]
+ [-contentType <String>] -usr <String> -x_verkada_token <String> -x_verkada_auth <String>
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -145,6 +146,21 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
