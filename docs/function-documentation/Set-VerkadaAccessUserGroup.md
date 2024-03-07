@@ -14,7 +14,8 @@ Adds an Access user to an Access group in an organization using https://apidocs.
 
 ```
 Set-VerkadaAccessUserGroup [[-userId] <String>] [[-externalId] <String>] [[-groupId] <String>]
- [[-org_id] <String>] [[-x_api_key] <String>] [-errorsToFile] [<CommonParameters>]
+ [[-org_id] <String>] [[-x_api_key] <String>] [-errorsToFile] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -124,6 +125,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

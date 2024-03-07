@@ -13,7 +13,8 @@ Returns creation time, description, and license plate number for all License Pla
 ## SYNTAX
 
 ```
-Get-VerkadaLicensePlatesOfInterest [[-org_id] <String>] [[-x_api_key] <String>] [<CommonParameters>]
+Get-VerkadaLicensePlatesOfInterest [[-org_id] <String>] [[-x_api_key] <String>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -69,6 +70,21 @@ Required: False
 Position: 2
 Default value: $Global:verkadaConnection.token
 Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

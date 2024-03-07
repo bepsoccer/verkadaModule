@@ -19,7 +19,7 @@ Add-VerkadaAccessUser [[-org_id] <String>] [[-email] <String>] [[-firstName] <St
  [[-cardNumber] <String>] [[-cardNumberHex] <String>] [[-facilityCode] <String>] [[-pinCode] <String>]
  [[-groupId] <String[]>] [[-groupName] <String[]>] [[-employeeId] <String>] [[-employeeTitle] <String>]
  [[-department] <String>] [[-departmentId] <String>] [[-companyName] <String>] [[-usr] <String>]
- [[-threads] <Int32>] [<CommonParameters>]
+ [[-threads] <Int32>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -444,6 +444,21 @@ Aliases:
 Required: False
 Position: 25
 Default value: 4
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

@@ -15,19 +15,21 @@ Adds an Access User to an Access Group in an organization
 ### email (Default)
 ```
 Add-VerkadaAccessUserToGroup [-org_id <String>] -userId <String[]> [-x_verkada_token <String>]
- [-x_verkada_auth <String>] [-threads <Int32>] [<CommonParameters>]
+ [-x_verkada_auth <String>] [-threads <Int32>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### groupId
 ```
 Add-VerkadaAccessUserToGroup [-org_id <String>] -userId <String[]> -groupId <String[]>
- [-x_verkada_token <String>] [-x_verkada_auth <String>] [-threads <Int32>] [<CommonParameters>]
+ [-x_verkada_token <String>] [-x_verkada_auth <String>] [-threads <Int32>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ### groupName
 ```
 Add-VerkadaAccessUserToGroup [-org_id <String>] -userId <String[]> -groupName <String[]>
- [-x_verkada_token <String>] [-x_verkada_auth <String>] [-threads <Int32>] [<CommonParameters>]
+ [-x_verkada_token <String>] [-x_verkada_auth <String>] [-threads <Int32>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -147,6 +149,21 @@ Number of threads allowed to multi-thread the task
 Type: Int32
 Parameter Sets: (All)
 Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
 
 Required: False
 Position: Named

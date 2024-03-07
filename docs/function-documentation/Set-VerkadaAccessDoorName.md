@@ -14,7 +14,8 @@ Sets a Verkada Access door name
 
 ```
 Set-VerkadaAccessDoorName [-doorId] <String> [-doorName] <String> [[-org_id] <String>]
- [[-x_verkada_token] <String>] [[-x_verkada_auth] <String>] [[-usr] <String>] [<CommonParameters>]
+ [[-x_verkada_token] <String>] [[-x_verkada_auth] <String>] [[-usr] <String>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -129,6 +130,21 @@ Aliases:
 Required: False
 Position: 6
 Default value: $Global:verkadaConnection.usr
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

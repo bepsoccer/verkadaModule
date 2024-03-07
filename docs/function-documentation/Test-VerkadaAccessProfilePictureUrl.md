@@ -16,7 +16,7 @@ does the user have a profile picture.
 ```
 Test-VerkadaAccessProfilePictureUrl [[-userId] <String>] [[-email] <String>] [[-firstName] <String>]
  [[-lastName] <String>] [[-org_id] <String>] [[-x_verkada_token] <String>] [[-x_verkada_auth] <String>]
- [[-usr] <String>] [<CommonParameters>]
+ [[-usr] <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -155,6 +155,21 @@ Aliases:
 Required: False
 Position: 8
 Default value: $Global:verkadaConnection.usr
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

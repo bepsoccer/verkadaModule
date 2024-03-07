@@ -16,14 +16,14 @@ This is used to set a Verkada Access door schedule override
 ```
 Set-VerkadaAccessDoorScheduleOverride -doorId <String> -minutes <Int32> [-startDate <DateTime>]
  -doorState <String> [-org_id <String>] [-x_verkada_token <String>] [-x_verkada_auth <String>] [-usr <String>]
- [<CommonParameters>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### indefinite
 ```
 Set-VerkadaAccessDoorScheduleOverride -doorId <String> [-indefinite] [-startDate <DateTime>]
  -doorState <String> [-org_id <String>] [-x_verkada_token <String>] [-x_verkada_auth <String>] [-usr <String>]
- [<CommonParameters>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -179,6 +179,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: $Global:verkadaConnection.usr
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

@@ -17,14 +17,15 @@ Sets the employment details for an Access User in an organization
 Set-VerkadaAccessUserEmployementDetail [-org_id <String>] [-email <String>] [-firstName <String>]
  [-lastName <String>] [-employeeId <String>] [-employeeTitle <String>] [-department <String>]
  [-departmentId <String>] [-companyName <String>] [-usr <String>] [-x_verkada_token <String>]
- [-x_verkada_auth <String>] [<CommonParameters>]
+ [-x_verkada_auth <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### userId
 ```
 Set-VerkadaAccessUserEmployementDetail [-org_id <String>] -userId <String> [-employeeId <String>]
  [-employeeTitle <String>] [-department <String>] [-departmentId <String>] [-companyName <String>]
- [-usr <String>] [-x_verkada_token <String>] [-x_verkada_auth <String>] [<CommonParameters>]
+ [-usr <String>] [-x_verkada_token <String>] [-x_verkada_auth <String>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -245,6 +246,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: $Global:verkadaConnection.userToken
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
