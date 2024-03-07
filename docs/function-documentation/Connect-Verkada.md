@@ -14,19 +14,20 @@ Gathers needed credentials for Verkada's API Endpoints
 
 ### apiToken (Default)
 ```
-Connect-Verkada [-org_id] <String> [-x_api_key] <String> [<CommonParameters>]
+Connect-Verkada [-org_id] <String> [-x_api_key] <String> [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ### ManualTokens
 ```
 Connect-Verkada [-org_id] <String> [[-x_api_key] <String>] [-userToken] <String> [-csrfToken] <String>
- [-usr] <String> [-manual] [<CommonParameters>]
+ [-usr] <String> [-manual] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### UnPwd
 ```
 Connect-Verkada [-org_id] <String> [[-x_api_key] <String>] -userName <String> [-Password]
- [-MyPwd <SecureString>] [-otp <String>] [<CommonParameters>]
+ [-MyPwd <SecureString>] [-otp <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -238,6 +239,21 @@ The One Time Password if using 2FA
 Type: String
 Parameter Sets: UnPwd
 Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
 
 Required: False
 Position: Named

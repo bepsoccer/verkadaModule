@@ -17,7 +17,7 @@ Set-VerkadaAlarmsDoorSensorSettings [-deviceId] <String> [[-name] <String>] [[-c
  [[-sensitivity] <String>] [[-enableTransmitterMode] <Boolean>] [[-transmitterModeNormalState] <String>]
  [[-doorHeldOpenTimeout] <Int32>] [[-isPanic] <Boolean>] [[-isImmediate] <Boolean>] [[-isMuted] <Boolean>]
  [[-tamperIsMuted] <Boolean>] [[-org_id] <String>] [[-x_verkada_token] <String>] [[-x_verkada_auth] <String>]
- [[-usr] <String>] [<CommonParameters>]
+ [[-usr] <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -262,6 +262,21 @@ Aliases:
 Required: False
 Position: 15
 Default value: $Global:verkadaConnection.usr
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

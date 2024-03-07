@@ -13,7 +13,7 @@ Used to verify an address with Google Maps API and retrieve lat/lon
 ## SYNTAX
 
 ```
-Get-AddressCheck [-address] <String> [-key <String>] [<CommonParameters>]
+Get-AddressCheck [-address] <String> [-key <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -56,6 +56,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: AIzaSyBOqayI1MPP1zWM_MiP-Hjq3gR9144jqvM
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

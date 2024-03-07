@@ -15,7 +15,7 @@ Sets a camera's cloud backup settings
 ```
 Set-VerkadaCloudBackupSettings [-camera_id] <String> [[-org_id] <String>] [[-x_api_key] <String>]
  -days_to_preserve <String> -enabled <Int32> -time_to_preserve <String> -upload_timeslot <String>
- -video_quality <String> -video_to_upload <String> [<CommonParameters>]
+ -video_quality <String> -video_to_upload <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -184,6 +184,21 @@ Required: True
 Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

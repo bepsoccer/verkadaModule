@@ -14,7 +14,7 @@ Deletes a License Plate of Interest for an organization using a license plate nu
 
 ```
 Remove-VerkadaLicensePlateOfInterest [-org_id <String>] [-license_plate] <String> [-x_api_key <String>]
- [<CommonParameters>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -91,6 +91,21 @@ Required: False
 Position: Named
 Default value: $Global:verkadaConnection.token
 Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 

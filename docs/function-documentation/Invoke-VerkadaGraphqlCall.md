@@ -16,14 +16,14 @@ Used to build an Invoke-RestMethod call for Verkada's graphql enpoint
 ```
 Invoke-VerkadaGraphqlCall [-url] <String> [-body] <Object> [-method <String>] [-page_size <Int32>]
  -propertyName <String> -org_id <String> -usr <String> -x_verkada_token <String> -x_verkada_auth <String>
- [-pagination] [<CommonParameters>]
+ [-pagination] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### query
 ```
 Invoke-VerkadaGraphqlCall [-url] <String> [-method <String>] [-page_size <Int32>] -propertyName <String>
  [-query] <Object> [-qlVariables] <Object> -org_id <String> -usr <String> -x_verkada_token <String>
- -x_verkada_auth <String> [-pagination] [<CommonParameters>]
+ -x_verkada_auth <String> [-pagination] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -216,6 +216,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

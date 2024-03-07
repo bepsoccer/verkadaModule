@@ -15,7 +15,7 @@ Adds a license plate credential to an Aceess user in an organization using https
 ```
 Add-VerkadaAccessUserLicensePlate [[-userId] <String>] [[-externalId] <String>]
  [[-licensePlateNumber] <String>] [[-name] <String>] [[-active] <Boolean>] [[-org_id] <String>]
- [[-x_api_key] <String>] [-errorsToFile] [<CommonParameters>]
+ [[-x_api_key] <String>] [-errorsToFile] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -158,6 +158,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

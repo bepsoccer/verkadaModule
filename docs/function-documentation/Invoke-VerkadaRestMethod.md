@@ -15,20 +15,21 @@ Used to build an Invoke-RestMethod call for Verkada's private API enpoints
 ### Default (Default)
 ```
 Invoke-VerkadaRestMethod [-url] <String> [-org_id] <String> [-x_api_key] <String> [[-query_params] <Object>]
- [[-body_params] <Object>] [-method <String>] [<CommonParameters>]
+ [[-body_params] <Object>] [-method <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### UnPwd
 ```
 Invoke-VerkadaRestMethod [-url] <String> [-org_id] <String> [[-body_params] <Object>] [-method <String>]
- -x_verkada_token <String> -x_verkada_auth <String> [-UnPwd] [<CommonParameters>]
+ -x_verkada_token <String> -x_verkada_auth <String> [-UnPwd] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ### Pagination
 ```
 Invoke-VerkadaRestMethod [-url] <String> [-org_id] <String> [-x_api_key] <String> [[-query_params] <Object>]
  [[-body_params] <Object>] [-method <String>] [-pagination] -page_size <String> -propertyName <String>
- [<CommonParameters>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -221,6 +222,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

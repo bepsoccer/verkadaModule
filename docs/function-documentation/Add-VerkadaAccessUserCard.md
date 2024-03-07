@@ -16,21 +16,21 @@ Creates and adds an Access credential to an Access user in an organization using
 ```
 Add-VerkadaAccessUserCard [-userId <String>] [-externalId <String>] -cardType <String> -cardNumber <String>
  [-facilityCode <String>] [-active <Boolean>] [-org_id <String>] [-x_api_key <String>] [-errorsToFile]
- [<CommonParameters>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### cardNumberHex
 ```
 Add-VerkadaAccessUserCard [-userId <String>] [-externalId <String>] -cardType <String> -cardNumberHex <String>
  [-facilityCode <String>] [-active <Boolean>] [-org_id <String>] [-x_api_key <String>] [-errorsToFile]
- [<CommonParameters>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### cardNumberBase36
 ```
 Add-VerkadaAccessUserCard [-userId <String>] [-externalId <String>] -cardType <String>
  -cardNumberBase36 <String> [-facilityCode <String>] [-active <Boolean>] [-org_id <String>]
- [-x_api_key <String>] [-errorsToFile] [<CommonParameters>]
+ [-x_api_key <String>] [-errorsToFile] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -224,6 +224,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ProgressAction
+{{ Fill ProgressAction Description }}
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
