@@ -1,27 +1,27 @@
 name: Versioning and Documentation
 on:
   push:
-    branches: [ "dev" ]
+    branches: [ "release" ]
     paths-ignore:
       - 'docs/**'
       - 'README.md'
   pull_request_target:
     types:
       - closed 
-    branches: [ "dev" ]
+    branches: [ "release" ]
   workflow_dispatch:
 env:
   PROJECT: verkadaModule
 jobs:
   Patch:
-    if: github.event_name == 'push' && !(startsWith(github.event.head_commit.message, 'Merge'))
+    if: github.event_name == 'push' && !(startsWith(github.head_ref, 'minor/') && github.event.pull_request.merged == true) && !(startsWith(github.head_ref, 'major/') && github.event.pull_request.merged == true)
     outputs:
       version: ${{ steps.buildUpdate.outputs.v }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: dev
+          ref: release
       - name: Run module maintenance script
         id: buildUpdate
         shell: pwsh
@@ -31,7 +31,7 @@ jobs:
           $loc = Get-Location
           $Env:PSModulePath = $Env:PSModulePath+":$loc"
           Import-Module -name $env:PROJECT
-          $output = (./maintenance/updateMod.ps1)
+          $output = (./maintenance/release.ps1)
           echo "v=$output" >> $env:GITHUB_OUTPUT
       - name: Git Auto Commit
         uses: stefanzweifel/git-auto-commit-action@v4.16.0
@@ -45,7 +45,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: dev
+          ref: release
       - name: Run module maintenance script
         id: buildUpdate
         shell: pwsh
@@ -55,13 +55,13 @@ jobs:
           $loc = Get-Location
           $Env:PSModulePath = $Env:PSModulePath+":$loc"
           Import-Module -name $env:PROJECT
-          $output = (./maintenance/updateMod.ps1 minor)
+          $output = (./maintenance/release.ps1 minor)
           echo "v=$output" >> $env:GITHUB_OUTPUT
       - name: Git Auto Commit
         uses: stefanzweifel/git-auto-commit-action@v4.16.0
         with:
           commit_message: Bumping release to ${{ steps.buildUpdate.outputs.v }}
-          branch: dev
+          branch: release
   Major:
     if: startsWith(github.head_ref, 'major/') && github.event.pull_request.merged == true
     outputs:
@@ -70,7 +70,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: dev
+          ref: release
       - name: Run module maintenance script
         id: buildUpdate
         shell: pwsh
@@ -80,10 +80,10 @@ jobs:
           $loc = Get-Location
           $Env:PSModulePath = $Env:PSModulePath+":$loc"
           Import-Module -name $env:PROJECT
-          $output = (./maintenance/updateMod.ps1 major)
+          $output = (./maintenance/release.ps1 major)
           echo "v=$output" >> $env:GITHUB_OUTPUT
       - name: Git Auto Commit
         uses: stefanzweifel/git-auto-commit-action@v4.16.0
         with:
           commit_message: Bumping release to ${{ steps.buildUpdate.outputs.v }}
-          branch: dev
+          branch: release
