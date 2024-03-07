@@ -12,7 +12,7 @@
 RootModule = 'verkadaModule.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.6.15'
+ModuleVersion = '0.6.16'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Desktop', 'Core'
@@ -30,7 +30,7 @@ CompanyName = 'Verkada'
 Copyright = '(c) Brad Parker. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = "This is a community project that provides an easier way to interact with Verkada Command's various endpoints in a programatic way for ad-hoc tasks."
+Description = 'This is a community project that provides an easier way to interact with Verkada Command''s various endpoints in a programatic way for ad-hoc tasks.'
 
 # Minimum version of the PowerShell engine required by this module
 PowerShellVersion = '6.1'
