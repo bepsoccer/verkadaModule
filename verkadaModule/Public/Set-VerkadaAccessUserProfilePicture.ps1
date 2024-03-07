@@ -73,34 +73,14 @@ function Set-VerkadaAccessUserProfilePicture{
 			return
 		}
 
-		$fileBytes = [System.IO.File]::ReadAllBytes($imagePath)
-		$fileEnc = [System.Text.Encoding]::GetEncoding('ISO-8859-1').GetString($fileBytes)
-		$boundary = "WebKitFormBoundary" + [System.Guid]::NewGuid().ToString().Replace("-", "").substring(0, 16)
-		$LF = "`r`n"
-		$contentType = "multipart/form-data; boundary=----$boundary"
-
-		$file = Get-Item $imagePath
-		switch ($file.Extension) {
-			'.png' { $imageContentType = 'Content-Type: image/png' }
-			Default { $imageContentType = 'Content-Type: image/jpeg' }
+		$form = @{
+			organizationId  = $org_id
+			userId          = $userId
+			file            = Get-Item -Path $imagePath
 		}
 
-		$body = ( 
-			"------$boundary",
-			"Content-Disposition: form-data; name=`"organizationId`"$LF",
-			"$org_id",
-			"------$boundary",
-			"Content-Disposition: form-data; name=`"userId`"$LF",
-			"$userId",
-			"------$boundary",
-			"Content-Disposition: form-data; name=`"file`"; filename=`"$($file.name)`"",
-			"Content-Type: $imageContentType$LF",
-			$fileEnc,
-			"------$boundary--$LF" 
-		) -join $LF
-
 		try {
-			Invoke-VerkadaCommandCall $url $org_id $body -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr -Method 'POST' -contentType $contentType
+			Invoke-VerkadaFormCall $url $org_id $form -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -Method 'POST'
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {
 			$err = $_.ErrorDetails | ConvertFrom-Json

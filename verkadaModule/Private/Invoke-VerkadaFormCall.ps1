@@ -18,7 +18,7 @@ function Invoke-VerkadaFormCall
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[String]$org_id,
 		#Object to pass form parameters to forms
-		[Parameter(Mandatory = $true,Position = 3)]
+		[Parameter(Mandatory = $true,Position = 2)]
 		[Object]$form_params,
 		#HTTP method required
 		[Parameter()]
