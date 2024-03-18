@@ -19,7 +19,7 @@ jobs:
       version: ${{ steps.buildUpdate.outputs.v }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: release
       - name: Run module maintenance script
@@ -34,7 +34,7 @@ jobs:
           $output = (./maintenance/release.ps1)
           echo "v=$output" >> $env:GITHUB_OUTPUT
       - name: Git Auto Commit
-        uses: stefanzweifel/git-auto-commit-action@v4.16.0
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Bumping release to ${{ steps.buildUpdate.outputs.v }}
   Minor:
@@ -43,7 +43,7 @@ jobs:
       version: ${{ steps.buildUpdate.outputs.v }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: release
       - name: Run module maintenance script
@@ -58,7 +58,7 @@ jobs:
           $output = (./maintenance/release.ps1 minor)
           echo "v=$output" >> $env:GITHUB_OUTPUT
       - name: Git Auto Commit
-        uses: stefanzweifel/git-auto-commit-action@v4.16.0
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Bumping release to ${{ steps.buildUpdate.outputs.v }}
           branch: release
@@ -68,7 +68,7 @@ jobs:
       version: ${{ steps.buildUpdate.outputs.v }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: release
       - name: Run module maintenance script
@@ -83,7 +83,7 @@ jobs:
           $output = (./maintenance/release.ps1 major)
           echo "v=$output" >> $env:GITHUB_OUTPUT
       - name: Git Auto Commit
-        uses: stefanzweifel/git-auto-commit-action@v4.16.0
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Bumping release to ${{ steps.buildUpdate.outputs.v }}
           branch: release

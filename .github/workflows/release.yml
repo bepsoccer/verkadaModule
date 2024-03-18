@@ -17,7 +17,7 @@ jobs:
       version: ${{ steps.FindVersion.outputs.v }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Find Module Version
         id: FindVersion
         shell: pwsh
@@ -31,7 +31,7 @@ jobs:
     steps:
       - name: Push Version Tag
         id: tag_version
-        uses: mathieudutour/github-tag-action@v6.1
+        uses: mathieudutour/github-tag-action@v6.2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           custom_tag: ${{needs.findVersion.outputs.version}}
@@ -41,7 +41,7 @@ jobs:
           tag: ${{ steps.tag_version.outputs.new_tag }}
           name: Release ${{ steps.tag_version.outputs.new_tag }}
           body: ${{ steps.tag_version.outputs.changelog }}
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Publish to PS Gallery
         shell: pwsh
         run: |

@@ -64,6 +64,7 @@ function Invoke-VerkadaCommandCall
 		$session = New-WebSession $cookies $url
 		switch (([System.Uri]$url).host) {
 			default { $headers=$headers1 }
+			'vdoorman.command.verkada.com' { $headers=$headers2 }
 			'vnetsuite.command.verkada.com' { $headers=$headers2 }
 			'vprovision.command.verkada.com' {
 				switch (([System.Uri]$url).AbsolutePath) {
