@@ -86,7 +86,12 @@ function Get-VerkadaWorkplaceEmployee{
 		$url = $url.Uri.OriginalString
 
 		try {
-			$response = Invoke-VerkadaCommandCall $url $org_id $body -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr -Method 'GET' | Select-Object -ExpandProperty host
+			$response = Invoke-VerkadaCommandCall $url $org_id $body -x_verkada_token $x_verkada_token -x_verkada_auth $x_verkada_auth -usr $usr -Method 'GET'
+			if (!([string]::IsNullOrEmpty($response))) {
+				$response = $response | Select-Object -ExpandProperty host
+			} else {
+				throw "No user found with $email"
+			}
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {
 			$err = $_.ErrorDetails | ConvertFrom-Json
