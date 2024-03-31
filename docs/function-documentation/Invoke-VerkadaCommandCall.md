@@ -14,7 +14,7 @@ Used to build an Invoke-RestMethod call for Verkada's private API enpoints
 
 ```
 Invoke-VerkadaCommandCall [-url] <String> [-org_id] <String> [-body] <Object> [-method <String>]
- [-contentType <String>] -usr <String> -x_verkada_token <String> -x_verkada_auth <String>
+ [-contentType <String>] [-outFile <String>] -usr <String> -x_verkada_token <String> -x_verkada_auth <String>
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
@@ -103,6 +103,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: Application/json
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -outFile
+This is the path output files will attempt to saved to
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

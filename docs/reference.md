@@ -19,6 +19,7 @@
 * [Disconnect-Verkada](function-documentation/Disconnect-Verkada.md)
 * [Enable-VerkadaAccessUserCard](function-documentation/Enable-VerkadaAccessUserCard.md)
 * [Enable-VerkadaAccessUserLicensePlate](function-documentation/Enable-VerkadaAccessUserLicensePlate.md)
+* [Export-VerkadaAccessUserProfilePicture](function-documentation/Export-VerkadaAccessUserProfilePicture.md)
 * [Find-VerkadaCommandUser](function-documentation/Find-VerkadaCommandUser.md)
 * [Find-VerkadaUserId](function-documentation/Find-VerkadaUserId.md)
 * [Get-VerkadaAccessCredential](function-documentation/Get-VerkadaAccessCredential.md)
