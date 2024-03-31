@@ -26,6 +26,9 @@ function Invoke-VerkadaCommandCall
 		#ContentType
 		[Parameter()]
 		[String]$contentType = 'application/json',
+		#This is the path output files will attempt to saved to
+		[Parameter()]
+		[string]$outFile,
 		#The UUID of the user account making the request
 		[Parameter(Mandatory = $true)]
 		[ValidateNotNullOrEmpty()]
@@ -100,11 +103,22 @@ function Invoke-VerkadaCommandCall
 			$body = $body | ConvertTo-Json -depth 100 -Compress
 		}
 
+		$params = @{
+			'uri'					= $uri
+			'Body'				= $body
+			'ContentType'	= $contentType
+			'WebSession'	= $session
+			'Method'			= $method
+			'Headers'			= $headers
+			'TimeoutSec'	= 120
+		}
+		if (!([string]::IsNullOrEmpty($outFile))){$params.outFile = $outFile}
+
 		$loop = $false
 		$rt = 0
 		do {
 			try {
-				$response = Invoke-RestMethod -Uri $uri -Body $body -ContentType $contentType -WebSession $session -Method $method -Headers $headers -TimeoutSec 120
+				$response = Invoke-RestMethod @params
 				
 				$loop = $true
 				return $response
