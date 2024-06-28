@@ -5,6 +5,12 @@
 .DESCRIPTION
   This is an implementation of the RFC 6238 Time-Based One-Time Password Algorithm draft based upon the HMAC-based One-Time Password (HOTP) algorithm (RFC 4226). This is a time based variant of the HOTP algorithm providing short-lived OTP values.
 
+.LINK
+	https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-Otp.md
+
+.EXAMPLE
+	Get-Otp MySecretTotpKey
+
 .NOTES
   Version:        1.0
   Author:         Jon Friesen
