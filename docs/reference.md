@@ -22,6 +22,7 @@
 * [Export-VerkadaAccessUserProfilePicture](function-documentation/Export-VerkadaAccessUserProfilePicture.md)
 * [Find-VerkadaCommandUser](function-documentation/Find-VerkadaCommandUser.md)
 * [Find-VerkadaUserId](function-documentation/Find-VerkadaUserId.md)
+* [Get-Otp](function-documentation/Get-Otp.md)
 * [Get-VerkadaAccessCredential](function-documentation/Get-VerkadaAccessCredential.md)
 * [Get-VerkadaAccessDoorConfigReport](function-documentation/Get-VerkadaAccessDoorConfigReport.md)
 * [Get-VerkadaAccessDoors](function-documentation/Get-VerkadaAccessDoors.md)
