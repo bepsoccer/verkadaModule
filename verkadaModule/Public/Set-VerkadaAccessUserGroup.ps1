@@ -13,12 +13,16 @@ function Set-VerkadaAccessUserGroup{
 		.EXAMPLE
 		Set-VerkadaAccessUserGroup -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -groupId '2d64e7de-fd95-48be-8b5c-7a23bde94f52'
 		This adds the Access user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 to Access group with groupId 2d64e7de-fd95-48be-8b5c-7a23bde94f52.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+
+		.EXAMPLE
+		Set-VerkadaAccessUserGroup -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -groupName 'MyAccessGroup'
+		This adds the Access user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 to Access group with groupName MyAccessGroup.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 		
 		.EXAMPLE
 		Set-VerkadaAccessUserGroup -externalId 'newUserUPN@contoso.com' -groupId '2d64e7de-fd95-48be-8b5c-7a23bde94f52' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token'
 		This adds the Access user uwith xternalId newUserUPN@contoso.com to Access group with groupId 2d64e7de-fd95-48be-8b5c-7a23bde94f52.  The org_id and tokens are submitted as parameters in the call.
 	#>
-	[CmdletBinding(PositionalBinding = $true)]
+	[CmdletBinding(PositionalBinding = $true, DefaultParameterSetName = 'groupId')]
 	[Alias("Set-VrkdaAcUsrGrp","st-VrkdaAcUsrGrp")]
 	param (
 		#The UUID of the user
@@ -32,10 +36,13 @@ function Set-VerkadaAccessUserGroup{
 		[Alias('external_id')]
 		[String]$externalId,
 		#The UUID of the group
-		[Parameter( ValueFromPipelineByPropertyName = $true)]
+		[Parameter( ValueFromPipelineByPropertyName = $true, ParameterSetName = 'groupId')]
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[Alias('group_id')]
 		[String]$groupId,
+		#The name of the group the user should be added to
+		[Parameter(ValueFromPipelineByPropertyName = $true, ParameterSetName = 'groupName')]
+		[String]$groupName,
 		#The UUID of the organization the user belongs to
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
@@ -59,6 +66,17 @@ function Set-VerkadaAccessUserGroup{
 	} #end begin
 	
 	process {
+		if ($PSCmdlet.ParameterSetName -eq 'groupName'){
+			if ([string]::IsNullOrEmpty($groupName)) {
+				Write-Error "groupName is missing but is required!"
+				return
+			}
+			$groupId = Read-VerkadaAccessGroups -org_id $org_id -x_api_key $x_api_key | Where-Object {$_.name -eq $groupName} | Select-Object -ExpandProperty group_id
+			if ([string]::IsNullOrEmpty($groupId)) {
+				Write-Error "Group $groupName seems to not exist."
+				return
+			}
+		}
 		if ([string]::IsNullOrEmpty($groupId)) {
 			Write-Error "groupId is missing but is required!"
 			return
