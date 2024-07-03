@@ -12,10 +12,16 @@ Adds an Access user to an Access group in an organization using https://apidocs.
 
 ## SYNTAX
 
+### groupId (Default)
 ```
-Set-VerkadaAccessUserGroup [[-userId] <String>] [[-externalId] <String>] [[-groupId] <String>]
- [[-org_id] <String>] [[-x_api_key] <String>] [-errorsToFile] [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+Set-VerkadaAccessUserGroup [-userId <String>] [-externalId <String>] [-groupId <String>] [-org_id <String>]
+ [-x_api_key <String>] [-errorsToFile] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+### groupName
+```
+Set-VerkadaAccessUserGroup [-userId <String>] [-externalId <String>] [-groupName <String>] [-org_id <String>]
+ [-x_api_key <String>] [-errorsToFile] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -33,6 +39,12 @@ This adds the Access user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 to Ac
 
 ### EXAMPLE 2
 ```
+Set-VerkadaAccessUserGroup -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -groupName 'MyAccessGroup'
+This adds the Access user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 to Access group with groupName MyAccessGroup.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+```
+
+### EXAMPLE 3
+```
 Set-VerkadaAccessUserGroup -externalId 'newUserUPN@contoso.com' -groupId '2d64e7de-fd95-48be-8b5c-7a23bde94f52' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token'
 This adds the Access user uwith xternalId newUserUPN@contoso.com to Access group with groupId 2d64e7de-fd95-48be-8b5c-7a23bde94f52.  The org_id and tokens are submitted as parameters in the call.
 ```
@@ -48,7 +60,7 @@ Parameter Sets: (All)
 Aliases: user_id
 
 Required: False
-Position: 1
+Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -63,7 +75,7 @@ Parameter Sets: (All)
 Aliases: external_id
 
 Required: False
-Position: 2
+Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -74,11 +86,26 @@ The UUID of the group
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: groupId
 Aliases: group_id
 
 Required: False
-Position: 3
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -groupName
+The name of the group the user should be added to
+
+```yaml
+Type: String
+Parameter Sets: groupName
+Aliases:
+
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -93,7 +120,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 4
+Position: Named
 Default value: $Global:verkadaConnection.org_id
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -108,7 +135,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 5
+Position: Named
 Default value: $Global:verkadaConnection.token
 Accept pipeline input: False
 Accept wildcard characters: False
