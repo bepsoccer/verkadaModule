@@ -115,7 +115,8 @@ FunctionsToExport = 'Add-VerkadaAccessBadgeToUser', 'Add-VerkadaAccessGroup',
                'Set-VerkadaAccessUserStartDate', 
                'Set-VerkadaAlarmsDoorSensorSettings', 
                'Set-VerkadaAlarmsPanicButtonSettings', 'Set-VerkadaCameraName', 
-               'Set-VerkadaCameraSite', 'Set-VerkadaCameraTamperSensitivity', 
+               'Set-VerkadaCameraOrientation', 'Set-VerkadaCameraSite', 
+               'Set-VerkadaCameraTamperSensitivity', 
                'Set-VerkadaCloudBackupSettings', 'Set-VerkadaCommandPermissions', 
                'Set-VerkadaCommandUser', 'Set-VerkadaLicensePlateOfInterest', 
                'Set-VerkadaSitePermissions', 'Set-VerkadaWorkplaceEmployee', 
@@ -161,10 +162,10 @@ AliasesToExport = 'a-VrkdaAcGrp', 'Add-VrkdaAcGrp', 'a-VrkdaAcUsrCrd',
                'Set-VrkdaAcUsrStrtDt', 'st-VrkdaAcUsrStrtDt', 's-VrkdAlrmBr31Setgs', 
                's-VrkdAlrmDrSenSetgs', 'Set-VrkdAlrmDrSenSetgs', 
                's-VrkdAlrmBr33Setgs', 's-VrkdAlrmPancSetgs', 'Set-VrkdAlrmPancSetgs', 
-               'Set-VrkdaCamTmprSen', 'VrkdaCamTmprSen', 'Set-VrkdaCmdUsr', 
-               'st-VrkdaCmdUsr', 'Set-VerkadaLPoI', 'Set-VrkdaWrkEmp', 
-               'st-VrkdaWrkEmp', 't-VrkdaAcPrflPicUrl', 'uk-VrkdAcDoor', 
-               'Unlock-VrkdAcDoor'
+               'Set-VrkdaCamOrnt', 'VrkdaCamOrnt', 'Set-VrkdaCamTmprSen', 
+               'VrkdaCamTmprSen', 'Set-VrkdaCmdUsr', 'st-VrkdaCmdUsr', 
+               'Set-VerkadaLPoI', 'Set-VrkdaWrkEmp', 'st-VrkdaWrkEmp', 
+               't-VrkdaAcPrflPicUrl', 'uk-VrkdAcDoor', 'Unlock-VrkdAcDoor'
 
 # DSC resources to export from this module
 # DscResourcesToExport = @()
