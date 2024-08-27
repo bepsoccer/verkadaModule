@@ -8,13 +8,20 @@ schema: 2.0.0
 # Read-VerkadaAccessUsers
 
 ## SYNOPSIS
-Gathers all Access Users in an organization
+Gathers all Access Users in an organization via the legacy private API or using https://apidocs.verkada.com/reference/getaccessmembersviewv1 depedning on the version of the function specified.
 
 ## SYNTAX
 
+### legacy (Default)
 ```
 Read-VerkadaAccessUsers [-org_id <String>] [[-query] <Object>] [[-variables] <Object>]
  [-x_verkada_token <String>] [-x_verkada_auth <String>] [-usr <String>] [-refresh] [-minimal]
+ [-version <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+### v1
+```
+Read-VerkadaAccessUsers [-org_id <String>] [-x_api_key <String>] [-refresh] [-version <String>] [-errorsToFile]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
@@ -64,7 +71,7 @@ This is the graphql query to be submitted (do not use unless you know what you a
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
+Parameter Sets: legacy
 Aliases:
 
 Required: False
@@ -79,7 +86,7 @@ This is the graphql variables to be submitted (do not use unless you know what y
 
 ```yaml
 Type: Object
-Parameter Sets: (All)
+Parameter Sets: legacy
 Aliases:
 
 Required: False
@@ -89,12 +96,27 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -x_api_key
+The public API key to be used for calls that hit the public API gateway
+
+```yaml
+Type: String
+Parameter Sets: v1
+Aliases:
+
+Required: False
+Position: Named
+Default value: $Global:verkadaConnection.token
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -x_verkada_token
 The Verkada(CSRF) token of the user running the command
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: legacy
 Aliases:
 
 Required: False
@@ -109,7 +131,7 @@ The Verkada Auth(session auth) token of the user running the command
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: legacy
 Aliases:
 
 Required: False
@@ -124,7 +146,7 @@ The UUID of the user account making the request
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: legacy
 Aliases:
 
 Required: False
@@ -154,7 +176,37 @@ Switch to retrieve the list of users from Command with minimal user profile info
 
 ```yaml
 Type: SwitchParameter
+Parameter Sets: legacy
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -version
+Version designation for which version of the function to use
+
+```yaml
+Type: String
 Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: Legacy
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -errorsToFile
+Switch to write errors to file
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: v1
 Aliases:
 
 Required: False
