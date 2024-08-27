@@ -45,8 +45,14 @@ This will return all the active access users in an organization.  The org_id and
 
 ### EXAMPLE 3
 ```
-Read-VerkadaAccessUsers -refresh
-This will return all the active access users in an organization with the most recent data available from Command.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+Read-VerkadaAccessUsers -version v1 -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token'
+This will return all the active access users in an organization using the Command v1 public API endpoint.  The org_id and tokens are submitted as parameters in the call.
+```
+
+### EXAMPLE 4
+```
+Read-VerkadaAccessUsers -version v1 -refresh
+This will return all the active access users in an organization with the most recent data available from the Command v1 public API endpoint.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 ```
 
 ## PARAMETERS
