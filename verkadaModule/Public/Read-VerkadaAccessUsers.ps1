@@ -17,10 +17,14 @@ function Read-VerkadaAccessUsers{
 		.EXAMPLE
 		Read-VerkadaAccessUsers -userId 'aefrfefb-3429-39ec-b042-userAC' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc' -usr 'a099bfe6-34ff-4976-9d53-ac68342d2b60'
 		This will return all the active access users in an organization.  The org_id and tokens are submitted as parameters in the call.
+		
+		.EXAMPLE
+		Read-VerkadaAccessUsers -version v1 -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token'
+		This will return all the active access users in an organization using the Command v1 public API endpoint.  The org_id and tokens are submitted as parameters in the call.
 
 		.EXAMPLE
-		Read-VerkadaAccessUsers -refresh
-		This will return all the active access users in an organization with the most recent data available from Command.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		Read-VerkadaAccessUsers -version v1 -refresh
+		This will return all the active access users in an organization with the most recent data available from the Command v1 public API endpoint.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 	#>
 	[CmdletBinding(PositionalBinding = $true, DefaultParameterSetName = 'legacy')]
 	param (
