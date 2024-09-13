@@ -104,7 +104,7 @@ function Connect-Verkada
 					'x-api-key' = $Global:verkadaConnection.token
 				}
 				
-				$response = Invoke-RestMethod -Uri 'https://api.verkada.com/cameras/v1/devices' -Body $body -Headers $headers -StatusCodeVariable responseCode
+				$response = Invoke-RestMethod -Uri 'https://api.verkada.com/core/v1/audit_log' -Body $body -Headers $headers -StatusCodeVariable responseCode
 				Write-Host -ForegroundColor green "$responseCode - Successfully connected to Verkada Command with API Token"
 				#return
 			} catch [Microsoft.PowerShell.Commands.HttpResponseException] {
