@@ -14,8 +14,9 @@ Used to build an Invoke-RestMethod call for Verkada's private API enpoints
 
 ### Default (Default)
 ```
-Invoke-VerkadaRestMethod [-url] <String> [-org_id] <String> [-x_api_key] <String> [[-query_params] <Object>]
- [[-body_params] <Object>] [-method <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Invoke-VerkadaRestMethod [-url] <String> [-org_id] <String> [-x_verkada_auth_api] <String>
+ [[-query_params] <Object>] [[-body_params] <Object>] [-method <String>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ### UnPwd
@@ -27,9 +28,9 @@ Invoke-VerkadaRestMethod [-url] <String> [-org_id] <String> [[-body_params] <Obj
 
 ### Pagination
 ```
-Invoke-VerkadaRestMethod [-url] <String> [-org_id] <String> [-x_api_key] <String> [[-query_params] <Object>]
- [[-body_params] <Object>] [-method <String>] [-pagination] -page_size <String> -propertyName <String>
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Invoke-VerkadaRestMethod [-url] <String> [-org_id] <String> [-x_verkada_auth_api] <String>
+ [[-query_params] <Object>] [[-body_params] <Object>] [-method <String>] [-pagination] -page_size <String>
+ -propertyName <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -76,8 +77,8 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -x_api_key
-The public API key to be used for calls that hit the public API gateway
+### -x_verkada_auth_api
+The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 
 ```yaml
 Type: String

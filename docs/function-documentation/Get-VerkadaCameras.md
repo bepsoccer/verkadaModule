@@ -13,8 +13,8 @@ Gets all cameras in an organization
 ## SYNTAX
 
 ```
-Get-VerkadaCameras [[-org_id] <String>] [[-x_api_key] <String>] [[-serial] <String>] [-refresh]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-VerkadaCameras [[-org_id] <String>] [[-x_verkada_auth_api] <String>] [-region <String>]
+ [[-serial] <String>] [-refresh] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -32,7 +32,7 @@ This will return all the cameras in the org.  The org_id and tokens will be popu
 
 ### EXAMPLE 2
 ```
-Get-VerkadaCameras -org_id 'deds343-uuid-of-org' -x_api_key 'sd78ds-uuid-of-verkada-token'
+Get-VerkadaCameras -org_id 'deds343-uuid-of-org' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
 This will return all the cameras in the org.  The org_id and tokens are submitted as parameters in the call.
 ```
 
@@ -65,8 +65,8 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -x_api_key
-The public API key to be used for calls that hit the public API gateway
+### -x_verkada_auth_api
+The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 
 ```yaml
 Type: String
@@ -75,7 +75,22 @@ Aliases:
 
 Required: False
 Position: 2
-Default value: $Global:verkadaConnection.token
+Default value: $Global:verkadaConnection.x_verkada_auth_api
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -region
+The region of the public API to be used
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: Api
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
