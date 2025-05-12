@@ -39,6 +39,10 @@ function Get-VerkadaCloudBackupSettings
 		[Parameter(Position = 2)]
 		[ValidateNotNullOrEmpty()]
 		[String]$x_verkada_auth_api = $Global:verkadaConnection.x_verkada_auth_api,
+		#The region of the public API to be used
+		[Parameter()]
+		[ValidateSet('api','api.eu','api.au')]
+		[String]$region='api',
 		#Switch used to write the retrieved cloud backup settings to a csv.  This will prompt for the path and file name for the output csv when the backup switch is used
 		[Parameter()]
 		[Switch]$backup
@@ -49,7 +53,7 @@ function Get-VerkadaCloudBackupSettings
 		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
 		if ([string]::IsNullOrEmpty($x_verkada_auth_api)) {throw "x_verkada_auth_api is missing but is required!"}
 	
-		$url = "https://api.verkada.com/cameras/v1/cloud_backup/settings"
+		$url = "https://$($region).verkada.com/cameras/v1/cloud_backup/settings"
 		$response = @()
 	} #end beging
 	

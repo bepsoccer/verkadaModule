@@ -133,7 +133,7 @@ function Invoke-VerkadaRestMethod
 									throw [VerkadaRestMethodException] "$res"
 								}
 								else {
-									Connect-Verkada -x_api_key $Global:verkadaConnection.x_api_key -org_id $Global:verkadaConnection.org_id -noOutput
+									Connect-Verkada -x_api_key $Global:verkadaConnection.x_api_key -org_id $Global:verkadaConnection.org_id -region $Global:verkadaConnection.region -noOutput
 									$headers.'x-verkada-auth' = $Global:verkadaConnection.x_verkada_auth_api
 								}
 							}
@@ -189,14 +189,14 @@ function Invoke-VerkadaRestMethod
 							}
 						}
 						401 {
-							if ($($response.message) -ne 'Token expired'){
+							if ($($response.message) -ne 'API token expired'){
 								$loop = $true
 								$res = "$resCode - $($response.message)"
 								throw [VerkadaRestMethodException] "$res"
 							}
 							else {
-								Connect-Verkada -x_api_key $Global:verkadaConnection.x_api_key
-								$loop = $true
+								Connect-Verkada -x_api_key $Global:verkadaConnection.x_api_key -org_id $Global:verkadaConnection.org_id -region $Global:verkadaConnection.region -noOutput
+								$headers.'x-verkada-auth' = $Global:verkadaConnection.x_verkada_auth_api
 							}
 						}
 						Default {

@@ -34,13 +34,17 @@ function Add-VerkadaAccessGroup{
 		[Parameter()]
 		[ValidateNotNullOrEmpty()]
 		[String]$x_verkada_auth_api = $Global:verkadaConnection.x_verkada_auth_api,
+		#The region of the public API to be used
+		[Parameter()]
+		[ValidateSet('api','api.eu','api.au')]
+		[String]$region='api',
 		#Switch to write errors to file
 		[Parameter()]
 		[switch]$errorsToFile
 	)
 	
 	begin {
-		$url = "https://api.verkada.com/access/v1/access_groups/group"
+		$url = "https://$($region).verkada.com/access/v1/access_groups/group"
 		#parameter validation
 		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
 		if ([string]::IsNullOrEmpty($x_verkada_auth_api)) {throw "x_verkada_auth_api is missing but is required!"}

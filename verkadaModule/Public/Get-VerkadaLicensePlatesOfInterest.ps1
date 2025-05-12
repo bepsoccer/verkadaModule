@@ -37,7 +37,7 @@ function Get-VerkadaLicensePlatesOfInterest{
 	)
 	
 	begin {
-		$url = "https://api.verkada.com/cameras/v1/analytics/lpr/license_plate_of_interest"
+		$url = "https://$($region).verkada.com/cameras/v1/analytics/lpr/license_plate_of_interest"
 		$page_size = 1000
 		$propertyName = 'license_plate_of_interest'
 		#parameter validation

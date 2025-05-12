@@ -56,6 +56,10 @@ function Get-VerkadaCameraConfig{
 		[Parameter(Position = 1)]
 		[ValidateNotNullOrEmpty()]
 		[String]$x_verkada_auth_api = $Global:verkadaConnection.x_verkada_auth_api,
+		#The region of the public API to be used
+		[Parameter()]
+		[ValidateSet('api','api.eu','api.au')]
+		[String]$region='api',
 		#The size of the batch of camera Ids to process in a single call
 		[Parameter()]
 		[Int]$batchSize = 100
