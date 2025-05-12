@@ -15,7 +15,7 @@ function Set-VerkadaCommandUser{
 		This will update the Command user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 with the name "New User".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 		
 		.EXAMPLE
-		Set-VerkadaCommandUser -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -firstName 'New' -lastName 'User' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token'
+		Set-VerkadaCommandUser -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -firstName 'New' -lastName 'User' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
 		This will update the Command user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 with the name "New User".  The org_id and tokens are submitted as parameters in the call.
 		
 		.EXAMPLE
@@ -88,10 +88,10 @@ function Set-VerkadaCommandUser{
 		[ValidateNotNullOrEmpty()]
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[String]$org_id = $Global:verkadaConnection.org_id,
-		#The public API key to be used for calls that hit the public API gateway
+		#The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 		[Parameter()]
 		[ValidateNotNullOrEmpty()]
-		[String]$x_api_key = $Global:verkadaConnection.token,
+		[String]$x_verkada_auth_api = $Global:verkadaConnection.x_verkada_auth_api,
 		#Switch to write errors to file
 		[Parameter()]
 		[switch]$errorsToFile
@@ -101,7 +101,7 @@ function Set-VerkadaCommandUser{
 		$url = "https://api.verkada.com/core/v1/user"
 		#parameter validation
 		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
-		if ([string]::IsNullOrEmpty($x_api_key)) {throw "x_api_key is missing but is required!"}
+		if ([string]::IsNullOrEmpty($x_verkada_auth_api)) {throw "x_verkada_auth_api is missing but is required!"}
 		$myErrors = @()
 	} #end begin
 	
@@ -133,7 +133,7 @@ function Set-VerkadaCommandUser{
 		}
 		
 		try {
-			$response = Invoke-VerkadaRestMethod $url $org_id $x_api_key $query_params -body_params $body_params -method PUT
+			$response = Invoke-VerkadaRestMethod $url $org_id $x_verkada_auth_api $query_params -body_params $body_params -method PUT
 			return $response
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {

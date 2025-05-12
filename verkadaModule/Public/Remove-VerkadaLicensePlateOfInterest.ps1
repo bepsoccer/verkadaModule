@@ -23,7 +23,7 @@ function Remove-VerkadaLicensePlateOfInterest{
 		The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Remove-VerkadaLicensePlateOfInterest -license_plate 'ABC123' -org_id 'deds343-uuid-of-org' -x_api_key 'sd78ds-uuid-of-verkada-token'
+		Remove-VerkadaLicensePlateOfInterest -license_plate 'ABC123' -org_id 'deds343-uuid-of-org' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
 		The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
@@ -37,17 +37,17 @@ function Remove-VerkadaLicensePlateOfInterest{
 		#The license plate number of the License Plate of Interest
 		[Parameter(ValueFromPipelineByPropertyName = $true, Position = 0, Mandatory = $true)]
 		[String]$license_plate,
-		#The public API key to be used for calls that hit the public API gateway
+		#The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
-		[String]$x_api_key = $Global:verkadaConnection.token
+		[String]$x_verkada_auth_api = $Global:verkadaConnection.x_verkada_auth_api
 	)
 
 	Begin {
 		$url = "https://api.verkada.com/cameras/v1/analytics/lpr/license_plate_of_interest"
 		#parameter validation
 		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
-		if ([string]::IsNullOrEmpty($x_api_key)) {throw "x_api_key is missing but is required!"}
+		if ([string]::IsNullOrEmpty($x_verkada_auth_api)) {throw "x_verkada_auth_api is missing but is required!"}
 	} #end begin
 	
 	Process {
@@ -56,7 +56,7 @@ function Remove-VerkadaLicensePlateOfInterest{
 		}
 
 		try {
-		$response = Invoke-VerkadaRestMethod $url $org_id $x_api_key $query_params -method delete
+		$response = Invoke-VerkadaRestMethod $url $org_id $x_verkada_auth_api $query_params -method delete
 		return $response
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {

@@ -26,10 +26,10 @@ function Read-VerkadaGuestSites{
 		[ValidateNotNullOrEmpty()]
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[String]$org_id = $Global:verkadaConnection.org_id,
-		#The public API key to be used for calls that hit the public API gateway
+		#The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 		[Parameter()]
 		[ValidateNotNullOrEmpty()]
-		[String]$x_api_key = $Global:verkadaConnection.token,
+		[String]$x_verkada_auth_api = $Global:verkadaConnection.x_verkada_auth_api,
 		#Switch to write errors to file
 		[Parameter()]
 		[switch]$errorsToFile
@@ -39,7 +39,7 @@ function Read-VerkadaGuestSites{
 		$url = "https://api.verkada.com/guest/v1/sites"
 		#parameter validation
 		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
-		if ([string]::IsNullOrEmpty($x_api_key)) {throw "x_api_key is missing but is required!"}
+		if ([string]::IsNullOrEmpty($x_verkada_auth_api)) {throw "x_verkada_auth_api is missing but is required!"}
 		$myErrors = @()
 	} #end begin
 	
@@ -49,7 +49,7 @@ function Read-VerkadaGuestSites{
 		$query_params = @{}
 		
 		try {
-			$response = Invoke-VerkadaRestMethod $url $org_id $x_api_key $query_params -body_params $body_params -method GET
+			$response = Invoke-VerkadaRestMethod $url $org_id $x_verkada_auth_api $query_params -body_params $body_params -method GET
 			if (![string]::IsNullOrEmpty($response.guest_sites)) {$response = $response.guest_sites}
 			return $response
 		}
