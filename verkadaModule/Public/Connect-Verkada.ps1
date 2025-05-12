@@ -27,7 +27,7 @@ function Connect-Verkada
 		This will authenticate user admin.user@contoso.com with a otp token and a secure string variable stored password([secureString]$yourPwd) and upon success store the org_id 7cd47706-f51b-4419-8675-3b9f0ce7c12d and the returned tokens.  This will no longer work for OrgAdmins due to the MFA requirement.
 		
 		.EXAMPLE
-		Connect-Verkada '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'myapiKey-dcwdskjnlnlkj' -userName "admin.user@contoso.com" -Password
+		Connect-Verkada '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'myapiKey-dcwdskjnlnlkj' -userName "admin.user@contoso.com" -Password
 		This will store the org_id 7cd47706-f51b-4419-8675-3b9f0ce7c12d with the public API key myapiKey-dcwdskjnlnlkj and will authenticate user admin.user@contoso.com by prompting for the password(stored as a secure string) and storing the returned tokens.  This will no longer work for OrgAdmins due to the MFA requirement.
 	#>
 
@@ -47,6 +47,10 @@ function Connect-Verkada
 		[Alias('token')]
 		[ValidateNotNullOrEmpty()]
 		[String]$x_api_key,
+		#The region of the public API to be used
+		[Parameter()]
+		[ValidateSet('api','api.eu','api.au')]
+		[String]$region='api',
 		#The admin user name to be used to obtain needed session and auth tokens
 		[Parameter(ParameterSetName = 'UnPwd', Mandatory = $true)]
 		[ValidateNotNullOrEmpty()]
@@ -79,7 +83,10 @@ function Connect-Verkada
 		[switch]$manual,
 		#The One Time Password if using 2FA
 		[Parameter(ParameterSetName = 'UnPwd')]
-		[string]$otp
+		[string]$otp,
+		#The switch to supress output
+		[Parameter(ParameterSetName = 'apiToken')]
+		[switch]$noOutput
 	)
 
 	Process {
@@ -89,24 +96,32 @@ function Connect-Verkada
 		If (!($Global:verkadaConnection)){
 			$Global:verkadaConnection = @{
 				org_id		= $org_id
+				region		= $region
 			}
 		}
 		
 		if($x_api_key) {
-			$Global:verkadaConnection.token = $x_api_key
+			$Global:verkadaConnection.x_api_key = $x_api_key
 
 			try {
+				$login_headers=@{
+					'x-api-key' = $Global:verkadaConnection.x_api_key
+				}
+
+				$x_verkada_auth_api = Invoke-RestMethod -Uri "https://$($region).verkada.com/token" -Method 'POST' -Headers $login_headers | Select-Object -ExpandProperty token
+				$Global:verkadaConnection.x_verkada_auth_api = $x_verkada_auth_api
+
 				$body = @{
 					'org_id' = $Global:verkadaConnection.org_id
 					'page_size' = "1"
 				}
 				$headers=@{
-					'x-api-key' = $Global:verkadaConnection.token
+					'x-verkada-auth' = $Global:verkadaConnection.x_verkada_auth_api
 				}
 				
-				$response = Invoke-RestMethod -Uri 'https://api.verkada.com/core/v1/audit_log' -Body $body -Headers $headers -StatusCodeVariable responseCode
-				Write-Host -ForegroundColor green "$responseCode - Successfully connected to Verkada Command with API Token"
-				#return
+				$response = Invoke-RestMethod -Uri "https://$($region).verkada.com/core/v1/audit_log" -Body $body -Headers $headers -StatusCodeVariable responseCode
+				if (!($noOutput)){Write-Host -ForegroundColor green "$responseCode - Successfully connected to Verkada Command with API Token"}
+				return
 			} catch [Microsoft.PowerShell.Commands.HttpResponseException] {
 				Disconnect-Verkada
 				Write-Host -ForegroundColor Red $_.Exception.Message

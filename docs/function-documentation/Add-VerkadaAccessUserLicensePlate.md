@@ -15,7 +15,8 @@ Adds a license plate credential to an Aceess user in an organization using https
 ```
 Add-VerkadaAccessUserLicensePlate [[-userId] <String>] [[-externalId] <String>]
  [[-licensePlateNumber] <String>] [[-name] <String>] [[-active] <Boolean>] [[-org_id] <String>]
- [[-x_api_key] <String>] [-errorsToFile] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [[-x_verkada_auth_api] <String>] [[-region] <String>] [-errorsToFile] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -132,8 +133,8 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -x_api_key
-The public API key to be used for calls that hit the public API gateway
+### -x_verkada_auth_api
+The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 
 ```yaml
 Type: String
@@ -142,7 +143,22 @@ Aliases:
 
 Required: False
 Position: 7
-Default value: $Global:verkadaConnection.token
+Default value: $Global:verkadaConnection.x_verkada_auth_api
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -region
+The region of the public API to be used
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 8
+Default value: Api
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

@@ -14,7 +14,8 @@ Removes an Access User's entry code using https://apidocs.verkada.com/reference/
 
 ```
 Remove-VerkadaAccessUserEntryCode [[-userId] <String>] [[-externalId] <String>] [[-org_id] <String>]
- [[-x_api_key] <String>] [-errorsToFile] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [[-x_verkada_auth_api] <String>] [[-region] <String>] [-errorsToFile] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -32,7 +33,7 @@ This will remove the Access user's entry code with userId 801c9551-b04c-4293-84a
 
 ### EXAMPLE 2
 ```
-Remove-VerkadaAccessUserEntryCode -externalId 'newUserUPN@contoso.com' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token'
+Remove-VerkadaAccessUserEntryCode -externalId 'newUserUPN@contoso.com' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
 This will remove the Access user's entry code with externalId newUserUPN@contoso.com.  The org_id and tokens are submitted as parameters in the call.
 ```
 
@@ -83,8 +84,8 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -x_api_key
-The public API key to be used for calls that hit the public API gateway
+### -x_verkada_auth_api
+The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 
 ```yaml
 Type: String
@@ -93,7 +94,22 @@ Aliases:
 
 Required: False
 Position: 4
-Default value: $Global:verkadaConnection.token
+Default value: $Global:verkadaConnection.x_verkada_auth_api
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -region
+The region of the public API to be used
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 5
+Default value: Api
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

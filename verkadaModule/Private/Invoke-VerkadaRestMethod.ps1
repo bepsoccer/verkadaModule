@@ -26,10 +26,10 @@ function Invoke-VerkadaRestMethod
 		[ValidateNotNullOrEmpty()]
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[String]$org_id,
-		#The public API key to be used for calls that hit the public API gateway
+		#The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 		[Parameter(Mandatory = $true, Position = 2, ParameterSetName = 'Default')]
 		[Parameter(Mandatory = $true, Position = 2, ParameterSetName = 'Pagination')]
-		[String]$x_api_key,
+		[String]$x_verkada_auth_api,
 		#Object containing the query parameters need that will be put into the query string of the uri
 		[Parameter(Position = 3, ParameterSetName = 'Default')]
 		[Parameter(Position = 3, ParameterSetName = 'Pagination')]
@@ -85,7 +85,7 @@ function Invoke-VerkadaRestMethod
 			}
 		} else {
 			$headers=@{
-				'x-api-key' = $x_api_key
+				'x-verkada-auth' = $x_verkada_auth_api
 			}
 		}
 
@@ -106,12 +106,43 @@ function Invoke-VerkadaRestMethod
 				$rt = 0
 				do {
 					try {
-						$response = Invoke-RestMethod -Uri $uri -Body $body -Headers $headers -ContentType 'application/json' -MaximumRetryCount 3 -TimeoutSec 30 -RetryIntervalSec 5
+						$response = Invoke-RestMethod -Uri $uri -Body $body -Headers $headers -ContentType 'application/json' -TimeoutSec 5 -SkipHttpErrorCheck -StatusCodeVariable resCode
 						$records += $response.($propertyName)
 						$page_token = $response.next_page_token
-						#$query.Set('page_token', $page_token)
 
-						$loop = $true
+						switch ($resCode) {
+							{($_ -eq 200) -or ($_ -eq 201)} {
+								$loop = $true
+								return $response
+							}
+							429 {
+								$rt++
+								if ($rt -gt 2){
+									$loop = $true
+									$res = "$resCode - $($response.message)"
+									throw [VerkadaRestMethodException] "$res"
+								}
+								else {
+									Start-Sleep -Seconds 5
+								}
+							}
+							401 {
+								if ($($response.message) -ne 'API token expired'){
+									$loop = $true
+									$res = "$resCode - $($response.message)"
+									throw [VerkadaRestMethodException] "$res"
+								}
+								else {
+									Connect-Verkada -x_api_key $Global:verkadaConnection.x_api_key -org_id $Global:verkadaConnection.org_id -region $Global:verkadaConnection.region -noOutput
+									$headers.'x-verkada-auth' = $Global:verkadaConnection.x_verkada_auth_api
+								}
+							}
+							Default {
+								$loop = $true
+								$res = "$resCode - $($response.message)"
+								throw [VerkadaRestMethodException] "$res"
+							}
+						}
 					}
 					catch [System.TimeoutException] {
 						$rt++
@@ -155,6 +186,17 @@ function Invoke-VerkadaRestMethod
 							}
 							else {
 								Start-Sleep -Seconds 5
+							}
+						}
+						401 {
+							if ($($response.message) -ne 'API token expired'){
+								$loop = $true
+								$res = "$resCode - $($response.message)"
+								throw [VerkadaRestMethodException] "$res"
+							}
+							else {
+								Connect-Verkada -x_api_key $Global:verkadaConnection.x_api_key -org_id $Global:verkadaConnection.org_id -region $Global:verkadaConnection.region -noOutput
+								$headers.'x-verkada-auth' = $Global:verkadaConnection.x_verkada_auth_api
 							}
 						}
 						Default {

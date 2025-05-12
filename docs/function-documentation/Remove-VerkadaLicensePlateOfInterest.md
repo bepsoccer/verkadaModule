@@ -13,8 +13,8 @@ Deletes a License Plate of Interest for an organization using a license plate nu
 ## SYNTAX
 
 ```
-Remove-VerkadaLicensePlateOfInterest [-org_id <String>] [-license_plate] <String> [-x_api_key <String>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Remove-VerkadaLicensePlateOfInterest [-org_id <String>] [-license_plate] <String>
+ [-x_verkada_auth_api <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -43,7 +43,7 @@ The org_id and tokens will be populated from the cached created by Connect-Verka
 
 ### EXAMPLE 4
 ```
-Remove-VerkadaLicensePlateOfInterest -license_plate 'ABC123' -org_id 'deds343-uuid-of-org' -x_api_key 'sd78ds-uuid-of-verkada-token'
+Remove-VerkadaLicensePlateOfInterest -license_plate 'ABC123' -org_id 'deds343-uuid-of-org' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
 The org_id and tokens are submitted as parameters in the call.
 ```
 
@@ -79,8 +79,8 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -x_api_key
-The public API key to be used for calls that hit the public API gateway
+### -x_verkada_auth_api
+The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 
 ```yaml
 Type: String
@@ -89,7 +89,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: $Global:verkadaConnection.token
+Default value: $Global:verkadaConnection.x_verkada_auth_api
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```

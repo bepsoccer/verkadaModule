@@ -14,19 +14,19 @@ Gathers needed credentials for Verkada's API Endpoints
 
 ### apiToken (Default)
 ```
-Connect-Verkada [-org_id] <String> [-x_api_key] <String> [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+Connect-Verkada [-org_id] <String> [-x_api_key] <String> [-region <String>] [-noOutput]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### ManualTokens
 ```
-Connect-Verkada [-org_id] <String> [[-x_api_key] <String>] [-userToken] <String> [-csrfToken] <String>
- [-usr] <String> [-manual] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Connect-Verkada [-org_id] <String> [[-x_api_key] <String>] [-region <String>] [-userToken] <String>
+ [-csrfToken] <String> [-usr] <String> [-manual] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### UnPwd
 ```
-Connect-Verkada [-org_id] <String> [[-x_api_key] <String>] -userName <String> [-Password]
+Connect-Verkada [-org_id] <String> [[-x_api_key] <String>] [-region <String>] -userName <String> [-Password]
  [-MyPwd <SecureString>] [-otp <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
@@ -61,7 +61,7 @@ This will authenticate user admin.user@contoso.com with a otp token and a secure
 
 ### EXAMPLE 5
 ```
-Connect-Verkada '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'myapiKey-dcwdskjnlnlkj' -userName "admin.user@contoso.com" -Password
+Connect-Verkada '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'myapiKey-dcwdskjnlnlkj' -userName "admin.user@contoso.com" -Password
 This will store the org_id 7cd47706-f51b-4419-8675-3b9f0ce7c12d with the public API key myapiKey-dcwdskjnlnlkj and will authenticate user admin.user@contoso.com by prompting for the password(stored as a secure string) and storing the returned tokens.  This will no longer work for OrgAdmins due to the MFA requirement.
 ```
 
@@ -130,6 +130,21 @@ Required: False
 Position: 2
 Default value: None
 Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -region
+The region of the public API to be used
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: Api
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -249,6 +264,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -noOutput
+The switch to supress output
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: apiToken
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

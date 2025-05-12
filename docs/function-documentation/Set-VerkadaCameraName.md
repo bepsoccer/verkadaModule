@@ -22,7 +22,8 @@ Set-VerkadaCameraName [-org_id <String>] -camera_id <String> [-serial <String>] 
 ### serial
 ```
 Set-VerkadaCameraName [-org_id <String>] -serial <String> -camera_name <String> [-x_verkada_token <String>]
- [-x_verkada_auth <String>] [-x_api_key <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-x_verkada_auth <String>] [-x_verkada_auth_api <String>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -159,8 +160,8 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -x_api_key
-The public API key to be used for calls that hit the public API gateway
+### -x_verkada_auth_api
+The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 
 ```yaml
 Type: String
@@ -169,7 +170,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: $Global:verkadaConnection.token
+Default value: $Global:verkadaConnection.x_verkada_auth_api
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

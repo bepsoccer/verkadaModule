@@ -14,8 +14,8 @@ Activates a credential for an Aceess user in an organization using https://apido
 
 ```
 Enable-VerkadaAccessUserCard [[-userId] <String>] [[-externalId] <String>] [[-cardId] <String>]
- [[-org_id] <String>] [[-x_api_key] <String>] [-errorsToFile] [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+ [[-org_id] <String>] [[-x_verkada_auth_api] <String>] [[-region] <String>] [-errorsToFile]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -33,7 +33,7 @@ This will activate the credential with cardId 10110010000000000000001011 for the
 
 ### EXAMPLE 2
 ```
-Enable-VerkadaAccessUserCard -externalId 'newUserUPN@contoso.com' -cardId '3f3b3e4d-1a67-4b88-a321-43c5e502991c' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token'
+Enable-VerkadaAccessUserCard -externalId 'newUserUPN@contoso.com' -cardId '3f3b3e4d-1a67-4b88-a321-43c5e502991c' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
 This will activate the credential with cardId 10110010000000000000001011 for the Access user with externalId newUserUPN@contoso.com as a credential.  The org_id and tokens are submitted as parameters in the call.
 ```
 
@@ -99,8 +99,8 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -x_api_key
-The public API key to be used for calls that hit the public API gateway
+### -x_verkada_auth_api
+The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 
 ```yaml
 Type: String
@@ -109,7 +109,22 @@ Aliases:
 
 Required: False
 Position: 5
-Default value: $Global:verkadaConnection.token
+Default value: $Global:verkadaConnection.x_verkada_auth_api
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -region
+The region of the public API to be used
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 6
+Default value: Api
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

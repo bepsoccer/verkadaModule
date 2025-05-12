@@ -11,7 +11,7 @@ function Test-VerkadaAccessProfilePictureUrl{
 		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Test-VerkadaAccessProfilePictureUrl.md
 
 		.EXAMPLE
-		Test-VerkadaAccessProfilePictureUrl -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token'
+		Test-VerkadaAccessProfilePictureUrl -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc' -usr 'a099bfe6-34ff-4976-9d53-ac68342d2b60'
 		This will test to see if a profile picture for the user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 exists.  The org_id and tokens are submitted as parameters in the call.
 		
 		.EXAMPLE

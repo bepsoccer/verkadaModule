@@ -13,9 +13,10 @@ Sets a camera's cloud backup settings
 ## SYNTAX
 
 ```
-Set-VerkadaCloudBackupSettings [-camera_id] <String> [[-org_id] <String>] [[-x_api_key] <String>]
- -days_to_preserve <String> -enabled <Int32> -time_to_preserve <String> -upload_timeslot <String>
- -video_quality <String> -video_to_upload <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Set-VerkadaCloudBackupSettings [-camera_id] <String> [[-org_id] <String>] [[-x_verkada_auth_api] <String>]
+ [-region <String>] -days_to_preserve <String> -enabled <Int32> -time_to_preserve <String>
+ -upload_timeslot <String> -video_quality <String> -video_to_upload <String>
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -32,7 +33,7 @@ This will set the camera cwdfwfw-3f3-cwdf2-cameraId to use cloud backup with the
 
 ### EXAMPLE 2
 ```
-Set-VerkadaCloudBackupSettings -enabled 1 -upload_timeslot '0,86400' -time_to_preserve '25200,68400' -days_to_preserve '1,1,1,1,1,1,1'  -video_to_upload 'ALL' -video_quality 'STANDARD_QUALITY' -camera_id 'cwdfwfw-3f3-cwdf2-cameraId' -org_id 'deds343-uuid-of-org' -x_api_key 'sd78ds-uuid-of-verkada-token'
+Set-VerkadaCloudBackupSettings -enabled 1 -upload_timeslot '0,86400' -time_to_preserve '25200,68400' -days_to_preserve '1,1,1,1,1,1,1'  -video_to_upload 'ALL' -video_quality 'STANDARD_QUALITY' -camera_id 'cwdfwfw-3f3-cwdf2-cameraId' -org_id 'deds343-uuid-of-org' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
 This will set the camera cwdfwfw-3f3-cwdf2-cameraId to use cloud backup with the submitted settings.  The org_id and tokens are submitted as parameters in the call.
 ```
 
@@ -74,8 +75,8 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -x_api_key
-The public API key to be used for calls that hit the public API gateway
+### -x_verkada_auth_api
+The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 
 ```yaml
 Type: String
@@ -84,7 +85,22 @@ Aliases:
 
 Required: False
 Position: 3
-Default value: $Global:verkadaConnection.token
+Default value: $Global:verkadaConnection.x_verkada_auth_api
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -region
+The region of the public API to be used
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: Api
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

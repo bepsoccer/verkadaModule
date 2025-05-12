@@ -14,8 +14,8 @@ Retrieves the camera config and feature settings present in Command for the spec
 
 ```
 Get-VerkadaCameraConfig [-cameraId] <String> [-org_id <String>] [-x_verkada_token <String>]
- [-x_verkada_auth <String>] [-usr <String>] [[-x_api_key] <String>] [-batchSize <Int32>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-x_verkada_auth <String>] [-usr <String>] [[-x_verkada_auth_api] <String>] [-region <String>]
+ [-batchSize <Int32>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -45,7 +45,7 @@ This will retieve the config information for all of the cameraId's present in th
 
 ### EXAMPLE 4
 ```
-Get-VerkadaCameraConfig -cameraId '6fbdcd72-a2ec-4016-9c6f-21553a42c998' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc'
+Get-VerkadaCameraConfig -cameraId '6fbdcd72-a2ec-4016-9c6f-21553a42c998' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc'
 This will retieve the config information for the camera with Id 6fbdcd72-a2ec-4016-9c6f-21553a42c998.  The org_id and tokens are submitted as parameters in the call.
 ```
 
@@ -126,8 +126,8 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -x_api_key
-The public API key to be used for calls that hit the public API gateway
+### -x_verkada_auth_api
+The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 
 ```yaml
 Type: String
@@ -136,7 +136,22 @@ Aliases:
 
 Required: False
 Position: 2
-Default value: $Global:verkadaConnection.token
+Default value: $Global:verkadaConnection.x_verkada_auth_api
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -region
+The region of the public API to be used
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: Api
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

@@ -57,10 +57,10 @@ function Set-VerkadaCameraName
 		[Parameter()]
 		[ValidateNotNullOrEmpty()]
 		[string]$x_verkada_auth = $Global:verkadaConnection.userToken,
-		#The public API key to be used for calls that hit the public API gateway
+		#The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 		[Parameter(ParameterSetName = 'serial')]
 		[ValidateNotNullOrEmpty()]
-		[String]$x_api_key = $Global:verkadaConnection.token
+		[String]$x_verkada_auth_api = $Global:verkadaConnection.x_verkada_auth_api
 	)
 
 	Begin {
@@ -69,7 +69,7 @@ function Set-VerkadaCameraName
 		if ([string]::IsNullOrEmpty($x_verkada_token)) {throw "x_verkada_token is missing but is required!"}
 		if ([string]::IsNullOrEmpty($x_verkada_auth)) {throw "x_verkada_auth is missing but is required!"}
 		if ($PSCmdlet.ParameterSetName -eq 'serial'){
-			if ([string]::IsNullOrEmpty($x_api_key)) {throw "x_api_key is missing but is required!"}
+		if ([string]::IsNullOrEmpty($x_verkada_auth_api)) {throw "x_verkada_auth_api is missing but is required!"}
 		}
 		
 		$url = "https://vprovision.command.verkada.com/camera/name/set"
