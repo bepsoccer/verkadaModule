@@ -16,7 +16,7 @@ function Get-VerkadaCameras
 		This will return all the cameras in the org.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 		
 		.EXAMPLE
-		Get-VerkadaCameras -org_id 'deds343-uuid-of-org' -x_api_key 'sd78ds-uuid-of-verkada-token'
+		Get-VerkadaCameras -org_id 'deds343-uuid-of-org' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
 		This will return all the cameras in the org.  The org_id and tokens are submitted as parameters in the call.
 		
 		.EXAMPLE
@@ -35,10 +35,10 @@ function Get-VerkadaCameras
 		[ValidateNotNullOrEmpty()]
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[String]$org_id = $Global:verkadaConnection.org_id,
-		#The public API key to be used for calls that hit the public API gateway
+		#The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 		[Parameter(Position = 1)]
 		[ValidateNotNullOrEmpty()]
-		[String]$x_api_key = $Global:verkadaConnection.token,
+		[String]$x_verkada_auth_api = $Global:verkadaConnection.x_verkada_auth_api,
 		#The serial of the camera you are querying
 		[Parameter(ValueFromPipelineByPropertyName = $true, Position = 2)]
 		[String]$serial,
@@ -53,14 +53,14 @@ function Get-VerkadaCameras
 		$propertyName = 'cameras'
 		#parameter validation
 		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
-		if ([string]::IsNullOrEmpty($x_api_key)) {throw "x_api_key is missing but is required!"}
+		if ([string]::IsNullOrEmpty($x_verkada_auth_api)) {throw "x_verkada_auth_api is missing but is required!"}
 
 		$response = @()
 
 		if ((!([string]::IsNullOrEmpty($global:verkadaCameras))) -and (!($refresh.IsPresent))) { 
 			$cameras = $Global:verkadaCameras
 		} else {
-			$cameras = Invoke-VerkadaRestMethod $url $org_id $x_api_key -pagination -page_size $page_size -propertyName $propertyName
+			$cameras = Invoke-VerkadaRestMethod $url $org_id $x_verkada_auth_api -pagination -page_size $page_size -propertyName $propertyName
 			$Global:verkadaCameras = $cameras
 		}
 	} #end begin

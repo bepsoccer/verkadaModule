@@ -23,7 +23,7 @@ function Add-VerkadaLicensePlateOfInterest{
 		The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Add-VerkadaLicensePlateOfInterest -license_plate 'ABC123' -description 'New License Plate' -org_id 'deds343-uuid-of-org' -x_api_key 'sd78ds-uuid-of-verkada-token'
+		Add-VerkadaLicensePlateOfInterest -license_plate 'ABC123' -description 'New License Plate' -org_id 'deds343-uuid-of-org' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
 		The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
@@ -40,17 +40,17 @@ function Add-VerkadaLicensePlateOfInterest{
 		#The description for the License Plate of Interest
 		[Parameter(ValueFromPipelineByPropertyName = $true, Position = 1, Mandatory = $true)]
 		[String]$description,
-		#The public API key to be used for calls that hit the public API gateway
+		#The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
-		[String]$x_api_key = $Global:verkadaConnection.token
+		[String]$x_verkada_auth_api = $Global:verkadaConnection.x_verkada_auth_api
 	)
 
 	Begin {
 		$url = "https://api.verkada.com/cameras/v1/analytics/lpr/license_plate_of_interest"
 		#parameter validation
 		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
-		if ([string]::IsNullOrEmpty($x_api_key)) {throw "x_api_key is missing but is required!"}
+		if ([string]::IsNullOrEmpty($x_verkada_auth_api)) {throw "x_verkada_auth_api is missing but is required!"}
 	} #end begin
 	
 	Process {
@@ -60,7 +60,7 @@ function Add-VerkadaLicensePlateOfInterest{
 		}
 
 		try {
-		$response = Invoke-VerkadaRestMethod $url $org_id $x_api_key -body_params $body_params -method post
+		$response = Invoke-VerkadaRestMethod $url $org_id $x_verkada_auth_api -body_params $body_params -method post
 		return $response
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {
