@@ -23,7 +23,7 @@ function Get-VerkadaCameraConfig{
 		This will retieve the config information for all of the cameraId's present in the given CSV.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Get-VerkadaCameraConfig -cameraId '6fbdcd72-a2ec-4016-9c6f-21553a42c998' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'sd78ds-uuid-of-verkada-token' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc'
+		Get-VerkadaCameraConfig -cameraId '6fbdcd72-a2ec-4016-9c6f-21553a42c998' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc'
 		This will retieve the config information for the camera with Id 6fbdcd72-a2ec-4016-9c6f-21553a42c998.  The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
@@ -52,10 +52,14 @@ function Get-VerkadaCameraConfig{
 		[ValidateNotNullOrEmpty()]
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[string]$usr = $Global:verkadaConnection.usr,
-		#The public API key to be used for calls that hit the public API gateway
+		#The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 		[Parameter(Position = 1)]
 		[ValidateNotNullOrEmpty()]
-		[String]$x_api_key = $Global:verkadaConnection.token,
+		[String]$x_verkada_auth_api = $Global:verkadaConnection.x_verkada_auth_api,
+		#The region of the public API to be used
+		[Parameter()]
+		[ValidateSet('api','api.eu','api.au')]
+		[String]$region='api',
 		#The size of the batch of camera Ids to process in a single call
 		[Parameter()]
 		[Int]$batchSize = 100
@@ -64,7 +68,7 @@ function Get-VerkadaCameraConfig{
 	begin {
 		#parameter validation
 		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
-		if ([string]::IsNullOrEmpty($x_api_key)) {throw "x_api_key is missing but is required!"}
+		if ([string]::IsNullOrEmpty($x_verkada_auth_api)) {throw "x_verkada_auth_api is missing but is required!"}
 		if ([string]::IsNullOrEmpty($x_verkada_token)) {throw "x_verkada_token is missing but is required!"}
 		if ([string]::IsNullOrEmpty($x_verkada_auth)) {throw "x_verkada_auth is missing but is required!"}
 		if ([string]::IsNullOrEmpty($usr)) {throw "usr is missing but is required!"}
