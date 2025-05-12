@@ -47,6 +47,10 @@ function Connect-Verkada
 		[Alias('token')]
 		[ValidateNotNullOrEmpty()]
 		[String]$x_api_key,
+		#The region of the public API to be used
+		[Parameter()]
+		[ValidateSet('api','api.eu','api.au')]
+		[String]$region='api',
 		#The admin user name to be used to obtain needed session and auth tokens
 		[Parameter(ParameterSetName = 'UnPwd', Mandatory = $true)]
 		[ValidateNotNullOrEmpty()]
@@ -92,6 +96,7 @@ function Connect-Verkada
 		If (!($Global:verkadaConnection)){
 			$Global:verkadaConnection = @{
 				org_id		= $org_id
+				region		= $region
 			}
 		}
 		
@@ -103,7 +108,7 @@ function Connect-Verkada
 					'x-api-key' = $Global:verkadaConnection.x_api_key
 				}
 
-				$x_verkada_auth_api = Invoke-RestMethod -Uri 'https://api.verkada.com/token' -Method 'POST' -Headers $login_headers | Select-Object -ExpandProperty token
+				$x_verkada_auth_api = Invoke-RestMethod -Uri "https://$($region).verkada.com/token" -Method 'POST' -Headers $login_headers | Select-Object -ExpandProperty token
 				$Global:verkadaConnection.x_verkada_auth_api = $x_verkada_auth_api
 
 				$body = @{
@@ -114,7 +119,7 @@ function Connect-Verkada
 					'x-verkada-auth' = $Global:verkadaConnection.x_verkada_auth_api
 				}
 				
-				$response = Invoke-RestMethod -Uri 'https://api.verkada.com/core/v1/audit_log' -Body $body -Headers $headers -StatusCodeVariable responseCode
+				$response = Invoke-RestMethod -Uri "https://$($region).verkada.com/core/v1/audit_log" -Body $body -Headers $headers -StatusCodeVariable responseCode
 				if (!($noOutput)){Write-Host -ForegroundColor green "$responseCode - Successfully connected to Verkada Command with API Token"}
 				return
 			} catch [Microsoft.PowerShell.Commands.HttpResponseException] {

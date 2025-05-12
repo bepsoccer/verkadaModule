@@ -39,6 +39,10 @@ function Get-VerkadaCameras
 		[Parameter(Position = 1)]
 		[ValidateNotNullOrEmpty()]
 		[String]$x_verkada_auth_api = $Global:verkadaConnection.x_verkada_auth_api,
+		#The region of the public API to be used
+		[Parameter()]
+		[ValidateSet('api','api.eu','api.au')]
+		[String]$region='api',
 		#The serial of the camera you are querying
 		[Parameter(ValueFromPipelineByPropertyName = $true, Position = 2)]
 		[String]$serial,
@@ -48,7 +52,7 @@ function Get-VerkadaCameras
 	)
 
 	Begin {
-		$url = "https://api.verkada.com/cameras/v1/devices"
+		$url = "https://$($region).verkada.com/cameras/v1/devices"
 		$page_size = 200
 		$propertyName = 'cameras'
 		#parameter validation

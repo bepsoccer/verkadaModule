@@ -39,6 +39,10 @@ function Set-VerkadaCloudBackupSettings
 		[Parameter(Position = 2)]
 		[ValidateNotNullOrEmpty()]
 		[String]$x_verkada_auth_api = $Global:verkadaConnection.x_verkada_auth_api,
+		#The region of the public API to be used
+		[Parameter()]
+		[ValidateSet('api','api.eu','api.au')]
+		[String]$region='api',
 		#Delimited list of booleans indicating which days footage should be uploaded. The elements in the array indicate the following days in order: Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday. If value is 1, cloud backup is on for that day. If value is 0, cloud backup is off for that day. For example, 0,1,1,1,1,1,0 means only backup on weekdays.
 		[Parameter(ValueFromPipelineByPropertyName = $true, Mandatory = $true)]
 		[ValidatePattern("[0-1],[0-1],[0-1],[0-1],[0-1],[0-1],[0-1]")]
@@ -70,7 +74,7 @@ function Set-VerkadaCloudBackupSettings
 		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
 		if ([string]::IsNullOrEmpty($x_verkada_auth_api)) {throw "x_verkada_auth_api is missing but is required!"}
 		
-		$url = "https://api.verkada.com/cameras/v1/cloud_backup/settings"
+		$url = "https://$($region).verkada.com/cameras/v1/cloud_backup/settings"
 		$result = @()
 		Write-Warning "Have you backed up your configs first? If not, consider halting and running Get-VerkadaCloudBackupSettings -backup" -WarningAction Inquire
 	} #end begin

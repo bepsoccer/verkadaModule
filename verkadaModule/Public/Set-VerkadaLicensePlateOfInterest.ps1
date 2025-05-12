@@ -47,7 +47,7 @@ function Set-VerkadaLicensePlateOfInterest{
 	)
 
 	Begin {
-		$url = "https://api.verkada.com/cameras/v1/analytics/lpr/license_plate_of_interest"
+		$url = "https://$($region).verkada.com/cameras/v1/analytics/lpr/license_plate_of_interest"
 		#parameter validation
 		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
 		if ([string]::IsNullOrEmpty($x_verkada_auth_api)) {throw "x_verkada_auth_api is missing but is required!"}
