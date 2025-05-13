@@ -64,6 +64,10 @@ function Get-VerkadaAccessUserProfilePicture{
 	} #end begin
 	
 	process {
+		if ([string]::IsNullOrEmpty($externalId) -and [string]::IsNullOrEmpty($userId)){
+			Write-Error "Either externalId or userId required"
+			return
+		}
 		$body_params = @{}
 		function testOutPath {
 			param ($folderPath)
