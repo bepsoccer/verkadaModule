@@ -15,8 +15,8 @@ function Set-VerkadaAccessUserProfilePicture{
 		This sets the Access user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 to use the picture specified at path ./myPicture.jpg.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Set-VerkadaAccessUserProfilePicture -externalId 'newUserUPN@contoso.com' -imagePath './myPicture.png' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
-		This sets the Access user with externalId newUserUPN@contoso.com to use the picture specified at path ./myPicture.png.  The org_id and tokens are submitted as parameters in the call.
+		Set-VerkadaAccessUserProfilePicture -externalId 'newUserUPN@contoso.com' -imagePath './myPicture.png' -overwrite $true -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+		This sets the Access user with externalId newUserUPN@contoso.com to use the picture specified at path ./myPicture.png and will overwrite the existing photo.  The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
 	[Alias("Set-VrkdaAcUsrPrflPic","s-VrkdaAcUsrPrflPic")]
