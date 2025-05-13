@@ -12,9 +12,17 @@ Used to build an Invoke-RestMethod call for Verkada's private API enpoints that 
 
 ## SYNTAX
 
+### Default (Default)
 ```
-Invoke-VerkadaFormCall [-url] <String> [-org_id] <String> [-form_params] <Object> [-method <String>]
- -x_verkada_token <String> -x_verkada_auth <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Invoke-VerkadaFormCall [-url] <String> [-org_id] <String> [-form_params] <Object> [-query_params <Object>]
+ [-method <String>] [-x_verkada_auth_api <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+### UnPwd
+```
+Invoke-VerkadaFormCall [-url] <String> [-org_id] <String> [-form_params] <Object> [-query_params <Object>]
+ [-method <String>] -x_verkada_token <String> -x_verkada_auth <String> [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -76,6 +84,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -query_params
+Object containing the query parameters need that will be put into the query string of the uri
+
+```yaml
+Type: Object
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -method
 HTTP method required
 
@@ -96,7 +119,7 @@ The Verkada(CSRF) token of the user running the command
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: UnPwd
 Aliases:
 
 Required: True
@@ -111,10 +134,25 @@ The Verkada Auth(session auth) token of the user running the command
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: UnPwd
 Aliases:
 
 Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -x_verkada_auth_api
+The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
+
+```yaml
+Type: String
+Parameter Sets: Default
+Aliases:
+
+Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False

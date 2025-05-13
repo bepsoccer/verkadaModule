@@ -8,20 +8,20 @@ schema: 2.0.0
 # Set-VerkadaAccessUserProfilePicture
 
 ## SYNOPSIS
-Adds/replaces an Access user's profile picture in an organization.
+Adds/replaces an Access user's profile picture in an organization using https://apidocs.verkada.com/reference/putprofilephotoviewv1
 
 ## SYNTAX
 
 ```
-Set-VerkadaAccessUserProfilePicture [[-userId] <String>] [[-imagePath] <String>] [[-org_id] <String>]
- [[-x_verkada_token] <String>] [[-x_verkada_auth] <String>] [[-usr] <String>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Set-VerkadaAccessUserProfilePicture [[-userId] <String>] [[-externalId] <String>] [[-imagePath] <String>]
+ [[-overwrite] <Boolean>] [[-org_id] <String>] [[-x_verkada_auth_api] <String>] [[-region] <String>]
+ [-errorsToFile] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-This will set the Access user's, specified by the userId, profile picture. 
+This will set the Access user's, specified by the user_Id or external_ID, profile picture. 
 This must be a png or jpeg/jpg format image.
-The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
+The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
@@ -33,8 +33,8 @@ This sets the Access user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 to us
 
 ### EXAMPLE 2
 ```
-Set-VerkadaAccessUserProfilePicture -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -imagePath './myPicture.png' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc' -usr 'a099bfe6-34ff-4976-9d53-ac68342d2b60'
-This sets the Access user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 to use the picture specified at path ./myPicture.png.  The org_id and tokens are submitted as parameters in the call.
+Set-VerkadaAccessUserProfilePicture -externalId 'newUserUPN@contoso.com' -imagePath './myPicture.png' -overwrite $true -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+This sets the Access user with externalId newUserUPN@contoso.com to use the picture specified at path ./myPicture.png and will overwrite the existing photo.  The org_id and tokens are submitted as parameters in the call.
 ```
 
 ## PARAMETERS
@@ -54,6 +54,21 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
+### -externalId
+unique identifier managed externally provided by the consumer
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases: external_id
+
+Required: False
+Position: 2
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
 ### -imagePath
 This is the path the image will be uploaded from
 
@@ -63,8 +78,23 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 2
+Position: 3
 Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -overwrite
+The flag that states whether to overwrite the existing profile photo
+
+```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 4
+Default value: False
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
@@ -78,44 +108,14 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 3
+Position: 5
 Default value: $Global:verkadaConnection.org_id
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -x_verkada_token
-The Verkada(CSRF) token of the user running the command
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 4
-Default value: $Global:verkadaConnection.csrfToken
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -x_verkada_auth
-The Verkada Auth(session auth) token of the user running the command
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 5
-Default value: $Global:verkadaConnection.userToken
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -usr
-The UUID of the user account making the request
+### -x_verkada_auth_api
+The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 
 ```yaml
 Type: String
@@ -124,7 +124,37 @@ Aliases:
 
 Required: False
 Position: 6
-Default value: $Global:verkadaConnection.usr
+Default value: $Global:verkadaConnection.x_verkada_auth_api
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -region
+The region of the public API to be used
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 7
+Default value: Api
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -errorsToFile
+Switch to write errors to file
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
