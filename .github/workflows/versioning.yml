@@ -1,10 +1,10 @@
 name: Versioning and Documentation
 on:
-  push:
-    branches: [ "release" ]
-    paths-ignore:
-      - 'docs/**'
-      - 'README.md'
+  #push:
+  #  branches: [ "release" ]
+  #  paths-ignore:
+  #    - 'docs/**'
+  #    - 'README.md'
   pull_request_target:
     types:
       - closed 
@@ -14,7 +14,7 @@ env:
   PROJECT: verkadaModule
 jobs:
   Patch:
-    if: ${{ github.event_name == 'push' && !(startsWith(github.head_ref, 'minor/') && github.event.pull_request.merged == true) && !(startsWith(github.head_ref, 'major/') && github.event.pull_request.merged == true) }}
+    if: ${{ !(startsWith(github.head_ref, 'minor/') && github.event.pull_request.merged == true) && !(startsWith(github.head_ref, 'major/') && github.event.pull_request.merged == true) }}
     outputs:
       version: ${{ steps.buildUpdate.outputs.v }}
     runs-on: ubuntu-latest
