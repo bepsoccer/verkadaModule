@@ -37,6 +37,7 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Bumping release to ${{ steps.buildUpdate.outputs.v }}
+          branch: release
   Minor:
     if: startsWith(github.head_ref, 'minor/') && github.event.pull_request.merged == true
     outputs:
