@@ -38,6 +38,7 @@ jobs:
         with:
           commit_message: Bumping release to ${{ steps.buildUpdate.outputs.v }}
           branch: release
+          push_options: '--force'
   Minor:
     if: startsWith(github.head_ref, 'minor/') && github.event.pull_request.merged == true
     outputs:
@@ -63,6 +64,7 @@ jobs:
         with:
           commit_message: Bumping release to ${{ steps.buildUpdate.outputs.v }}
           branch: release
+          push_options: '--force'
   Major:
     if: startsWith(github.head_ref, 'major/') && github.event.pull_request.merged == true
     outputs:
@@ -88,3 +90,4 @@ jobs:
         with:
           commit_message: Bumping release to ${{ steps.buildUpdate.outputs.v }}
           branch: release
+          push_options: '--force'
