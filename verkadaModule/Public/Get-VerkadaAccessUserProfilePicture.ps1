@@ -19,7 +19,7 @@ function Get-VerkadaAccessUserProfilePicture{
 		This downloads the Access user's, with externalId newUserUPN@contoso.com picture to ./MyProfilePics/newUserUPN.jpg.  The org_id and token are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
-	[Alias("Get-VrkdaAcUsrPrflPic","g-VrkdaAcUsrPrflPic")]
+	[Alias("Export-VerkadaAccessUserProfilePicture","Get-VrkdaAcUsrPrflPic","g-VrkdaAcUsrPrflPic","Export-VrkdaAcUsrPrflPic","ep-VrkdaAcUsrPrflPic")]
 	param (
 		#The UUID of the user
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
