@@ -63,7 +63,10 @@ function Invoke-VerkadaRestMethod
 		[string]$x_verkada_auth,
 		#Switch to indicate username/password auth is required
 		[Parameter(ParameterSetName = 'UnPwd')]
-		[Switch]$UnPwd
+		[Switch]$UnPwd,
+		#This is the path output files will attempt to saved to
+		[Parameter()]
+		[string]$outFile
 	)
 
 	Process {
@@ -105,8 +108,19 @@ function Invoke-VerkadaRestMethod
 				$loop = $false
 				$rt = 0
 				do {
+					$params = @{
+						'uri'									= $uri
+						'Body'								= $body
+						'ContentType'					= 'application/json'
+						'Method'							= $method
+						'Headers'							= $headers
+						'TimeoutSec'					= 5
+						'StatusCodeVariable'	= 'resCode'
+						'SkipHttpErrorCheck'	= $true
+					}
+					if (!([string]::IsNullOrEmpty($outFile))){$params.outFile = $outFile}
 					try {
-						$response = Invoke-RestMethod -Uri $uri -Body $body -Headers $headers -ContentType 'application/json' -TimeoutSec 5 -SkipHttpErrorCheck -StatusCodeVariable resCode
+						$response = Invoke-RestMethod @params
 						$records += $response.($propertyName)
 						$page_token = $response.next_page_token
 
@@ -169,8 +183,19 @@ function Invoke-VerkadaRestMethod
 			$loop = $false
 			$rt = 0
 			do {
+				$params = @{
+					'uri'									= $uri
+					'Body'								= $body
+					'ContentType'					= 'application/json'
+					'Method'							= $method
+					'Headers'							= $headers
+					'TimeoutSec'					= 5
+					'StatusCodeVariable'	= 'resCode'
+					'SkipHttpErrorCheck'	= $true
+				}
+				if (!([string]::IsNullOrEmpty($outFile))){$params.outFile = $outFile}
 				try {
-					$response = Invoke-RestMethod -Uri $uri -Body $body -Headers $headers -Method $method -ContentType 'application/json' -TimeoutSec 5 -SkipHttpErrorCheck -StatusCodeVariable resCode
+					$response = Invoke-RestMethod @params
 
 					switch ($resCode) {
 						{($_ -eq 200) -or ($_ -eq 201)} {
