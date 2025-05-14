@@ -68,6 +68,15 @@ function Get-VerkadaAccessUserProfilePicture{
 			Write-Error "Either externalId or userId required"
 			return
 		}
+		
+		if (!([string]::IsNullOrEmpty($userId))){
+			$hasPhoto = Get-VerkadaAccessUser -userId $userId -org_id $org_id -x_verkada_auth_api $x_verkada_auth_api -region $region | Select-Object -ExpandProperty has_profile_photo
+			if (!($hasPhoto)){throw "No profile picture exists for $userId"}
+		} elseif (!([string]::IsNullOrEmpty($externalId))){
+			$hasPhoto = Get-VerkadaAccessUser -externalId $externalId -org_id $org_id -x_verkada_auth_api $x_verkada_auth_api -region $region | Select-Object -ExpandProperty has_profile_photo
+			if (!($hasPhoto)){throw "No profile picture exists for $externalId"}
+		}
+
 		$body_params = @{}
 		function testOutPath {
 			param ($folderPath)
