@@ -1,25 +1,25 @@
-function Remove-VerkadaAccessUserProfilePicture{
+function Get-VerkadaAccessUserProfilePicture{
 	<#
 		.SYNOPSIS
-		Deletes a profile photo for the specified user using https://apidocs.verkada.com/reference/deleteprofilephotoviewv1
+		Retrieves a profile photo for the specified Access user using https://apidocs.verkada.com/reference/getprofilephotoviewv1
 
 		.DESCRIPTION
-		This will remove the Access user's, specified by the user_Id or external_Id, profile picture.
+		This will download the Access user's, specified by the user_Id or external_Id, current profile picture.
 		The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
-		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Remove-VerkadaAccessUserProfilePicture.md
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaAccessUserProfilePicture.md
 
 		.EXAMPLE
-		Remove-VerkadaAccessUserProfilePicture -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3'
-		This removes the Access user's profile picture with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		Export-VerkadaAccessUserProfilePicture -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -outPath './MyProfilePics'
+		This downloads the Access user's, with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3, picture to ./MyProfilePics/801c9551-b04c-4293-84ad-b0a6aa0588b3.jpg.  The org_id and token will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Remove-VerkadaAccessUserProfilePicture -externalId 'newUserUPN@contoso.com' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
-		This removes the Access user's profile picture with externalId newUserUPN@contoso.com.  The org_id and tokens are submitted as parameters in the call.
+		Export-VerkadaAccessUserProfilePicture -externalId 'newUserUPN@contoso.com' -outPath './MyProfilePics' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+		This downloads the Access user's, with externalId newUserUPN@contoso.com picture to ./MyProfilePics/newUserUPN.jpg.  The org_id and token are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
-	[Alias("Remove-VrkdaAcUsrPrflPic","rm-VrkdaAcUsrPrflPic")]
+	[Alias("Export-VerkadaAccessUserProfilePicture","Get-VrkdaAcUsrPrflPic","g-VrkdaAcUsrPrflPic","Export-VrkdaAcUsrPrflPic","ep-VrkdaAcUsrPrflPic")]
 	param (
 		#The UUID of the user
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
@@ -31,6 +31,12 @@ function Remove-VerkadaAccessUserProfilePicture{
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[Alias('external_id')]
 		[String]$externalId,
+		#This is the path the picture/s will attempt to be saved to
+		[Parameter()]
+		[string]$outPath='./',
+		#The flag that states whether to download the original or cropped version
+		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		[bool]$original=$false,
 		#The UUID of the organization the user belongs to
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
@@ -62,18 +68,48 @@ function Remove-VerkadaAccessUserProfilePicture{
 			Write-Error "Either externalId or userId required"
 			return
 		}
-		$body_params = @{}
 		
-		$query_params = @{}
+		if (!([string]::IsNullOrEmpty($userId))){
+			$hasPhoto = Get-VerkadaAccessUser -userId $userId -org_id $org_id -x_verkada_auth_api $x_verkada_auth_api -region $region | Select-Object -ExpandProperty has_profile_photo
+			if (!($hasPhoto)){throw "No profile picture exists for $userId"}
+		} elseif (!([string]::IsNullOrEmpty($externalId))){
+			$hasPhoto = Get-VerkadaAccessUser -externalId $externalId -org_id $org_id -x_verkada_auth_api $x_verkada_auth_api -region $region | Select-Object -ExpandProperty has_profile_photo
+			if (!($hasPhoto)){throw "No profile picture exists for $externalId"}
+		}
+
+		$body_params = @{}
+		function testOutPath {
+			param ($folderPath)
+			try {
+				if([string]::IsNullOrEmpty($folderPath)){Throw "no path provided"}
+				Get-ChildItem -Path $folderPath -ErrorAction Stop | Out-Null
+				$folderPath = ($folderPath | Resolve-Path).Path
+				return $folderPath
+			}
+			catch {
+				Write-Warning $_.Exception.Message
+				$folderPath = Read-Host -Prompt 'Please provide a valid folder path for the AC profile picture/s to be saved to.'
+				testOutPath $folderPath
+			}
+		}
+
+		$outPath = testOutPath $outPath
+
+		$query_params = @{
+			'original'	= $original
+		}
+
 		if (!([string]::IsNullOrEmpty($userId))){
 			$query_params.user_id = $userId
+			$outFile = Join-Path $outPath "$userId.jpg"
 		} elseif (!([string]::IsNullOrEmpty($externalId))){
 			$query_params.external_id = $externalId
+			$outFile = Join-Path $outPath "$($externalId.TrimEnd().Split('@')[0].replace('.','_')).jpg"
 		}
 		
 		try {
-			Invoke-VerkadaRestMethod $url $org_id $x_verkada_auth_api $query_params -body_params $body_params -method 'DELETE'
-			return "Profile pictured removed from user $($query_params | ConvertTo-Json -Compress)"
+			Invoke-VerkadaRestMethod $url $org_id $x_verkada_auth_api $query_params -method GET -outFile $outFile
+			return
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {
 			$err = $_.ErrorDetails | ConvertFrom-Json
