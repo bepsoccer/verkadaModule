@@ -15,22 +15,22 @@ Used to build an Invoke-RestMethod call for Verkada's private API enpoints
 ### Default (Default)
 ```
 Invoke-VerkadaRestMethod [-url] <String> [-org_id] <String> [-x_verkada_auth_api] <String>
- [[-query_params] <Object>] [[-body_params] <Object>] [-method <String>] [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+ [[-query_params] <Object>] [[-body_params] <Object>] [-method <String>] [-outFile <String>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### UnPwd
 ```
 Invoke-VerkadaRestMethod [-url] <String> [-org_id] <String> [[-body_params] <Object>] [-method <String>]
- -x_verkada_token <String> -x_verkada_auth <String> [-UnPwd] [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+ -x_verkada_token <String> -x_verkada_auth <String> [-UnPwd] [-outFile <String>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### Pagination
 ```
 Invoke-VerkadaRestMethod [-url] <String> [-org_id] <String> [-x_verkada_auth_api] <String>
  [[-query_params] <Object>] [[-body_params] <Object>] [-method <String>] [-pagination] -page_size <String>
- -propertyName <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ -propertyName <String> [-outFile <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -223,6 +223,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -outFile
+This is the path output files will attempt to saved to
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
