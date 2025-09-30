@@ -127,7 +127,7 @@ function Invoke-VerkadaRestMethod
 						switch ($resCode) {
 							{($_ -eq 200) -or ($_ -eq 201)} {
 								$loop = $true
-								return $response
+								#return $response
 							}
 							429 {
 								$rt++
