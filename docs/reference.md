@@ -22,6 +22,7 @@
 * [Get-VerkadaAccessDoorConfigReport](function-documentation/Get-VerkadaAccessDoorConfigReport.md)
 * [Get-VerkadaAccessDoors](function-documentation/Get-VerkadaAccessDoors.md)
 * [Get-VerkadaAccessDoorSchedules](function-documentation/Get-VerkadaAccessDoorSchedules.md)
+* [Get-VerkadaAccessEvents](function-documentation/Get-VerkadaAccessEvents.md)
 * [Get-VerkadaAccessGroup](function-documentation/Get-VerkadaAccessGroup.md)
 * [Get-VerkadaAccessLevels](function-documentation/Get-VerkadaAccessLevels.md)
 * [Get-VerkadaAccessSite](function-documentation/Get-VerkadaAccessSite.md)
