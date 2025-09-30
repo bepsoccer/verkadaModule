@@ -52,6 +52,9 @@ function Get-VerkadaAccessEvents{
 		#The optional user_id/s for the events
 		[Parameter()]
 		[string[]]$user_id,
+		#Switch to convert timestamps to local time
+		[Parameter()]
+		[switch]$toLocalTime,
 		#Switch to write errors to file
 		[Parameter()]
 		[switch]$errorsToFile
@@ -70,11 +73,11 @@ function Get-VerkadaAccessEvents{
 		$query_params = @{}
 
 		if (!([string]::IsNullOrEmpty($start_time))){
-			$start_time_epoch = (New-TimeSpan -Start (Get-Date "01/01/1970") -End $start_time).TotalSeconds
+			$start_time_epoch = (New-TimeSpan -Start (Get-Date "01/01/1970") -End $start_time.ToUniversalTime()).TotalSeconds
 			$query_params.start_time = $start_time_epoch
 		}
 		if (!([string]::IsNullOrEmpty($end_time))){
-			$end_time_epoch = (New-TimeSpan -Start (Get-Date "01/01/1970") -End $end_time).TotalSeconds
+			$end_time_epoch = (New-TimeSpan -Start (Get-Date "01/01/1970") -End $end_time.ToUniversalTime()).TotalSeconds
 			$query_params.end_time = $end_time_epoch
 		}
 		if (!([string]::IsNullOrEmpty($event_type))){$query_params.event_type = $event_type -join ','}
@@ -84,6 +87,11 @@ function Get-VerkadaAccessEvents{
 		
 		try {
 			$response = Invoke-VerkadaRestMethod $url $org_id $x_verkada_auth_api $query_params -body_params $body_params -method GET -pagination -page_size 200 -propertyName 'events'
+			if ($toLocalTime.IsPresent){
+				foreach ($e in $response){
+					$e.timestamp = (Get-Date -Date ($e.timestamp) -AsUTC).ToLocalTime()
+				}
+			}
 			return $response
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {
