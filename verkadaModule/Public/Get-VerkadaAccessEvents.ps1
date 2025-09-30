@@ -84,7 +84,7 @@ function Get-VerkadaAccessEvents{
 		
 		try {
 			$response = Invoke-VerkadaRestMethod $url $org_id $x_verkada_auth_api $query_params -body_params $body_params -method GET -pagination -page_size 200 -propertyName 'events'
-			return $response.events
+			return $response
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {
 			$err = $_.ErrorDetails | ConvertFrom-Json
