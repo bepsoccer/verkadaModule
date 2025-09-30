@@ -15,8 +15,8 @@ Returns Verkada Access Control events using https://apidocs.verkada.com/referenc
 ```
 Get-VerkadaAccessEvents [[-org_id] <String>] [[-x_verkada_auth_api] <String>] [[-region] <String>]
  [[-start_time] <DateTime>] [[-end_time] <DateTime>] [[-event_type] <String[]>] [[-side_id] <String[]>]
- [[-device_id] <String[]>] [[-user_id] <String[]>] [-errorsToFile] [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+ [[-device_id] <String[]>] [[-user_id] <String[]>] [-toLocalTime] [-errorsToFile]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -170,6 +170,21 @@ Aliases:
 Required: False
 Position: 9
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -toLocalTime
+Switch to convert timestamps to local time
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
