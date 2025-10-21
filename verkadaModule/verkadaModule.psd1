@@ -117,9 +117,9 @@ FunctionsToExport = 'Add-VerkadaAccessGroup', 'Add-VerkadaAccessSiteAdmin',
                'Set-VerkadaCameraOrientation', 'Set-VerkadaCameraSite', 
                'Set-VerkadaCameraTamperSensitivity', 
                'Set-VerkadaCloudBackupSettings', 'Set-VerkadaCommandPermissions', 
-               'Set-VerkadaCommandUser', 'Set-VerkadaLicensePlateOfInterest', 
-               'Set-VerkadaSitePermissions', 'Set-VerkadaWorkplaceEmployee', 
-               'Unlock-VerkadaAccessDoor'
+               'Set-VerkadaCommandUser', 'Set-VerkadaHelixEvent', 
+               'Set-VerkadaLicensePlateOfInterest', 'Set-VerkadaSitePermissions', 
+               'Set-VerkadaWorkplaceEmployee', 'Unlock-VerkadaAccessDoor'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
@@ -167,7 +167,8 @@ AliasesToExport = 'a-VrkdaAcGrp', 'Add-VrkdaAcGrp', 'a-VrkdaAcUsrCrd',
                's-VrkdAlrmBr33Setgs', 's-VrkdAlrmPancSetgs', 'Set-VrkdAlrmPancSetgs', 
                'Set-VrkdaCamOrnt', 'VrkdaCamOrnt', 'Set-VrkdaCamTmprSen', 
                'VrkdaCamTmprSen', 'Set-VrkdaCmdUsr', 'st-VrkdaCmdUsr', 
-               'Set-VerkadaLPoI', 'Set-VrkdaWrkEmp', 'st-VrkdaWrkEmp', 'uk-VrkdAcDoor', 
+               'Set-VrkdaHlxEvt', 'st-VrkdaHlxEvt', 'Set-VerkadaLPoI', 
+               'Set-VrkdaWrkEmp', 'st-VrkdaWrkEmp', 'uk-VrkdAcDoor', 
                'Unlock-VrkdAcDoor'
 
 # DSC resources to export from this module
