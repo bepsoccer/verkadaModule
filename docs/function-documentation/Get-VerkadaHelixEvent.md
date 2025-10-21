@@ -1,42 +1,41 @@
 ---
 external help file: verkadaModule-help.xml
 Module Name: verkadaModule
-online version: https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Add-VerkadaHelixEvent.md
+online version: https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaHelixEvent.md
 schema: 2.0.0
 ---
 
-# Add-VerkadaHelixEvent
+# Get-VerkadaHelixEvent
 
 ## SYNOPSIS
-Creates a Helix event in Commadn using https://apidocs.verkada.com/reference/postvideotaggingeventviewv1
+Gets a specific Helix event using https://apidocs.verkada.com/reference/getvideotaggingeventviewv1
 
 ## SYNTAX
 
 ```
-Add-VerkadaHelixEvent [[-org_id] <String>] [-camera_id] <String> [-event_type_uid] <String>
- [[-timeStamp] <DateTime>] [[-epoch_time] <Int64>] [-attributes] <Object> [[-flagged] <Boolean>]
- [[-x_verkada_auth_api] <String>] [[-region] <String>] [-errorsToFile] [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+Get-VerkadaHelixEvent [[-org_id] <String>] [-camera_id] <String> [-event_type_uid] <String>
+ [[-timeStamp] <DateTime>] [[-epoch_time] <Int64>] [[-x_verkada_auth_api] <String>] [[-region] <String>]
+ [-errorsToFile] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-This method can be used to generate a Helix Event in Command.
-Users will be able to specify the attribute values for each attribute key that was previously defined in the Event Type creation process.
-To successfully create a Helix Event, users will need to input the associated Camera ID, API Token with Helix permissions, Event Type UID, and the exact event epoch timestamp in milliseconds.
+This method can be used to retrieve a Helix Event that has already been posted to Command.
+In the return message, the users will be able to see the corresponding attribute values for that unique event.
+To successfully retrieve a Helix Event, users will need to input the associated Camera ID, API Token with Helix permissions, Event Type UID, and the exact event epoch time in milliseconds.
 The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Add-VerkadaHelixEvent -camera_id 6b8731d7-d991-4206-ba71-b5446fa617fc -event_type_uid cf918b16-26cd-4c01-a672-5a91b79311e1 -timeStamp (get-date) -attributes $attributes 
-This will add a new helix event for the current time for the sepcified camera, event ID, and submitted attributes. The org_id and token will be populated from the cached created by Connect-Verkada.
+Get-VerkadaHelixEvent -camera_id 6b8731d7-d991-4206-ba71-b5446fa617fc -event_type_uid cf918b16-26cd-4c01-a672-5a91b79311e1 -timeStamp '1/1/2025 08:35:00 -06'
+This will get the helix event for Jan 1, 2025 at 8:35 AM CST for the sepcified camera, and event ID. The org_id and token will be populated from the cached created by Connect-Verkada.
 ```
 
 ### EXAMPLE 2
 ```
-Add-VerkadaHelixEvent -camera_id 6b8731d7-d991-4206-ba71-b5446fa617fc -event_type_uid cf918b16-26cd-4c01-a672-5a91b79311e1 -timeStamp '1/1/2025 08:35:00 -06' -attributes $attributes -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
-This will add a new helix event for Jan 1, 2025 at 8:35 AM CST for the sepcified camera, event ID, and submitted attributes. The org_id and token are submitted as parameters in the call.
+Get-VerkadaHelixEvent -camera_id 6b8731d7-d991-4206-ba71-b5446fa617fc -event_type_uid cf918b16-26cd-4c01-a672-5a91b79311e1 -timeStamp '1/1/2025 08:35:00 -06' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+This will get the helix event for Jan 1, 2025 at 8:35 AM CST for the sepcified camera, and event ID. The org_id and token are submitted as parameters in the call.
 ```
 
 ## PARAMETERS
@@ -116,36 +115,6 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -attributes
-The parameters to be submitted for the event
-
-```yaml
-Type: Object
-Parameter Sets: (All)
-Aliases:
-
-Required: True
-Position: 6
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -flagged
-Boolean if the event should be flagged
-
-```yaml
-Type: Boolean
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 7
-Default value: False
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -x_verkada_auth_api
 The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 
@@ -155,7 +124,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 8
+Position: 6
 Default value: $Global:verkadaConnection.x_verkada_auth_api
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -170,7 +139,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 9
+Position: 7
 Default value: Api
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -217,5 +186,5 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Add-VerkadaHelixEvent.md](https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Add-VerkadaHelixEvent.md)
+[https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaHelixEvent.md](https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaHelixEvent.md)
 
