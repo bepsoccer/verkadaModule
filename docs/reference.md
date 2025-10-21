@@ -7,6 +7,7 @@
 * [Add-VerkadaCamera](function-documentation/Add-VerkadaCamera.md)
 * [Add-VerkadaCommandSite](function-documentation/Add-VerkadaCommandSite.md)
 * [Add-VerkadaCommandUser](function-documentation/Add-VerkadaCommandUser.md)
+* [Add-VerkadaHelixEvent](function-documentation/Add-VerkadaHelixEvent.md)
 * [Add-VerkadaLicensePlateOfInterest](function-documentation/Add-VerkadaLicensePlateOfInterest.md)
 * [Add-VerkadaWorkplaceEmployee](function-documentation/Add-VerkadaWorkplaceEmployee.md)
 * [Connect-Verkada](function-documentation/Connect-Verkada.md)
