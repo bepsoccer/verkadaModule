@@ -35,9 +35,13 @@ function Add-VerkadaHelixEvent{
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[String]$event_type_uid,
-		#The the epoch time of the event
-		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
+		#The the timestamp of the event
+		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[datetime]$timeStamp,
+		#The the epoch time of the event in milliseconds
+		[Parameter(ValueFromPipelineByPropertyName = $true)]
+		[Alias("time_ms")]
+		[Int64]$epoch_time,
 		#The parameters to be submitted for the event
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
 		[object]$attributes,
@@ -65,7 +69,13 @@ function Add-VerkadaHelixEvent{
 	} #end begin
 	
 	process {
-		$epoch_time = (New-TimeSpan -Start (Get-Date "01/01/1970") -End $timeStamp.ToUniversalTime()).TotalMilliseconds
+		if ($PSBoundParameters.ContainsKey('epoch_time')){
+
+		} elseif ($PSBoundParameters.ContainsKey('timeStamp')){
+			$epoch_time = (New-TimeSpan -Start (Get-Date "01/01/1970") -End $timeStamp.ToUniversalTime()).TotalMilliseconds
+		} else {
+			throw "timestamp or epoch_time (time_ms) are required"
+		}
 		$body_params = @{
 			'camera_id'				= $camera_id
 			'event_type_uid'	= $event_type_uid
