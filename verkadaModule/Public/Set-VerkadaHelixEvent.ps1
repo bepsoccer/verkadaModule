@@ -89,7 +89,7 @@ function Set-VerkadaHelixEvent{
 		
 		try {
 			Invoke-VerkadaRestMethod $url $org_id $x_verkada_auth_api $query_params -body_params $body_params -method PATCH
-			return return "Event updated successfully"
+			return "Event updated successfully"
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {
 			$err = $_.ErrorDetails | ConvertFrom-Json
