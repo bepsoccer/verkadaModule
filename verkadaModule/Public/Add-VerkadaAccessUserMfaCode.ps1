@@ -11,10 +11,12 @@ function Add-VerkadaAccessUserMfaCode{
 		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Add-VerkadaAccessMfaCode.md
 
 		.EXAMPLE
-		The org_id and token will be populated from the cached created by Connect-Verkada.
+		Add-VerkadaAccessUserMfaCode -mfaCode '9567' -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3'
+		This adds the MFA code 9567 to the Access user's profile with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3. The org_id and token will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		The org_id and token are submitted as parameters in the call.
+		Add-VerkadaAccessUserMfaCode -mfaCode '9567' -externalId 'newUserUPN@contoso.com' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+		This adds the MFA code 9567 to the Access user's profile with externalId newUserUPN@contoso.com. The org_id and token are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
 	[Alias("Add-VrkdaAcUsrMfaCd","a-VrkdaAcUsrMfaCd")]
