@@ -5,22 +5,22 @@ function Get-VerkadaAccessGroup{
 
 		.DESCRIPTION
 		Retrieves an access group specified by its Verkada-defined unique identifier(Group ID). The response is the Access Group Metadata Object for the desired Access Group.
-		The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
+		The reqired token can be directly submitted as a parameter, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
 		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaAccessGroup.md
 
 		.EXAMPLE
 		Get-VerkadaAccessGroup -groupId '7858d17a-3f72-4506-8532-a4b6ba233c5e'
-		This will return the Access Group with userId "7858d17a-3f72-4506-8532-a4b6ba233c5e".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		This will return the Access Group with userId "7858d17a-3f72-4506-8532-a4b6ba233c5e".  The token will be populated from the cache created by Connect-Verkada.
 
 		.EXAMPLE
-		Get-VerkadaAccessGroup -groupId '7858d17a-3f72-4506-8532-a4b6ba233c5e' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
-		This will return the Access Group with userId "7858d17a-3f72-4506-8532-a4b6ba233c5e".  The org_id and tokens are submitted as parameters in the call.
+		Get-VerkadaAccessGroup -groupId '7858d17a-3f72-4506-8532-a4b6ba233c5e' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+		This will return the Access Group with userId "7858d17a-3f72-4506-8532-a4b6ba233c5e".  The token is submitted as a parameter in the call.
 
 		.EXAMPLE
 		Read-VerkadaAccessGroups | Where-Object {$_.name -eq "Executive Access"} | Get-VerkadaAccessGroup
-		This will return the Access Group named "Executive Access".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		This will return the Access Group named "Executive Access".  The token will be populated from the cache created by Connect-Verkada.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
 	[Alias("Get-VrkdaAcGrp","gt-VrkdaAcGrp")]
@@ -30,11 +30,6 @@ function Get-VerkadaAccessGroup{
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[Alias('group_id')]
 		[String]$groupId,
-		#The UUID of the organization the user belongs to
-		[Parameter(ValueFromPipelineByPropertyName = $true)]
-		[ValidateNotNullOrEmpty()]
-		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
-		[String]$org_id = $Global:verkadaConnection.org_id,
 		#The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 		[Parameter()]
 		[ValidateNotNullOrEmpty()]
@@ -51,7 +46,6 @@ function Get-VerkadaAccessGroup{
 	begin {
 		$url = "https://$($region).verkada.com/access/v1/access_groups/group"
 		#parameter validation
-		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
 		if ([string]::IsNullOrEmpty($x_verkada_auth_api)) {throw "x_verkada_auth_api is missing but is required!"}
 		$myErrors = @()
 	} #end begin
@@ -68,7 +62,7 @@ function Get-VerkadaAccessGroup{
 		}
 		
 		try {
-			$response = Invoke-VerkadaRestMethod $url $org_id $x_verkada_auth_api $query_params -body_params $body_params -method GET
+			$response = Invoke-VerkadaRestMethod $url $x_verkada_auth_api $query_params -body_params $body_params -method GET
 			return $response
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {

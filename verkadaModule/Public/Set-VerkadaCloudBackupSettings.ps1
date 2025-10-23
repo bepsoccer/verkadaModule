@@ -6,22 +6,22 @@ function Set-VerkadaCloudBackupSettings
 		
 		.DESCRIPTION
 		This function set the cloud back settings for a camera or cameras.
-		The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
+		The reqired token can be directly submitted as a parameter, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 		
 		.LINK
 		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Set-VerkadaCloudBackupSettings.md
 
 		.EXAMPLE
 		Set-VerkadaCloudBackupSettings -enabled 1 -upload_timeslot '0,86400' -time_to_preserve '25200,68400' -days_to_preserve '1,1,1,1,1,1,1'  -video_to_upload 'ALL' -video_quality 'STANDARD_QUALITY' -camera_id 'cwdfwfw-3f3-cwdf2-cameraId'
-		This will set the camera cwdfwfw-3f3-cwdf2-cameraId to use cloud backup with the submitted settings.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		This will set the camera cwdfwfw-3f3-cwdf2-cameraId to use cloud backup with the submitted settings.  The token will be populated from the cache created by Connect-Verkada.
 		
 		.EXAMPLE
 		Set-VerkadaCloudBackupSettings -enabled 1 -upload_timeslot '0,86400' -time_to_preserve '25200,68400' -days_to_preserve '1,1,1,1,1,1,1'  -video_to_upload 'ALL' -video_quality 'STANDARD_QUALITY' -camera_id 'cwdfwfw-3f3-cwdf2-cameraId' -org_id 'deds343-uuid-of-org' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
-		This will set the camera cwdfwfw-3f3-cwdf2-cameraId to use cloud backup with the submitted settings.  The org_id and tokens are submitted as parameters in the call.
+		This will set the camera cwdfwfw-3f3-cwdf2-cameraId to use cloud backup with the submitted settings.  The token is submitted as a parameter in the call.
 		
 		.EXAMPLE
 		import-Csv ./cameras.csv | Set-VerkadaCloudBackupSettings
-		This will set the camera cloud backup settings for all the rows in the CSV which contains all needed params.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		This will set the camera cloud backup settings for all the rows in the CSV which contains all needed params.  The token will be populated from the cache created by Connect-Verkada.
 	#>
 
 	[CmdletBinding(PositionalBinding = $true)]
@@ -30,11 +30,6 @@ function Set-VerkadaCloudBackupSettings
 		[Parameter(ValueFromPipelineByPropertyName = $true, Mandatory = $true, Position = 0)]
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[String]$camera_id,
-		#The UUID of the organization the user belongs to
-		[Parameter(Position = 1)]
-		[ValidateNotNullOrEmpty()]
-		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
-		[String]$org_id = $Global:verkadaConnection.org_id,
 		#The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 		[Parameter(Position = 2)]
 		[ValidateNotNullOrEmpty()]
@@ -71,7 +66,6 @@ function Set-VerkadaCloudBackupSettings
 
 	Begin {
 		#parameter validation
-		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
 		if ([string]::IsNullOrEmpty($x_verkada_auth_api)) {throw "x_verkada_auth_api is missing but is required!"}
 		
 		$url = "https://$($region).verkada.com/cameras/v1/cloud_backup/settings"
@@ -82,7 +76,6 @@ function Set-VerkadaCloudBackupSettings
 	Process {
 		$body_params = @{
 			'camera_id'					= $camera_id
-			'org_id'						= $org_id
 			'days_to_preserve'	= $days_to_preserve
 			'enabled'						= $enabled
 			'time_to_preserve'	= $time_to_preserve
@@ -95,7 +88,7 @@ function Set-VerkadaCloudBackupSettings
 			'camera_id'					= $camera_id
 		}
 
-		Invoke-VerkadaRestMethod $url $org_id $x_verkada_auth_api $query_params -body_params $body_params -method post
+		Invoke-VerkadaRestMethod $url $x_verkada_auth_api $query_params -body_params $body_params -method post
 		$result += ($body_params | ConvertTo-Json | ConvertFrom-Json)
 	} #end process
 

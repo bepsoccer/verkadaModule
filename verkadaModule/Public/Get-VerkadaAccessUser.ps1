@@ -5,18 +5,18 @@ function Get-VerkadaAccessUser{
 
 		.DESCRIPTION
 		Given the Verkada created User ID or the user defined External ID, retrieve the Access Object Information for the specified user.
-		The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
+		The reqired token can be directly submitted as a parameter, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
 		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Get-VerkadaAccessUser.md
 
 		.EXAMPLE
 		Get-VerkadaAccessUser -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3'
-		This will retrieve the Access user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		This will retrieve the Access user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3.  The token will be populated from the cache created by Connect-Verkada.
 		
 		.EXAMPLE
-		Get-VerkadaAccessUser -externalId 'newUserUPN@contoso.com' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
-		This will retrieve the Access user with externalId newUserUPN@contoso.com.  The org_id and tokens are submitted as parameters in the call.
+		Get-VerkadaAccessUser -externalId 'newUserUPN@contoso.com' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+		This will retrieve the Access user with externalId newUserUPN@contoso.com.  The token is submitted as a parameter in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
 	[Alias("Get-VrkdaAcUsr","gt-VrkdaAcUsr")]
@@ -31,11 +31,6 @@ function Get-VerkadaAccessUser{
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[Alias('external_id')]
 		[String]$externalId,
-		#The UUID of the organization the user belongs to
-		[Parameter(ValueFromPipelineByPropertyName = $true)]
-		[ValidateNotNullOrEmpty()]
-		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
-		[String]$org_id = $Global:verkadaConnection.org_id,
 		#The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 		[Parameter()]
 		[ValidateNotNullOrEmpty()]
@@ -52,7 +47,6 @@ function Get-VerkadaAccessUser{
 	begin {
 		$url = "https://$($region).verkada.com/access/v1/access_users/user"
 		#parameter validation
-		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
 		if ([string]::IsNullOrEmpty($x_verkada_auth_api)) {throw "x_verkada_auth_api is missing but is required!"}
 		$myErrors = @()
 	} #end begin
@@ -73,7 +67,7 @@ function Get-VerkadaAccessUser{
 		}
 		
 		try {
-			$response = Invoke-VerkadaRestMethod $url $org_id $x_verkada_auth_api $query_params -body_params $body_params -method GET
+			$response = Invoke-VerkadaRestMethod $url $x_verkada_auth_api $query_params -body_params $body_params -method GET
 			return $response
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {

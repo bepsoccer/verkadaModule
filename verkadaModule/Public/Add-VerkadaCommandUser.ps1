@@ -6,34 +6,34 @@ function Add-VerkadaCommandUser{
 		.DESCRIPTION
 		Creates a user in an organization. External ID required.
 		Otherwise, the newly created user will contain a user ID which can be used for identification.
-		The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
+		The reqired token can be directly submitted as a parameter, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
 		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Add-VerkadaCommandUser.md
 
 		.EXAMPLE
 		Add-VerkadaCommandUser -firstName 'New' -lastName 'User'
-		This will add the Command user with the name "New User".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		This will add the Command user with the name "New User".  The token will be populated from the cache created by Connect-Verkada.
 		
 		.EXAMPLE
-		Add-VerkadaCommandUser -firstName 'New' -lastName 'User' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
-		This will add the Command user with the name "New User".  The org_id and tokens are submitted as parameters in the call.
+		Add-VerkadaCommandUser -firstName 'New' -lastName 'User' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+		This will add the Command user with the name "New User".  The token is submitted as a parameter in the call.
 		
 		.EXAMPLE
 		Add-VerkadaCommandUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com' 
-		This will add the Command user with the name "New User" and email newUser@contoso.com.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		This will add the Command user with the name "New User" and email newUser@contoso.com.  The token will be populated from the cache created by Connect-Verkada.
 
 		.EXAMPLE
 		Add-VerkadaCommandUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com' -externalId 'newUserUPN@contoso.com'
-		This will add the Command user with the name "New User", email newUser@contoso.com, and externalId newUserUPN@contoso.com.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		This will add the Command user with the name "New User", email newUser@contoso.com, and externalId newUserUPN@contoso.com.  The token will be populated from the cache created by Connect-Verkada.
 		
 		.EXAMPLE
 		Add-VerkadaCommandUser -email 'newUser@contoso.com' 
-		This will add the Command user with the email newUser@contoso.com.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		This will add the Command user with the email newUser@contoso.com.  The token will be populated from the cache created by Connect-Verkada.
 		
 		.EXAMPLE
 		Add-VerkadaCommandUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com -companyName 'Contoso' -department 'sales' -departmentId 'US-Sales' -employeeId '12345' -employeeTitle 'The Closer' -employeeType 'Full Time' -phone '+18165556789'
-		This will add the Command user with the name "New User" and email newUser@contoso.com in department defined as sales with departmnetId of US-Sales with the appropriate companyName, employeeID, employeeTitle, employeeType and phone.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		This will add the Command user with the name "New User" and email newUser@contoso.com in department defined as sales with departmnetId of US-Sales with the appropriate companyName, employeeID, employeeTitle, employeeType and phone.  The token will be populated from the cache created by Connect-Verkada.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
 	[Alias("Add-VrkdaCmdUsr","a-VrkdaCmdUsr")]
@@ -82,11 +82,6 @@ function Add-VerkadaCommandUser{
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[ValidatePattern("^\+[1-9]\d{10,14}$")]
 		[String]$phone,
-		#The UUID of the organization the user belongs to
-		[Parameter(ValueFromPipelineByPropertyName = $true)]
-		[ValidateNotNullOrEmpty()]
-		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
-		[String]$org_id = $Global:verkadaConnection.org_id,
 		#The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 		[Parameter()]
 		[ValidateNotNullOrEmpty()]
@@ -103,7 +98,6 @@ function Add-VerkadaCommandUser{
 	begin {
 		$url = "https://$($region).verkada.com/core/v1/user"
 		#parameter validation
-		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
 		if ([string]::IsNullOrEmpty($x_verkada_auth_api)) {throw "x_verkada_auth_api is missing but is required!"}
 		$myErrors = @()
 	} #end begin
@@ -132,7 +126,7 @@ function Add-VerkadaCommandUser{
 		$query_params = @{}
 
 		try {
-		$response = Invoke-VerkadaRestMethod $url $org_id $x_verkada_auth_api $query_params -body_params $body_params -method POST
+		$response = Invoke-VerkadaRestMethod $url $x_verkada_auth_api $query_params -body_params $body_params -method POST
 		return $response
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {
