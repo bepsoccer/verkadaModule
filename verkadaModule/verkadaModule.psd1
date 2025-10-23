@@ -12,7 +12,7 @@
 RootModule = 'verkadaModule.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.9.10'
+ModuleVersion = '0.9.11'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Desktop', 'Core'
@@ -71,10 +71,11 @@ PowerShellVersion = '6.1'
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 FunctionsToExport = 'Add-VerkadaAccessGroup', 'Add-VerkadaAccessSiteAdmin', 
                'Add-VerkadaAccessUserCard', 'Add-VerkadaAccessUserLicensePlate', 
-               'Add-VerkadaCamera', 'Add-VerkadaCommandSite', 
-               'Add-VerkadaCommandUser', 'Add-VerkadaHelixEvent', 
-               'Add-VerkadaLicensePlateOfInterest', 'Add-VerkadaWorkplaceEmployee', 
-               'Connect-Verkada', 'Disable-VerkadaAccessUserCard', 
+               'Add-VerkadaAccessUserMfaCode', 'Add-VerkadaCamera', 
+               'Add-VerkadaCommandSite', 'Add-VerkadaCommandUser', 
+               'Add-VerkadaHelixEvent', 'Add-VerkadaLicensePlateOfInterest', 
+               'Add-VerkadaWorkplaceEmployee', 'Connect-Verkada', 
+               'Disable-VerkadaAccessUserCard', 
                'Disable-VerkadaAccessUserLicensePlate', 'Disconnect-Verkada', 
                'Enable-VerkadaAccessUserCard', 
                'Enable-VerkadaAccessUserLicensePlate', 'Find-VerkadaCommandUser', 
@@ -99,6 +100,7 @@ FunctionsToExport = 'Add-VerkadaAccessGroup', 'Add-VerkadaAccessSiteAdmin',
                'Remove-VerkadaAccessUserCard', 'Remove-VerkadaAccessUserEntryCode', 
                'Remove-VerkadaAccessUserFromGroup', 
                'Remove-VerkadaAccessUserLicensePlate', 
+               'Remove-VerkadaAccessUserMfaCode', 
                'Remove-VerkadaAccessUserProfilePicture', 
                'Remove-VerkadaAccessUserRemoteUnlock', 
                'Remove-VerkadaCameraArchive', 'Remove-VerkadaCommandUser', 
@@ -130,7 +132,8 @@ CmdletsToExport = @()
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
 AliasesToExport = 'a-VrkdaAcGrp', 'Add-VrkdaAcGrp', 'a-VrkdaAcUsrCrd', 
                'Add-VrkdaAcUsrCrd', 'a-VrkdaAcUsrLPR', 'Add-VrkdaAcUsrLPR', 
-               'a-VrkdaCmdUsr', 'Add-VrkdaCmdUsr', 'a-VrkdaHlxEvt', 'Add-VrkdaHlxEvt', 
+               'a-VrkdaAcUsrMfaCd', 'Add-VrkdaAcUsrMfaCd', 'a-VrkdaCmdUsr', 
+               'Add-VrkdaCmdUsr', 'a-VrkdaHlxEvt', 'Add-VrkdaHlxEvt', 
                'Add-VerkadaLPoI', 'a-VrkdaWrkEmp', 'Add-VrkdaWrkEmp', 
                'd-VrkdaAcUsrCrd', 'Disable-VrkdaAcUsrCrd', 'd-VrkdaAcUsrLPR', 
                'Disable-VrkdaAcUsrLPR', 'e-VrkdaAcUsrCrd', 'Enable-VrkdaAcUsrCrd', 
@@ -150,26 +153,27 @@ AliasesToExport = 'a-VrkdaAcGrp', 'Add-VrkdaAcGrp', 'a-VrkdaAcUsrCrd',
                'Remove-VrkdaAcUsrCrd', 'rm-VrkdaAcUsrCrd', 
                'Remove-VrkdaAcUsrEntryCo', 'rm-VrkdaAcUsrEntryCo', 
                'Remove-VrkdaAcUsrFrGrp', 'rm-VrkdaAcUsrFrGrp', 
-               'Remove-VrkdaAcUsrLPR', 'rm-VrkdaAcUsrLPR', 
-               'Remove-VrkdaAcUsrPrflPic', 'rm-VrkdaAcUsrPrflPic', 
-               'Remove-VrkdaAcUsrRmtUnlk', 'rm-VrkdaAcUsrRmtUnlk', 
-               'Remove-VrkdaCamArchv', 'rm-VrkdaCamArchv', 'Remove-VrkdaCmdUsr', 
-               'rm-VrkdaCmdUsr', 'Remove-VrkdaHlxEvt', 'rm-VrkdaHlxEvt', 
-               'Remove-VerkadaLPoI', 'Remove-VrkdaWrkEmp', 'rm-VrkdaWrkEmp', 
-               'sd-VrkdaPssInv', 'Send-VrkdaPssInv', 'Set-VrkdaAcDrNm', 
-               'st-VrkdaAcDrNm', 's-VrkdAcDrSchOvrd', 'Set-VrkdAcDrSchOvrd', 
-               'Set-VrkdaAcUsrBtUnlk', 'st-VrkdaAcUsrBtUnlk', 'Set-VrkdaAcUsrEndDt', 
-               'st-VrkdaAcUsrEndDt', 'Set-VrkdaAcUsrEntryCo', 'st-VrkdaAcUsrEntryCo', 
-               'Set-VrkdaAcUsrGrp', 'st-VrkdaAcUsrGrp', 's-VrkdaAcUsrPrflPic', 
-               'Set-VrkdaAcUsrPrflPic', 'Set-VrkdaAcUsrRmtUnlk', 
-               'st-VrkdaAcUsrRmtUnlk', 'Set-VrkdaAcUsrStrtDt', 'st-VrkdaAcUsrStrtDt', 
-               's-VrkdAlrmBr31Setgs', 's-VrkdAlrmDrSenSetgs', 
-               'Set-VrkdAlrmDrSenSetgs', 's-VrkdAlrmBr33Setgs', 
-               's-VrkdAlrmPancSetgs', 'Set-VrkdAlrmPancSetgs', 'Set-VrkdaCamOrnt', 
-               'VrkdaCamOrnt', 'Set-VrkdaCamTmprSen', 'VrkdaCamTmprSen', 
-               'Set-VrkdaCmdUsr', 'st-VrkdaCmdUsr', 'Set-VrkdaHlxEvt', 
-               'st-VrkdaHlxEvt', 'Set-VerkadaLPoI', 'Set-VrkdaWrkEmp', 
-               'st-VrkdaWrkEmp', 'uk-VrkdAcDoor', 'Unlock-VrkdAcDoor'
+               'Remove-VrkdaAcUsrLPR', 'rm-VrkdaAcUsrLPR', 'Remove-VrkdaAcUsrMfaCd', 
+               'rm-VrkdaAcUsrMfaCd', 'Remove-VrkdaAcUsrPrflPic', 
+               'rm-VrkdaAcUsrPrflPic', 'Remove-VrkdaAcUsrRmtUnlk', 
+               'rm-VrkdaAcUsrRmtUnlk', 'Remove-VrkdaCamArchv', 'rm-VrkdaCamArchv', 
+               'Remove-VrkdaCmdUsr', 'rm-VrkdaCmdUsr', 'Remove-VrkdaHlxEvt', 
+               'rm-VrkdaHlxEvt', 'Remove-VerkadaLPoI', 'Remove-VrkdaWrkEmp', 
+               'rm-VrkdaWrkEmp', 'sd-VrkdaPssInv', 'Send-VrkdaPssInv', 
+               'Set-VrkdaAcDrNm', 'st-VrkdaAcDrNm', 's-VrkdAcDrSchOvrd', 
+               'Set-VrkdAcDrSchOvrd', 'Set-VrkdaAcUsrBtUnlk', 'st-VrkdaAcUsrBtUnlk', 
+               'Set-VrkdaAcUsrEndDt', 'st-VrkdaAcUsrEndDt', 'Set-VrkdaAcUsrEntryCo', 
+               'st-VrkdaAcUsrEntryCo', 'Set-VrkdaAcUsrGrp', 'st-VrkdaAcUsrGrp', 
+               's-VrkdaAcUsrPrflPic', 'Set-VrkdaAcUsrPrflPic', 
+               'Set-VrkdaAcUsrRmtUnlk', 'st-VrkdaAcUsrRmtUnlk', 
+               'Set-VrkdaAcUsrStrtDt', 'st-VrkdaAcUsrStrtDt', 's-VrkdAlrmBr31Setgs', 
+               's-VrkdAlrmDrSenSetgs', 'Set-VrkdAlrmDrSenSetgs', 
+               's-VrkdAlrmBr33Setgs', 's-VrkdAlrmPancSetgs', 'Set-VrkdAlrmPancSetgs', 
+               'Set-VrkdaCamOrnt', 'VrkdaCamOrnt', 'Set-VrkdaCamTmprSen', 
+               'VrkdaCamTmprSen', 'Set-VrkdaCmdUsr', 'st-VrkdaCmdUsr', 
+               'Set-VrkdaHlxEvt', 'st-VrkdaHlxEvt', 'Set-VerkadaLPoI', 
+               'Set-VrkdaWrkEmp', 'st-VrkdaWrkEmp', 'uk-VrkdAcDoor', 
+               'Unlock-VrkdAcDoor'
 
 # DSC resources to export from this module
 # DscResourcesToExport = @()
