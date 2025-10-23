@@ -111,15 +111,6 @@ function Connect-Verkada
 				$x_verkada_auth_api = Invoke-RestMethod -Uri "https://$($region).verkada.com/token" -Method 'POST' -Headers $login_headers -StatusCodeVariable responseCode | Select-Object -ExpandProperty token
 				$Global:verkadaConnection.x_verkada_auth_api = $x_verkada_auth_api
 
-				$body = @{
-					'org_id' = $Global:verkadaConnection.org_id
-					'page_size' = "1"
-				}
-				$headers=@{
-					'x-verkada-auth' = $Global:verkadaConnection.x_verkada_auth_api
-				}
-				
-				#$response = Invoke-RestMethod -Uri "https://$($region).verkada.com/core/v1/audit_log" -Body $body -Headers $headers -StatusCodeVariable responseCode
 				if (!($noOutput)){Write-Host -ForegroundColor green "$responseCode - Successfully connected to Verkada Command with API Token"}
 				return
 			} catch [Microsoft.PowerShell.Commands.HttpResponseException] {
