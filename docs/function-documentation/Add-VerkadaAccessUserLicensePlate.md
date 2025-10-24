@@ -14,9 +14,8 @@ Adds a license plate credential to an Aceess user in an organization using https
 
 ```
 Add-VerkadaAccessUserLicensePlate [[-userId] <String>] [[-externalId] <String>]
- [[-licensePlateNumber] <String>] [[-name] <String>] [[-active] <Boolean>] [[-org_id] <String>]
- [[-x_verkada_auth_api] <String>] [[-region] <String>] [-errorsToFile] [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+ [[-licensePlateNumber] <String>] [[-name] <String>] [[-active] <Boolean>] [[-x_verkada_auth_api] <String>]
+ [[-region] <String>] [-errorsToFile] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -24,20 +23,20 @@ Add a license plate credential to a user given a specified user_id or external_i
 License plate object will be passed in the body of the request as a json.
 We require a string of 6 alphanumeric values.
 The License Plate Object is returned.
-The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
+The reqired token can be directly submitted as a parameter, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
 Add-VerkadaAccessUserLicensePlate -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -licensePlateNumber 'ABC123'
-This will add the license plate ABC123 to the Access user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 as a credential.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+This will add the license plate ABC123 to the Access user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 as a credential.  The token will be populated from the cache created by Connect-Verkada.
 ```
 
 ### EXAMPLE 2
 ```
-Add-VerkadaAccessUserLicensePlate -externalId 'newUserUPN@contoso.com' -licensePlateNumber 'ABC123' -name 'Users License Plate' -active $true -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a'
-This will add the license plate ABC123 to the Access user with externalId newUserUPN@contoso.com as a credential and mark it active.  The org_id and tokens are submitted as parameters in the call.
+Add-VerkadaAccessUserLicensePlate -externalId 'newUserUPN@contoso.com' -licensePlateNumber 'ABC123' -name 'Users License Plate' -active $true -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a'
+This will add the license plate ABC123 to the Access user with externalId newUserUPN@contoso.com as a credential and mark it active.  The token is submitted as a parameter in the call.
 ```
 
 ## PARAMETERS
@@ -118,21 +117,6 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -org_id
-The UUID of the organization the user belongs to
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 6
-Default value: $Global:verkadaConnection.org_id
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### -x_verkada_auth_api
 The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 
@@ -142,7 +126,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 7
+Position: 6
 Default value: $Global:verkadaConnection.x_verkada_auth_api
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -157,7 +141,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 8
+Position: 7
 Default value: Api
 Accept pipeline input: False
 Accept wildcard characters: False

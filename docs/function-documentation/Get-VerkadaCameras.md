@@ -8,50 +8,50 @@ schema: 2.0.0
 # Get-VerkadaCameras
 
 ## SYNOPSIS
-Gets all cameras in an organization
+Gets all the cameras and their details using https://apidocs.verkada.com/reference/getcamerainfoviewv1
 
 ## SYNTAX
 
 ```
-Get-VerkadaCameras [[-org_id] <String>] [[-x_verkada_auth_api] <String>] [-region <String>]
- [[-serial] <String>] [-refresh] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-VerkadaCameras [[-serial] <String>] [-refresh] [[-x_verkada_auth_api] <String>] [[-region] <String>]
+ [-errorsToFile] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-This function will retrieve the complete list of cameras in an organization. 
-Upon the first run the camera list will be cached until a new powershell session is initiated, Connect/Disconnect-Verkada is run, or you use the refresh switch.
-The org_id and reqired tokens can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
+Returns details of all cameras within the organization.
+Details returned per camera are name, site, location, model, serial number, camera ID, MAC address, local IP, device retention, extended cloud retention (if any), date camera added to command, firmware update status, camera status, location latitude, location longitude, and location angle (in degrees).
+The reqired token can be directly submitted as a parameter, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
 Get-VerkadaCameras
-This will return all the cameras in the org.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+This will return all the cameras in the org.  The token will be populated from the cache created by Connect-Verkada.
 ```
 
 ### EXAMPLE 2
 ```
-Get-VerkadaCameras -org_id 'deds343-uuid-of-org' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
-This will return all the cameras in the org.  The org_id and tokens are submitted as parameters in the call.
+Get-VerkadaCameras -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+This will return all the cameras in the org.  The token is submitted as a parameter in the call.
 ```
 
 ### EXAMPLE 3
 ```
 Get-VerkadaCameras -serial
-This will return the camera information using the serial.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+This will return the camera information using the serial.  The token will be populated from the cache created by Connect-Verkada.
 ```
 
 ### EXAMPLE 4
 ```
 Get-VerkadaCameras -refresh
-This will return all the cameras in the org with the most recent data available from Command.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+This will return all the cameras in the org with the most recent data available from Command.  The token will be populated from the cache created by Connect-Verkada.
 ```
 
 ## PARAMETERS
 
-### -org_id
-The UUID of the organization the user belongs to
+### -serial
+The serial of the camera you are querying
 
 ```yaml
 Type: String
@@ -60,8 +60,23 @@ Aliases:
 
 Required: False
 Position: 1
-Default value: $Global:verkadaConnection.org_id
+Default value: None
 Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -refresh
+Switch to force a refreshed list of cameras from Command
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -89,29 +104,14 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: Named
+Position: 3
 Default value: Api
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-### -serial
-The serial of the camera you are querying
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 3
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -refresh
-Switch to force a refreshed list of cameras from Command
+### -errorsToFile
+Switch to write errors to file
 
 ```yaml
 Type: SwitchParameter

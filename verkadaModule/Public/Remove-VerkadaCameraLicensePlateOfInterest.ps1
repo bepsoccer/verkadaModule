@@ -1,26 +1,37 @@
-function Read-VerkadaGuestSites{
+function Remove-VerkadaCameraLicensePlateOfInterest{
 	<#
 		.SYNOPSIS
-		Gets all the Guest sites in an organization using https://apidocs.verkada.com/reference/getguestsiteview
+		This removes a license plate from being an LPoI using https://apidocs.verkada.com/reference/deletelicenseplateofinterestviewv1
 
 		.DESCRIPTION
-		Retrieves a list of all the Guest sites in an organization.
+		Deletes a license plate from License Plates of Interest using a specified license plate number.
 		The reqired token can be directly submitted as a parameter, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
-		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Read-VerkadaGuestSites.md
+		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Remove-VerkadaCameraLicensePlateOfInterest.md
 
 		.EXAMPLE
-		Read-VerkadaGuestSites
-		This will return all the Guest in an organization.  The token will be populated from the cache created by Connect-Verkada.
-		
+		Remove-VerkadaCameraLicensePlateOfInterest -license_plate 'ABC123'
+		The token will be populated from the cache created by Connect-Verkada.
+
 		.EXAMPLE
-		Read-VerkadaGuestSites -userId 'aefrfefb-3429-39ec-b042-userAC' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc' -usr 'a099bfe6-34ff-4976-9d53-ac68342d2b60'
-		This will return all the Guest sites in an organization.  The token will be populated from the cache created by Connect-Verkada.
+		Remove-VerkadaLPoI 'ABC123'
+		The token will be populated from the cache created by Connect-Verkada.
+
+		.EXAMPLE
+		Import-CSV ./file_ofLicenses.csv | Remove-VerkadaLPoI
+		The token will be populated from the cache created by Connect-Verkada.
+
+		.EXAMPLE
+		Remove-VerkadaCameraLicensePlateOfInterest -license_plate 'ABC123' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+		The token is submitted as a parameter in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
-	[Alias("Read-VrkdaGstSte","rd-VrkdaGstSte")]
+	[Alias("Remove-VerkadaLicensePlateOfInterest","Remove-VerkadaLPoI","Remove-VrkdaLPoI","rm-VrkdaLPoI")]
 	param (
+		#The license plate number of the License Plate of Interest
+		[Parameter(ValueFromPipelineByPropertyName = $true, Position = 0, Mandatory = $true)]
+		[String]$license_plate,
 		#The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 		[Parameter()]
 		[ValidateNotNullOrEmpty()]
@@ -35,7 +46,7 @@ function Read-VerkadaGuestSites{
 	)
 	
 	begin {
-		$url = "https://$($region).verkada.com/guest/v1/sites"
+		$url = "https://$($region).verkada.com/cameras/v1/analytics/lpr/license_plate_of_interest"
 		#parameter validation
 		if ([string]::IsNullOrEmpty($x_verkada_auth_api)) {throw "x_verkada_auth_api is missing but is required!"}
 		$myErrors = @()
@@ -44,11 +55,12 @@ function Read-VerkadaGuestSites{
 	process {
 		$body_params = @{}
 		
-		$query_params = @{}
+		$query_params = @{
+			'license_plate'		= $license_plate
+		}
 		
 		try {
-			$response = Invoke-VerkadaRestMethod $url $x_verkada_auth_api $query_params -body_params $body_params -method GET
-			if (![string]::IsNullOrEmpty($response.guest_sites)) {$response = $response.guest_sites}
+			$response = Invoke-VerkadaRestMethod $url $x_verkada_auth_api $query_params -body_params $body_params -method DELETE
 			return $response
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {

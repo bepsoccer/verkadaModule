@@ -14,8 +14,8 @@ Used to build an Invoke-RestMethod call for Verkada's private API enpoints that 
 
 ### Default (Default)
 ```
-Invoke-VerkadaFormCall [-url] <String> [-org_id] <String> [-form_params] <Object> [-query_params <Object>]
- [-method <String>] [-x_verkada_auth_api <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Invoke-VerkadaFormCall [-url] <String> [-form_params] <Object> [-query_params <Object>] [-method <String>]
+ [-x_verkada_auth_api <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### UnPwd
@@ -59,7 +59,7 @@ The UUID of the organization the user belongs to
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: UnPwd
 Aliases:
 
 Required: True
@@ -78,7 +78,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 3
+Position: 2
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

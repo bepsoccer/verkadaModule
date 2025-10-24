@@ -14,19 +14,19 @@ Gathers needed credentials for Verkada's API Endpoints
 
 ### apiToken (Default)
 ```
-Connect-Verkada [-org_id] <String> [-x_api_key] <String> [-region <String>] [-noOutput]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Connect-Verkada -x_api_key <String> [-region <String>] [-noOutput] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ### ManualTokens
 ```
-Connect-Verkada [-org_id] <String> [[-x_api_key] <String>] [-region <String>] [-userToken] <String>
- [-csrfToken] <String> [-usr] <String> [-manual] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Connect-Verkada -org_id <String> [-x_api_key <String>] [-region <String>] -userToken <String>
+ -csrfToken <String> -usr <String> [-manual] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### UnPwd
 ```
-Connect-Verkada [-org_id] <String> [[-x_api_key] <String>] [-region <String>] -userName <String> [-Password]
+Connect-Verkada -org_id <String> [-x_api_key <String>] [-region <String>] -userName <String> [-Password]
  [-MyPwd <SecureString>] [-otp <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
@@ -37,31 +37,31 @@ This function is used to authenticate a session and store the needed tokens and 
 
 ### EXAMPLE 1
 ```
-Connect-Verkada '7cd47706-f51b-4419-8675-3b9f0ce7c12d' 'myapiKey-dcwdskjnlnlkj'
+Connect-Verkada -x_api_key 'myapiKey-dcwdskjnlnlkj'
 This will store the org_id 7cd47706-f51b-4419-8675-3b9f0ce7c12d with the public API key myapiKey-dcwdskjnlnlkj.
 ```
 
 ### EXAMPLE 2
 ```
-Connect-Verkada '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -userName "admin.user@contoso.com" -otp (Get-Otp (Get-Secret -Name myVerkadaOtp -AsPlainText)) -MyPwd (Get-Secret -Name myVerkadaPassword) -x_api_key 'myapiKey-dcwdskjnlnlkj'
+Connect-Verkada -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -userName "admin.user@contoso.com" -otp (Get-Otp (Get-Secret -Name myVerkadaOtp -AsPlainText)) -MyPwd (Get-Secret -Name myVerkadaPassword) -x_api_key 'myapiKey-dcwdskjnlnlkj'
 This will authenticate user admin.user@contoso.com with a otp token and a secure string variable stored password([secureString]$yourPwd) and upon success store the org_id 7cd47706-f51b-4419-8675-3b9f0ce7c12d and the returned tokens.  This will also store the org_id 7cd47706-f51b-4419-8675-3b9f0ce7c12d with the public API key myapiKey-dcwdskjnlnlkj
 ```
 
 ### EXAMPLE 3
 ```
-Connect-Verkada '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -userName "admin.user@contoso.com" -Password
+Connect-Verkada -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -userName "admin.user@contoso.com" -Password
 This will authenticate user admin.user@contoso.com by prompting for the password(stored as a secure string) and upon success store the org_id 7cd47706-f51b-4419-8675-3b9f0ce7c12d and the returned tokens.  This will no longer work for OrgAdmins due to the MFA requirement.
 ```
 
 ### EXAMPLE 4
 ```
-Connect-Verkada '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -userName "admin.user@contoso.com" -otp '123456' -MyPwd $yourPwd(seure string)
+Connect-Verkada -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -userName "admin.user@contoso.com" -otp '123456' -MyPwd $yourPwd(seure string)
 This will authenticate user admin.user@contoso.com with a otp token and a secure string variable stored password([secureString]$yourPwd) and upon success store the org_id 7cd47706-f51b-4419-8675-3b9f0ce7c12d and the returned tokens.  This will no longer work for OrgAdmins due to the MFA requirement.
 ```
 
 ### EXAMPLE 5
 ```
-Connect-Verkada '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'myapiKey-dcwdskjnlnlkj' -userName "admin.user@contoso.com" -Password
+Connect-Verkada -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'myapiKey-dcwdskjnlnlkj' -userName "admin.user@contoso.com" -Password
 This will store the org_id 7cd47706-f51b-4419-8675-3b9f0ce7c12d with the public API key myapiKey-dcwdskjnlnlkj and will authenticate user admin.user@contoso.com by prompting for the password(stored as a secure string) and storing the returned tokens.  This will no longer work for OrgAdmins due to the MFA requirement.
 ```
 
@@ -72,11 +72,11 @@ The UUID of the organization the user belongs to
 
 ```yaml
 Type: String
-Parameter Sets: apiToken, ManualTokens
+Parameter Sets: ManualTokens
 Aliases:
 
 Required: True
-Position: 1
+Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -88,7 +88,7 @@ Parameter Sets: UnPwd
 Aliases:
 
 Required: True
-Position: 1
+Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -103,7 +103,7 @@ Parameter Sets: apiToken
 Aliases: token
 
 Required: True
-Position: 2
+Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -115,7 +115,7 @@ Parameter Sets: ManualTokens
 Aliases: token
 
 Required: False
-Position: 2
+Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -127,7 +127,7 @@ Parameter Sets: UnPwd
 Aliases: token
 
 Required: False
-Position: 2
+Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -202,7 +202,7 @@ Parameter Sets: ManualTokens
 Aliases: x_verkada_auth
 
 Required: True
-Position: 3
+Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -217,7 +217,7 @@ Parameter Sets: ManualTokens
 Aliases: x_verkada_token
 
 Required: True
-Position: 4
+Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -232,7 +232,7 @@ Parameter Sets: ManualTokens
 Aliases: x-verkada-user-id
 
 Required: True
-Position: 5
+Position: Named
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False

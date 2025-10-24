@@ -5,27 +5,22 @@ function Remove-VerkadaHelixEvent{
 
 		.DESCRIPTION
 		This method can be used to delete a Helix event from Command. The required parameter to successfully delete a Helix event are the associated Camera ID, API Token with Helix permissions, Event Type UID, and the exact event epoch time in milliseconds.
-		The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
+		The reqired token can be directly submitted as a parameter, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
 		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Remove-VerkadaHelixEvent.md
 
 		.EXAMPLE
 		Remove-VerkadaHelixEvent -camera_id 6b8731d7-d991-4206-ba71-b5446fa617fc -event_type_uid cf918b16-26cd-4c01-a672-5a91b79311e1 -timeStamp '1/1/2025 08:35:00 -06'
-		This will delete the helix event for Jan 1, 2025 at 8:35 AM CST for the sepcified camera, and event ID. The org_id and token will be populated from the cached created by Connect-Verkada.
+		This will delete the helix event for Jan 1, 2025 at 8:35 AM CST for the sepcified camera, and event ID. The token will be populated from the cache created by Connect-Verkada.
 
 		.EXAMPLE
-		Remove-VerkadaHelixEvent -camera_id 6b8731d7-d991-4206-ba71-b5446fa617fc -event_type_uid cf918b16-26cd-4c01-a672-5a91b79311e1 -timeStamp '1/1/2025 08:35:00 -06' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
-		This will delete the helix event for Jan 1, 2025 at 8:35 AM CST for the sepcified camera, and event ID. The org_id and token are submitted as parameters in the call.
+		Remove-VerkadaHelixEvent -camera_id 6b8731d7-d991-4206-ba71-b5446fa617fc -event_type_uid cf918b16-26cd-4c01-a672-5a91b79311e1 -timeStamp '1/1/2025 08:35:00 -06' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+		This will delete the helix event for Jan 1, 2025 at 8:35 AM CST for the sepcified camera, and event ID. The token is submitted as a parameter in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
 	[Alias("Remove-VrkdaHlxEvt","rm-VrkdaHlxEvt")]
 	param (
-		#The UUID of the organization the user belongs to
-		[Parameter(ValueFromPipelineByPropertyName = $true)]
-		[ValidateNotNullOrEmpty()]
-		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
-		[String]$org_id = $Global:verkadaConnection.org_id,
 		#The UUID of the camera who's name is being changed
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
@@ -58,7 +53,6 @@ function Remove-VerkadaHelixEvent{
 	begin {
 		$url = "https://$($region).verkada.com/cameras/v1/video_tagging/event"
 		#parameter validation
-		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
 		if ([string]::IsNullOrEmpty($x_verkada_auth_api)) {throw "x_verkada_auth_api is missing but is required!"}
 		$myErrors = @()
 	} #end begin
@@ -81,7 +75,7 @@ function Remove-VerkadaHelixEvent{
 		}
 		
 		try {
-			Invoke-VerkadaRestMethod $url $org_id $x_verkada_auth_api $query_params -body_params $body_params -method DELETE
+			Invoke-VerkadaRestMethod $url $x_verkada_auth_api $query_params -body_params $body_params -method DELETE
 			return "Event deleted successfully"
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {

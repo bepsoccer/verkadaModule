@@ -20,23 +20,21 @@ function Invoke-VerkadaRestMethod
 		[Parameter(Mandatory = $true, Position = 0, ParameterSetName = 'UnPwd')]
 		[String]$url,
 		#The UUID of the organization the user belongs to
-		[Parameter(Mandatory = $true, Position = 1, ParameterSetName = 'Default')]
-		[Parameter(Mandatory = $true, Position = 1, ParameterSetName = 'Pagination')]
 		[Parameter(Mandatory = $true, Position = 1, ParameterSetName = 'UnPwd')]
 		[ValidateNotNullOrEmpty()]
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[String]$org_id,
 		#The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
-		[Parameter(Mandatory = $true, Position = 2, ParameterSetName = 'Default')]
-		[Parameter(Mandatory = $true, Position = 2, ParameterSetName = 'Pagination')]
+		[Parameter(Mandatory = $true, Position = 1, ParameterSetName = 'Default')]
+		[Parameter(Mandatory = $true, Position = 1, ParameterSetName = 'Pagination')]
 		[String]$x_verkada_auth_api,
 		#Object containing the query parameters need that will be put into the query string of the uri
-		[Parameter(Position = 3, ParameterSetName = 'Default')]
-		[Parameter(Position = 3, ParameterSetName = 'Pagination')]
+		[Parameter(Position = 2, ParameterSetName = 'Default')]
+		[Parameter(Position = 2, ParameterSetName = 'Pagination')]
 		[Object]$query_params,
 		#The body of the REST call
-		[Parameter(Position = 4, ParameterSetName = 'Default')]
-		[Parameter(Position = 4, ParameterSetName = 'Pagination')]
+		[Parameter(Position = 3, ParameterSetName = 'Default')]
+		[Parameter(Position = 3, ParameterSetName = 'Pagination')]
 		[Parameter(Position = 2, ParameterSetName = 'UnPwd')]
 		[Object]$body_params,
 		#HTTP method required
@@ -71,7 +69,9 @@ function Invoke-VerkadaRestMethod
 
 	Process {
 		$query = [System.Web.HttpUtility]::ParseQueryString([String]::Empty)
-		$query.add('org_id',$org_id)
+		if ($PSCmdlet.ParameterSetName -eq 'UnPwd'){
+			$query.add('org_id',$org_id)
+		}
 		if($query_params){
 			foreach ($qp in $query_params.GetEnumerator()) {$query.add("$($qp.name)", "$($qp.value)")}
 		}
@@ -147,7 +147,7 @@ function Invoke-VerkadaRestMethod
 									throw [VerkadaRestMethodException] "$res"
 								}
 								else {
-									Connect-Verkada -x_api_key $Global:verkadaConnection.x_api_key -org_id $Global:verkadaConnection.org_id -region $Global:verkadaConnection.region -noOutput
+									Connect-Verkada -x_api_key $Global:verkadaConnection.x_api_key -region $Global:verkadaConnection.region -noOutput
 									$headers.'x-verkada-auth' = $Global:verkadaConnection.x_verkada_auth_api
 								}
 							}
@@ -220,7 +220,7 @@ function Invoke-VerkadaRestMethod
 								throw [VerkadaRestMethodException] "$res"
 							}
 							else {
-								Connect-Verkada -x_api_key $Global:verkadaConnection.x_api_key -org_id $Global:verkadaConnection.org_id -region $Global:verkadaConnection.region -noOutput
+								Connect-Verkada -x_api_key $Global:verkadaConnection.x_api_key -region $Global:verkadaConnection.region -noOutput
 								$headers.'x-verkada-auth' = $Global:verkadaConnection.x_verkada_auth_api
 							}
 						}
