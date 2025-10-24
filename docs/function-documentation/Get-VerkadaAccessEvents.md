@@ -13,46 +13,31 @@ Returns Verkada Access Control events using https://apidocs.verkada.com/referenc
 ## SYNTAX
 
 ```
-Get-VerkadaAccessEvents [[-org_id] <String>] [[-x_verkada_auth_api] <String>] [[-region] <String>]
- [[-start_time] <DateTime>] [[-end_time] <DateTime>] [[-event_type] <String[]>] [[-side_id] <String[]>]
- [[-device_id] <String[]>] [[-user_id] <String[]>] [-toLocalTime] [-errorsToFile]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-VerkadaAccessEvents [[-x_verkada_auth_api] <String>] [[-region] <String>] [[-start_time] <DateTime>]
+ [[-end_time] <DateTime>] [[-event_type] <String[]>] [[-side_id] <String[]>] [[-device_id] <String[]>]
+ [[-user_id] <String[]>] [-toLocalTime] [-errorsToFile] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
 Returns events for an organization within a specified time range.
-The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
+The reqired token can be directly submitted as a parameter, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
 Get-VerkadaAccessEvents
-This will return all the access events from 1 hour in the past until present.  The org_id and token will be populated from the cached created by Connect-Verkada.
+This will return all the access events from 1 hour in the past until present.  The token will be populated from the cache created by Connect-Verkada.
 ```
 
 ### EXAMPLE 2
 ```
-Get-VerkadaAccessEvents -start_time 'January 1, 2025 9:00:00AM' -end_time 'February 8, 2025 10:30:00PM' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
-This will return all the access events from Jan 1 at 9am to Feb 8 at 10:30pm.  The org_id and token are submitted as parameters in the call.
+Get-VerkadaAccessEvents -start_time 'January 1, 2025 9:00:00AM' -end_time 'February 8, 2025 10:30:00PM' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+This will return all the access events from Jan 1 at 9am to Feb 8 at 10:30pm.  The token is submitted as parameter in the call.
 ```
 
 ## PARAMETERS
-
-### -org_id
-The UUID of the organization the user belongs to
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 1
-Default value: $Global:verkadaConnection.org_id
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
 
 ### -x_verkada_auth_api
 The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
@@ -63,7 +48,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 2
+Position: 1
 Default value: $Global:verkadaConnection.x_verkada_auth_api
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -78,7 +63,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 3
+Position: 2
 Default value: Api
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -93,7 +78,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 4
+Position: 3
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -108,7 +93,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 5
+Position: 4
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -123,7 +108,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 6
+Position: 5
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -138,7 +123,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 7
+Position: 6
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -153,7 +138,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 8
+Position: 7
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -168,7 +153,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 9
+Position: 8
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

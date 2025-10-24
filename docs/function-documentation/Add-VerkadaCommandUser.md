@@ -16,7 +16,7 @@ Adds a user to Verkada Command using https://apidocs.verkada.com/reference/postu
 Add-VerkadaCommandUser [[-email] <String>] [[-firstName] <String>] [[-middleName] <String>]
  [[-lastName] <String>] [[-externalId] <String>] [[-companyName] <String>] [[-department] <String>]
  [[-departmentId] <String>] [[-employeeId] <String>] [[-employeeType] <String>] [[-employeeTitle] <String>]
- [[-phone] <String>] [[-org_id] <String>] [[-x_verkada_auth_api] <String>] [[-region] <String>] [-errorsToFile]
+ [[-phone] <String>] [[-x_verkada_auth_api] <String>] [[-region] <String>] [-errorsToFile]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
@@ -24,44 +24,44 @@ Add-VerkadaCommandUser [[-email] <String>] [[-firstName] <String>] [[-middleName
 Creates a user in an organization.
 External ID required.
 Otherwise, the newly created user will contain a user ID which can be used for identification.
-The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
+The reqired token can be directly submitted as a parameter, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
 Add-VerkadaCommandUser -firstName 'New' -lastName 'User'
-This will add the Command user with the name "New User".  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+This will add the Command user with the name "New User".  The token will be populated from the cache created by Connect-Verkada.
 ```
 
 ### EXAMPLE 2
 ```
-Add-VerkadaCommandUser -firstName 'New' -lastName 'User' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
-This will add the Command user with the name "New User".  The org_id and tokens are submitted as parameters in the call.
+Add-VerkadaCommandUser -firstName 'New' -lastName 'User' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+This will add the Command user with the name "New User".  The token is submitted as a parameter in the call.
 ```
 
 ### EXAMPLE 3
 ```
 Add-VerkadaCommandUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com' 
-This will add the Command user with the name "New User" and email newUser@contoso.com.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+This will add the Command user with the name "New User" and email newUser@contoso.com.  The token will be populated from the cache created by Connect-Verkada.
 ```
 
 ### EXAMPLE 4
 ```
 Add-VerkadaCommandUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com' -externalId 'newUserUPN@contoso.com'
-This will add the Command user with the name "New User", email newUser@contoso.com, and externalId newUserUPN@contoso.com.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+This will add the Command user with the name "New User", email newUser@contoso.com, and externalId newUserUPN@contoso.com.  The token will be populated from the cache created by Connect-Verkada.
 ```
 
 ### EXAMPLE 5
 ```
 Add-VerkadaCommandUser -email 'newUser@contoso.com' 
-This will add the Command user with the email newUser@contoso.com.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+This will add the Command user with the email newUser@contoso.com.  The token will be populated from the cache created by Connect-Verkada.
 ```
 
 ### EXAMPLE 6
 ```
 Add-VerkadaCommandUser -firstName 'New' -lastName 'User' -email 'newUser@contoso.com -companyName 'Contoso' -department 'sales' -departmentId 'US-Sales' -employeeId '12345' -employeeTitle 'The Closer' -employeeType 'Full Time' -phone '+18165556789'
-This will add the Command user with the name "New User" and email newUser@contoso.com in department defined as sales with departmnetId of US-Sales with the appropriate companyName, employeeID, employeeTitle, employeeType and phone.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+This will add the Command user with the name "New User" and email newUser@contoso.com in department defined as sales with departmnetId of US-Sales with the appropriate companyName, employeeID, employeeTitle, employeeType and phone.  The token will be populated from the cache created by Connect-Verkada.
 ```
 
 ## PARAMETERS
@@ -247,21 +247,6 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -org_id
-The UUID of the organization the user belongs to
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 13
-Default value: $Global:verkadaConnection.org_id
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### -x_verkada_auth_api
 The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 
@@ -271,7 +256,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 14
+Position: 13
 Default value: $Global:verkadaConnection.x_verkada_auth_api
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -286,7 +271,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 15
+Position: 14
 Default value: Api
 Accept pipeline input: False
 Accept wildcard characters: False

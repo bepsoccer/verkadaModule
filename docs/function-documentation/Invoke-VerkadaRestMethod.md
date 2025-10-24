@@ -14,9 +14,9 @@ Used to build an Invoke-RestMethod call for Verkada's private API enpoints
 
 ### Default (Default)
 ```
-Invoke-VerkadaRestMethod [-url] <String> [-org_id] <String> [-x_verkada_auth_api] <String>
- [[-query_params] <Object>] [[-body_params] <Object>] [-method <String>] [-outFile <String>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Invoke-VerkadaRestMethod [-url] <String> [-x_verkada_auth_api] <String> [[-query_params] <Object>]
+ [[-body_params] <Object>] [-method <String>] [-outFile <String>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ### UnPwd
@@ -28,9 +28,9 @@ Invoke-VerkadaRestMethod [-url] <String> [-org_id] <String> [[-body_params] <Obj
 
 ### Pagination
 ```
-Invoke-VerkadaRestMethod [-url] <String> [-org_id] <String> [-x_verkada_auth_api] <String>
- [[-query_params] <Object>] [[-body_params] <Object>] [-method <String>] [-pagination] -page_size <String>
- -propertyName <String> [-outFile <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Invoke-VerkadaRestMethod [-url] <String> [-x_verkada_auth_api] <String> [[-query_params] <Object>]
+ [[-body_params] <Object>] [-method <String>] [-pagination] -page_size <String> -propertyName <String>
+ [-outFile <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -67,7 +67,7 @@ The UUID of the organization the user belongs to
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: UnPwd
 Aliases:
 
 Required: True
@@ -86,7 +86,7 @@ Parameter Sets: Default, Pagination
 Aliases:
 
 Required: True
-Position: 3
+Position: 2
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -101,7 +101,7 @@ Parameter Sets: Default, Pagination
 Aliases:
 
 Required: False
-Position: 4
+Position: 3
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -116,7 +116,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 5
+Position: 4
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

@@ -14,8 +14,8 @@ Sets the end date for an Access user's access in an organization using https://a
 
 ```
 Set-VerkadaAccessUserEndDate [[-userId] <String>] [[-externalId] <String>] [[-endDate] <DateTime>]
- [[-org_id] <String>] [[-x_verkada_auth_api] <String>] [[-region] <String>] [-errorsToFile]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [[-x_verkada_auth_api] <String>] [[-region] <String>] [-errorsToFile] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -23,20 +23,20 @@ Given the user defined External ID or Verkada defined User ID (but not both), se
 After this time, all methods of access will be revoked.
 End date value will be passed as a parameter in a json payload.
 Returns the updated Access Information Object.
-The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
+The reqired token can be directly submitted as a parameter, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
 Set-VerkadaAccessUserEndDate -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -endDate '11/28/2025 08:00 AM'
-This sets the Access user's access to end at 8am on Nov 28, 2025 with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+This sets the Access user's access to end at 8am on Nov 28, 2025 with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3.  The token will be populated from the cache created by Connect-Verkada.
 ```
 
 ### EXAMPLE 2
 ```
-Set-VerkadaAccessUserEndDate -externalId 'newUserUPN@contoso.com' -endDate (Get-Date) -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
-This sets the Access user's access to end immediately since you are specifiying the current date and time with externalId newUserUPN@contoso.com.  The org_id and tokens are submitted as parameters in the call.
+Set-VerkadaAccessUserEndDate -externalId 'newUserUPN@contoso.com' -endDate (Get-Date) -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+This sets the Access user's access to end immediately since you are specifiying the current date and time with externalId newUserUPN@contoso.com.  The token is submitted as a parameter in the call.
 ```
 
 ## PARAMETERS
@@ -86,21 +86,6 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -org_id
-The UUID of the organization the user belongs to
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: 4
-Default value: $Global:verkadaConnection.org_id
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
 ### -x_verkada_auth_api
 The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 
@@ -110,7 +95,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 5
+Position: 4
 Default value: $Global:verkadaConnection.x_verkada_auth_api
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -125,7 +110,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 6
+Position: 5
 Default value: Api
 Accept pipeline input: False
 Accept wildcard characters: False

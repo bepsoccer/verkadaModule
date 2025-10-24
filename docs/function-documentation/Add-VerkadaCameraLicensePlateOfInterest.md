@@ -1,84 +1,80 @@
 ---
 external help file: verkadaModule-help.xml
 Module Name: verkadaModule
-online version: https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Enable-VerkadaAccessUserCard.md
+online version: https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Add-VerkadaCameraLicensePlateOfInterest.md
 schema: 2.0.0
 ---
 
-# Enable-VerkadaAccessUserCard
+# Add-VerkadaCameraLicensePlateOfInterest
 
 ## SYNOPSIS
-Activates a credential for an Aceess user in an organization using https://apidocs.verkada.com/reference/putaccesscardactivateviewv1
+Creates a License Plate of Interest for an organization using a specified description and license plate number using https://apidocs.verkada.com/reference/postlicenseplateofinterestviewv1
 
 ## SYNTAX
 
 ```
-Enable-VerkadaAccessUserCard [[-userId] <String>] [[-externalId] <String>] [[-cardId] <String>]
- [[-x_verkada_auth_api] <String>] [[-region] <String>] [-errorsToFile] [-ProgressAction <ActionPreference>]
+Add-VerkadaCameraLicensePlateOfInterest [-license_plate] <String> [-description] <String>
+ [-x_verkada_auth_api <String>] [-region <String>] [-errorsToFile] [-ProgressAction <ActionPreference>]
  [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-Given the Verkada defined User ID (OR user defined External ID)and Card ID, activate a specific access card for a user.
-Returns the updated Access Card Object.
+Creates a License Plate of Interest for an organization using a specified description and license plate number.
 The reqired token can be directly submitted as a parameter, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
-Enable-VerkadaAccessUserCard -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -cardId '3f3b3e4d-1a67-4b88-a321-43c5e502991c'
-This will activate the credential with cardId 10110010000000000000001011 for the Access user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 as a credential.  The token will be populated from the cache created by Connect-Verkada.
+Add-VerkadaCameraLicensePlateOfInterest -license_plate 'ABC123' -description 'New License Plate'
+The token will be populated from the cache created by Connect-Verkada.
 ```
 
 ### EXAMPLE 2
 ```
-Enable-VerkadaAccessUserCard -externalId 'newUserUPN@contoso.com' -cardId '3f3b3e4d-1a67-4b88-a321-43c5e502991c' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
-This will activate the credential with cardId 10110010000000000000001011 for the Access user with externalId newUserUPN@contoso.com as a credential.  The token is submitted as a parameter in the call.
+Add-VerkadaLPoI 'ABC123' 'New License Plate'
+The token will be populated from the cache created by Connect-Verkada.
+```
+
+### EXAMPLE 3
+```
+Import-CSV ./file_ofLicenses_and_Descriptions.csv | Add-VerkadaLPoI
+The token will be populated from the cache created by Connect-Verkada.
+```
+
+### EXAMPLE 4
+```
+Add-VerkadaCameraLicensePlateOfInterest -license_plate 'ABC123' -description 'New License Plate' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+The token is submitted as a parameter in the call.
 ```
 
 ## PARAMETERS
 
-### -userId
-The UUID of the user
+### -license_plate
+The license plate number of the License Plate of Interest
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: user_id
+Aliases:
 
-Required: False
+Required: True
 Position: 1
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -externalId
-unique identifier managed externally provided by the consumer
+### -description
+The description for the License Plate of Interest
 
 ```yaml
 Type: String
 Parameter Sets: (All)
-Aliases: external_id
+Aliases:
 
-Required: False
+Required: True
 Position: 2
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -cardId
-The cardId of the credential
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases: card_id
-
-Required: False
-Position: 3
 Default value: None
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
@@ -93,7 +89,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 4
+Position: Named
 Default value: $Global:verkadaConnection.x_verkada_auth_api
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -108,7 +104,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 5
+Position: Named
 Default value: Api
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -155,5 +151,5 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Enable-VerkadaAccessUserCard.md](https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Enable-VerkadaAccessUserCard.md)
+[https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Add-VerkadaCameraLicensePlateOfInterest.md](https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Add-VerkadaCameraLicensePlateOfInterest.md)
 

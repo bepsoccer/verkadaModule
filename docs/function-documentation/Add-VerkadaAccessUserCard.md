@@ -15,23 +15,22 @@ Creates and adds an Access credential to an Access user in an organization using
 ### cardNumber (Default)
 ```
 Add-VerkadaAccessUserCard [-userId <String>] [-externalId <String>] -cardType <String> -cardNumber <String>
- [-facilityCode <String>] [-active <Boolean>] [-org_id <String>] [-x_verkada_auth_api <String>]
- [-region <String>] [-errorsToFile] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-facilityCode <String>] [-active <Boolean>] [-x_verkada_auth_api <String>] [-region <String>] [-errorsToFile]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### cardNumberHex
 ```
 Add-VerkadaAccessUserCard [-userId <String>] [-externalId <String>] -cardType <String> -cardNumberHex <String>
- [-facilityCode <String>] [-active <Boolean>] [-org_id <String>] [-x_verkada_auth_api <String>]
- [-region <String>] [-errorsToFile] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-facilityCode <String>] [-active <Boolean>] [-x_verkada_auth_api <String>] [-region <String>] [-errorsToFile]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### cardNumberBase36
 ```
 Add-VerkadaAccessUserCard [-userId <String>] [-externalId <String>] -cardType <String>
- -cardNumberBase36 <String> [-facilityCode <String>] [-active <Boolean>] [-org_id <String>]
- [-x_verkada_auth_api <String>] [-region <String>] [-errorsToFile] [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+ -cardNumberBase36 <String> [-facilityCode <String>] [-active <Boolean>] [-x_verkada_auth_api <String>]
+ [-region <String>] [-errorsToFile] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -39,26 +38,26 @@ Create and add an access card for a specified user_id or external_id and org_id.
 Card object will be passed in the body of the request as a json.
 We require facility code and card number OR card_number_hex OR card_number_base36.
 The successful repsonse will be the created credential information.
-The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
+The reqired token can be directly submitted as a parameter, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
 Add-VerkadaAccessUserCard -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -type 'HID' -facilityCode 111 -cardNumber 55555
-This will add a badge in the HID format with facility code 111 and card number 55555 to the user specified.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+This will add a badge in the HID format with facility code 111 and card number 55555 to the user specified.  The token will be populated from the cache created by Connect-Verkada.
 ```
 
 ### EXAMPLE 2
 ```
-Add-VerkadaAccessUserCard -externalId 'newUserUPN@contoso.com' -type 'HID' -facilityCode 111 -cardNumber 55555 -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
-This will add an Access credential in the HID format with facility code 111 and card number 55555 to the user specified.  The org_id and tokens are submitted as parameters in the call.
+Add-VerkadaAccessUserCard -externalId 'newUserUPN@contoso.com' -type 'HID' -facilityCode 111 -cardNumber 55555 -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+This will add an Access credential in the HID format with facility code 111 and card number 55555 to the user specified.  The token is submitted as a parameter in the call.
 ```
 
 ### EXAMPLE 3
 ```
 Import-Csv ./myUserBadges.csv |  Add-VerkadaAccessUserCard
-This will add an Access credential for every row in the csv file which contains userId, type, cardNumber(or cardNumberHex or cardNumberBase36), and facilityCode(optional).  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+This will add an Access credential for every row in the csv file which contains userId, type, cardNumber(or cardNumberHex or cardNumberBase36), and facilityCode(optional).  The token will be populated from the cache created by Connect-Verkada.
 ```
 
 ## PARAMETERS
@@ -180,21 +179,6 @@ Aliases:
 Required: False
 Position: Named
 Default value: True
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -org_id
-The UUID of the organization the user belongs to
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: $Global:verkadaConnection.org_id
 Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```

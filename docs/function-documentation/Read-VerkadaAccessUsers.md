@@ -12,17 +12,17 @@ Gathers all Access Users in an organization via the legacy private API or using 
 
 ## SYNTAX
 
-### legacy (Default)
+### legacy
 ```
-Read-VerkadaAccessUsers [-org_id <String>] [[-query] <Object>] [[-variables] <Object>] [-region <String>]
+Read-VerkadaAccessUsers [[-query] <Object>] [[-variables] <Object>] [-region <String>]
  [-x_verkada_token <String>] [-x_verkada_auth <String>] [-usr <String>] [-refresh] [-minimal]
  [-version <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### v1
 ```
-Read-VerkadaAccessUsers [-org_id <String>] [-x_verkada_auth_api <String>] [-region <String>] [-refresh]
- [-version <String>] [-errorsToFile] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Read-VerkadaAccessUsers [-x_verkada_auth_api <String>] [-region <String>] [-refresh] [-version <String>]
+ [-errorsToFile] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -34,43 +34,28 @@ The org_id and reqired tokens can be directly submitted as parameters, but is mu
 ### EXAMPLE 1
 ```
 Read-VerkadaAccessUsers
-This will return all the active access users in an organization.	The org_id and tokens will be populated from the cached created by Connect-Verkada.
+This will return all the active access users in an organization.	The token will be populated from the cache created by Connect-Verkada.
 ```
 
 ### EXAMPLE 2
 ```
 Read-VerkadaAccessUsers -userId 'aefrfefb-3429-39ec-b042-userAC' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc' -usr 'a099bfe6-34ff-4976-9d53-ac68342d2b60'
-This will return all the active access users in an organization.  The org_id and tokens are submitted as parameters in the call.
+This will return all the active access users in an organization.  The token is submitted as a parameter in the call.
 ```
 
 ### EXAMPLE 3
 ```
-Read-VerkadaAccessUsers -version v1 -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
-This will return all the active access users in an organization using the Command v1 public API endpoint.  The org_id and tokens are submitted as parameters in the call.
+Read-VerkadaAccessUsers -version v1 -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+This will return all the active access users in an organization using the Command v1 public API endpoint.  The token is submitted as a parameter in the call.
 ```
 
 ### EXAMPLE 4
 ```
 Read-VerkadaAccessUsers -version v1 -refresh
-This will return all the active access users in an organization with the most recent data available from the Command v1 public API endpoint.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+This will return all the active access users in an organization with the most recent data available from the Command v1 public API endpoint.  The token will be populated from the cache created by Connect-Verkada.
 ```
 
 ## PARAMETERS
-
-### -org_id
-The UUID of the organization the user belongs to
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: $Global:verkadaConnection.org_id
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
 
 ### -query
 This is the graphql query to be submitted (do not use unless you know what you are doing)
