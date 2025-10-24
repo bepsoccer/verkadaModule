@@ -13,12 +13,13 @@ function Invoke-VerkadaFormCall
 		[Parameter(Mandatory = $true, Position = 0)]
 		[String]$url,
 		#The UUID of the organization the user belongs to
-		[Parameter(Mandatory = $true, Position = 1)]
+		[Parameter(Mandatory = $true, ParameterSetName = 'UnPwd', Position = 1)]
 		[ValidateNotNullOrEmpty()]
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[String]$org_id,
 		#Object to pass form parameters to forms
-		[Parameter(Mandatory = $true,Position = 2)]
+		[Parameter(Mandatory = $true, ParameterSetName = 'Default', Position = 1)]
+		[Parameter(Mandatory = $true, ParameterSetName = 'UnPwd',Position = 2)]
 		[Object]$form_params,
 		#Object containing the query parameters need that will be put into the query string of the uri
 		[Parameter()]

@@ -5,27 +5,22 @@ function Set-VerkadaHelixEvent{
 
 		.DESCRIPTION
 		This method can be used to update a Helix Event that has already been posted to Command. This is especially useful if a user needs to add an additional attribute key to the existing event, along with its new corresponding value. To successfully update a Helix Event, users will need to input the associated Camera ID, API Token with Helix permissions, Event Type UID, exact event epoch time in milliseconds, as well as the new attribute key and attribute value that is being updated.
-		The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
+		The reqired token can be directly submitted as a parameter, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
 		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Set-VerkadaHelixEvent.md
 
 		.EXAMPLE
 		Get-VerkadaHelixEvent -camera_id 6b8731d7-d991-4206-ba71-b5446fa617fc -event_type_uid cf918b16-26cd-4c01-a672-5a91b79311e1 -timeStamp '1/1/2025 08:35:00 -06' -attributes $attributes
-		This will get the helix event for Jan 1, 2025 at 8:35 AM CST for the sepcified camera, event ID, and submitted attributes. The org_id and token will be populated from the cached created by Connect-Verkada.
+		This will get the helix event for Jan 1, 2025 at 8:35 AM CST for the sepcified camera, event ID, and submitted attributes. The token will be populated from the cache created by Connect-Verkada.
 
 		.EXAMPLE
-		Get-VerkadaHelixEvent -camera_id 6b8731d7-d991-4206-ba71-b5446fa617fc -event_type_uid cf918b16-26cd-4c01-a672-5a91b79311e1 -timeStamp '1/1/2025 08:35:00 -06' -attributes $attributes -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
-		This will get the helix event for Jan 1, 2025 at 8:35 AM CST for the sepcified camera, event ID, and submitted attributes. The org_id and token are submitted as parameters in the call.
+		Get-VerkadaHelixEvent -camera_id 6b8731d7-d991-4206-ba71-b5446fa617fc -event_type_uid cf918b16-26cd-4c01-a672-5a91b79311e1 -timeStamp '1/1/2025 08:35:00 -06' -attributes $attributes -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+		This will get the helix event for Jan 1, 2025 at 8:35 AM CST for the sepcified camera, event ID, and submitted attributes. The token is submitted as a parameter in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
 	[Alias("Set-VrkdaHlxEvt","st-VrkdaHlxEvt")]
 	param (
-		#The UUID of the organization the user belongs to
-		[Parameter(ValueFromPipelineByPropertyName = $true)]
-		[ValidateNotNullOrEmpty()]
-		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
-		[String]$org_id = $Global:verkadaConnection.org_id,
 		#The UUID of the camera who's name is being changed
 		[Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
@@ -63,7 +58,6 @@ function Set-VerkadaHelixEvent{
 	begin {
 		$url = "https://$($region).verkada.com/cameras/v1/video_tagging/event"
 		#parameter validation
-		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
 		if ([string]::IsNullOrEmpty($x_verkada_auth_api)) {throw "x_verkada_auth_api is missing but is required!"}
 		$myErrors = @()
 	} #end begin
@@ -88,7 +82,7 @@ function Set-VerkadaHelixEvent{
 		}
 		
 		try {
-			Invoke-VerkadaRestMethod $url $org_id $x_verkada_auth_api $query_params -body_params $body_params -method PATCH
+			Invoke-VerkadaRestMethod $url $x_verkada_auth_api $query_params -body_params $body_params -method PATCH
 			return "Event updated successfully"
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {

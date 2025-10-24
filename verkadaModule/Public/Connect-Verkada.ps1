@@ -11,39 +11,38 @@ function Connect-Verkada
 		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Connect-Verkada.md
 
 		.EXAMPLE
-		Connect-Verkada '7cd47706-f51b-4419-8675-3b9f0ce7c12d' 'myapiKey-dcwdskjnlnlkj'
+		Connect-Verkada -x_api_key 'myapiKey-dcwdskjnlnlkj'
 		This will store the org_id 7cd47706-f51b-4419-8675-3b9f0ce7c12d with the public API key myapiKey-dcwdskjnlnlkj.
 
 		.EXAMPLE
-		Connect-Verkada '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -userName "admin.user@contoso.com" -otp (Get-Otp (Get-Secret -Name myVerkadaOtp -AsPlainText)) -MyPwd (Get-Secret -Name myVerkadaPassword) -x_api_key 'myapiKey-dcwdskjnlnlkj'
+		Connect-Verkada -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -userName "admin.user@contoso.com" -otp (Get-Otp (Get-Secret -Name myVerkadaOtp -AsPlainText)) -MyPwd (Get-Secret -Name myVerkadaPassword) -x_api_key 'myapiKey-dcwdskjnlnlkj'
 		This will authenticate user admin.user@contoso.com with a otp token and a secure string variable stored password([secureString]$yourPwd) and upon success store the org_id 7cd47706-f51b-4419-8675-3b9f0ce7c12d and the returned tokens.  This will also store the org_id 7cd47706-f51b-4419-8675-3b9f0ce7c12d with the public API key myapiKey-dcwdskjnlnlkj
 		
 		.EXAMPLE
-		Connect-Verkada '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -userName "admin.user@contoso.com" -Password
+		Connect-Verkada -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -userName "admin.user@contoso.com" -Password
 		This will authenticate user admin.user@contoso.com by prompting for the password(stored as a secure string) and upon success store the org_id 7cd47706-f51b-4419-8675-3b9f0ce7c12d and the returned tokens.  This will no longer work for OrgAdmins due to the MFA requirement.
 
 		.EXAMPLE
-		Connect-Verkada '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -userName "admin.user@contoso.com" -otp '123456' -MyPwd $yourPwd(seure string)
+		Connect-Verkada -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -userName "admin.user@contoso.com" -otp '123456' -MyPwd $yourPwd(seure string)
 		This will authenticate user admin.user@contoso.com with a otp token and a secure string variable stored password([secureString]$yourPwd) and upon success store the org_id 7cd47706-f51b-4419-8675-3b9f0ce7c12d and the returned tokens.  This will no longer work for OrgAdmins due to the MFA requirement.
 		
 		.EXAMPLE
-		Connect-Verkada '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'myapiKey-dcwdskjnlnlkj' -userName "admin.user@contoso.com" -Password
+		Connect-Verkada -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'myapiKey-dcwdskjnlnlkj' -userName "admin.user@contoso.com" -Password
 		This will store the org_id 7cd47706-f51b-4419-8675-3b9f0ce7c12d with the public API key myapiKey-dcwdskjnlnlkj and will authenticate user admin.user@contoso.com by prompting for the password(stored as a secure string) and storing the returned tokens.  This will no longer work for OrgAdmins due to the MFA requirement.
 	#>
 
 	[CmdletBinding(PositionalBinding = $true,DefaultParameterSetName='apiToken')]
 	Param(
 		#The UUID of the organization the user belongs to
-		[Parameter(ParameterSetName = 'apiToken', Mandatory = $true, Position = 0, ValueFromPipelineByPropertyName = $true)]
-		[Parameter(ParameterSetName = 'UnPwd', Mandatory = $true, Position = 0)]
-		[Parameter(ParameterSetName = 'ManualTokens', Mandatory = $true, Position = 0, ValueFromPipelineByPropertyName = $true)]
+		[Parameter(ParameterSetName = 'UnPwd', Mandatory = $true)]
+		[Parameter(ParameterSetName = 'ManualTokens', Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
 		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
 		[String]$org_id,
 		#The public API key to be used for calls that hit the public API gateway
-		[Parameter(ParameterSetName = 'apiToken', Mandatory = $true, Position = 1, ValueFromPipelineByPropertyName = $true)]
-		[Parameter(ParameterSetName = 'UnPwd', Position = 1)]
-		[Parameter(ParameterSetName = 'ManualTokens', Position = 1, ValueFromPipelineByPropertyName = $true)]
+		[Parameter(ParameterSetName = 'apiToken', Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
+		[Parameter(ParameterSetName = 'UnPwd')]
+		[Parameter(ParameterSetName = 'ManualTokens', ValueFromPipelineByPropertyName = $true)]
 		[Alias('token')]
 		[ValidateNotNullOrEmpty()]
 		[String]$x_api_key,
@@ -64,17 +63,17 @@ function Connect-Verkada
 		[ValidateNotNullOrEmpty()]
 		[securestring]$MyPwd,
 		#The userToken retrieved from Command login
-		[Parameter(ParameterSetName = 'ManualTokens', Mandatory = $true, Position = 2, ValueFromPipelineByPropertyName = $true)]
+		[Parameter(ParameterSetName = 'ManualTokens', Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
 		[Alias('x_verkada_auth')]
 		[String]$userToken,
 		#The csrfToken retrieved from Command login
-		[Parameter(ParameterSetName = 'ManualTokens', Mandatory = $true, Position = 3, ValueFromPipelineByPropertyName = $true)]
+		[Parameter(ParameterSetName = 'ManualTokens', Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
 		[Alias('x_verkada_token')]
 		[String]$csrfToken,
 		#The usr ID retrieved from Command login
-		[Parameter(ParameterSetName = 'ManualTokens', Mandatory = $true, Position = 4, ValueFromPipelineByPropertyName = $true)]
+		[Parameter(ParameterSetName = 'ManualTokens', Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
 		[ValidateNotNullOrEmpty()]
 		[Alias('x-verkada-user-id')]
 		[String]$usr,
@@ -95,11 +94,14 @@ function Connect-Verkada
 		Remove-Variable -Name verkadaCameraGroups -Scope Global -ErrorAction SilentlyContinue
 		If (!($Global:verkadaConnection)){
 			$Global:verkadaConnection = @{
-				org_id		= $org_id
 				region		= $region
 			}
 		}
-		
+
+		if($org_id) {
+			$Global:verkadaConnection.org_id = $org_id
+		}
+
 		if($x_api_key) {
 			$Global:verkadaConnection.x_api_key = $x_api_key
 

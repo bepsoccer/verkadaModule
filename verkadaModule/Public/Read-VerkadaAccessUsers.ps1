@@ -12,27 +12,22 @@ function Read-VerkadaAccessUsers{
 
 		.EXAMPLE
 		Read-VerkadaAccessUsers
-		This will return all the active access users in an organization.	The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		This will return all the active access users in an organization.	The token will be populated from the cache created by Connect-Verkada.
 
 		.EXAMPLE
 		Read-VerkadaAccessUsers -userId 'aefrfefb-3429-39ec-b042-userAC' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc' -usr 'a099bfe6-34ff-4976-9d53-ac68342d2b60'
-		This will return all the active access users in an organization.  The org_id and tokens are submitted as parameters in the call.
+		This will return all the active access users in an organization.  The token is submitted as a parameter in the call.
 		
 		.EXAMPLE
-		Read-VerkadaAccessUsers -version v1 -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
-		This will return all the active access users in an organization using the Command v1 public API endpoint.  The org_id and tokens are submitted as parameters in the call.
+		Read-VerkadaAccessUsers -version v1 -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+		This will return all the active access users in an organization using the Command v1 public API endpoint.  The token is submitted as a parameter in the call.
 
 		.EXAMPLE
 		Read-VerkadaAccessUsers -version v1 -refresh
-		This will return all the active access users in an organization with the most recent data available from the Command v1 public API endpoint.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		This will return all the active access users in an organization with the most recent data available from the Command v1 public API endpoint.  The token will be populated from the cache created by Connect-Verkada.
 	#>
-	[CmdletBinding(PositionalBinding = $true, DefaultParameterSetName = 'legacy')]
+	[CmdletBinding(PositionalBinding = $true)]
 	param (
-		#The UUID of the organization the user belongs to
-		[Parameter(ValueFromPipelineByPropertyName = $true)]
-		[ValidateNotNullOrEmpty()]
-		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
-		[String]$org_id = $Global:verkadaConnection.org_id,
 		#This is the graphql query to be submitted (do not use unless you know what you are doing)
 		[Parameter(Position = 1, ParameterSetName = 'legacy')]
 		[Object]$query,
@@ -280,7 +275,6 @@ fragment AccessUserBasic on User {
 	} elseif ($version -eq 'v1') {
 			$url = "https://$($region).verkada.com/access/v1/access_users"
 			#parameter validation
-			if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
 			if ([string]::IsNullOrEmpty($x_verkada_auth_api)) {throw "x_verkada_auth_api is missing but is required!"}
 			$myErrors = @()
 	}
@@ -302,7 +296,7 @@ fragment AccessUserBasic on User {
 					$query_params = @{}
 					
 					try {
-						$response = Invoke-VerkadaRestMethod $url $org_id $x_verkada_auth_api $query_params -body_params $body_params -method GET
+						$response = Invoke-VerkadaRestMethod $url $x_verkada_auth_api $query_params -body_params $body_params -method GET
 						$users = $response | Select-Object -ExpandProperty access_members
 						$global:verkadaAccessUsers = $users
 					}

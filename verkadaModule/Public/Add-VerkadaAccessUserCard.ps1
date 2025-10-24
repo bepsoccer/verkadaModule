@@ -6,22 +6,22 @@ function Add-VerkadaAccessUserCard{
 		.DESCRIPTION
 		Create and add an access card for a specified user_id or external_id and org_id. Card object will be passed in the body of the request as a json.
 		We require facility code and card number OR card_number_hex OR card_number_base36. The successful repsonse will be the created credential information.
-		The org_id and reqired token can be directly submitted as parameters, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
+		The reqired token can be directly submitted as a parameter, but is much easier to use Connect-Verkada to cache this information ahead of time and for subsequent commands.
 
 		.LINK
 		https://github.com/bepsoccer/verkadaModule/blob/master/docs/function-documentation/Add-VerkadaAccessUserCard.md
 
 		.EXAMPLE
 		Add-VerkadaAccessUserCard -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -type 'HID' -facilityCode 111 -cardNumber 55555
-		This will add a badge in the HID format with facility code 111 and card number 55555 to the user specified.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		This will add a badge in the HID format with facility code 111 and card number 55555 to the user specified.  The token will be populated from the cache created by Connect-Verkada.
 		
 		.EXAMPLE
-		Add-VerkadaAccessUserCard -externalId 'newUserUPN@contoso.com' -type 'HID' -facilityCode 111 -cardNumber 55555 -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
-		This will add an Access credential in the HID format with facility code 111 and card number 55555 to the user specified.  The org_id and tokens are submitted as parameters in the call.
+		Add-VerkadaAccessUserCard -externalId 'newUserUPN@contoso.com' -type 'HID' -facilityCode 111 -cardNumber 55555 -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+		This will add an Access credential in the HID format with facility code 111 and card number 55555 to the user specified.  The token is submitted as a parameter in the call.
 
 		.EXAMPLE
 		Import-Csv ./myUserBadges.csv |  Add-VerkadaAccessUserCard
-		This will add an Access credential for every row in the csv file which contains userId, type, cardNumber(or cardNumberHex or cardNumberBase36), and facilityCode(optional).  The org_id and tokens will be populated from the cached created by Connect-Verkada.
+		This will add an Access credential for every row in the csv file which contains userId, type, cardNumber(or cardNumberHex or cardNumberBase36), and facilityCode(optional).  The token will be populated from the cache created by Connect-Verkada.
 	#>
 	[CmdletBinding(PositionalBinding = $true, DefaultParameterSetName = 'cardNumber')]
 	[Alias("Add-VrkdaAcUsrCrd","a-VrkdaAcUsrCrd")]
@@ -60,11 +60,6 @@ function Add-VerkadaAccessUserCard{
 		#Bool value specifying if the credential is currently active. Default value is False.
 		[Parameter(ValueFromPipelineByPropertyName = $true)]
 		[bool]$active=$true,
-		#The UUID of the organization the user belongs to
-		[Parameter(ValueFromPipelineByPropertyName = $true)]
-		[ValidateNotNullOrEmpty()]
-		[ValidatePattern('^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$')]
-		[String]$org_id = $Global:verkadaConnection.org_id,
 		#The public API token obatined via the Login endpoint to be used for calls that hit the public API gateway
 		[Parameter()]
 		[ValidateNotNullOrEmpty()]
@@ -81,7 +76,6 @@ function Add-VerkadaAccessUserCard{
 	begin {
 		$url = "https://$($region).verkada.com/access/v1/credentials/card"
 		#parameter validation
-		if ([string]::IsNullOrEmpty($org_id)) {throw "org_id is missing but is required!"}
 		if ([string]::IsNullOrEmpty($x_verkada_auth_api)) {throw "x_verkada_auth_api is missing but is required!"}
 		$myErrors = @()
 	} #end begin
@@ -113,7 +107,7 @@ function Add-VerkadaAccessUserCard{
 		}
 		
 		try {
-			$response = Invoke-VerkadaRestMethod $url $org_id $x_verkada_auth_api $query_params -body_params $body_params -method POST
+			$response = Invoke-VerkadaRestMethod $url $x_verkada_auth_api $query_params -body_params $body_params -method POST
 			return $response
 		}
 		catch [Microsoft.PowerShell.Commands.HttpResponseException] {
