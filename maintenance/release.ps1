@@ -1,14 +1,42 @@
 $myMod = 'verkadaModule'
 $mypath = $PSScriptRoot | Split-Path -Parent
 import-Module $mypath/$myMod/$myMod.psm1
-update-ModuleManifest -Path "$mypath/$myMod/$myMod.psd1" -FunctionsToExport (Get-ChildItem -Path $mypath/$myMod/Public/*.ps1 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty BaseName) -AliasesToExport (Get-Command -Module verkadaModule | ForEach-Object {Get-Alias -Definition $_.name -ea 0} | Select-Object -ExpandProperty Name)
+update-ModuleManifest -Path "$mypath/$myMod/$myMod.psd1" -FunctionsToExport (Get-ChildItem -Path $mypath/$myMod/Public/ -Recurse -Include *.ps1 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty BaseName) -AliasesToExport (Get-Command -Module verkadaModule | ForEach-Object {Get-Alias -Definition $_.name -ea 0} | Select-Object -ExpandProperty Name)
 import-Module $mypath/$myMod/$myMod.psm1 -Force
-update-ModuleManifest -Path "$mypath/$myMod/$myMod.psd1" -FunctionsToExport (Get-ChildItem -Path $mypath/$myMod/Public/*.ps1 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty BaseName) -AliasesToExport (Get-Command -Module verkadaModule | ForEach-Object {Get-Alias -Definition $_.name -ea 0} | Select-Object -ExpandProperty Name)
-new-MarkdownHelp -Module $myMod -OutputFolder $mypath/docs/function-documentation -Force | Out-Null
+update-ModuleManifest -Path "$mypath/$myMod/$myMod.psd1" -FunctionsToExport (Get-ChildItem -Path $mypath/$myMod/Public/ -Recurse -Include *.ps1 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty BaseName) -AliasesToExport (Get-Command -Module verkadaModule | ForEach-Object {Get-Alias -Definition $_.name -ea 0} | Select-Object -ExpandProperty Name)
+Get-ChildItem -Path $mypath/docs/function-documentation -Recurse | Remove-Item -Force -Recurse -Confirm:$false | Out-Null
+New-MarkdownHelp -Module $myMod -OutputFolder $mypath/docs/function-documentation -Force | Out-Null
 
-Write-output "# Verkada PowerShell module" | Out-File $mypath/docs/reference.md -Force
+Write-output "# Verkada PowerShell module`n" | Out-File $mypath/docs/reference.md -Force
 Write-output "## Command Documentation" | Out-File $mypath/docs/reference.md -Append
-Get-ChildItem -Path $mypath/$myMod/Public/*.ps1 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty BaseName | ForEach-Object {write-output "* [$_](function-documentation/$_.md)"} | Out-File $mypath/docs/reference.md -Append
+
+Get-ChildItem $mypath/$myMod/Public/ | ForEach-Object {
+	If(!($_.BaseName -eq 'Legacy')){
+		Write-Output "`n### $($_.BaseName)`n" | Out-File $mypath/docs/reference.md -Append
+		$tempDir=$_.BaseName
+		Get-ChildItem $_ | ForEach-Object {
+			if (!(Test-Path -Path "$mypath/docs/function-documentation/$tempDir/" -PathType Container)) {
+					New-Item -Path "$mypath/docs/function-documentation/$tempDir/" -ItemType Directory -Force
+			}
+			Move-Item -Path "$mypath/docs/function-documentation/$($_.BaseName).md" -Destination "$mypath/docs/function-documentation/$tempDir/" -Force
+			Write-Output "* [$($_.BaseName)](function-documentation/$tempDir/$($_.BaseName).md)" | Out-File $mypath/docs/reference.md -Append
+		}
+	} else {
+		Write-Output `n"### Legacy" | Out-File $mypath/docs/reference.md -Append
+		$tempDir=$_.BaseName
+		Get-ChildItem $_ | ForEach-Object {
+			Write-Output "`n#### Legacy $($_.BaseName)`n" | Out-File $mypath/docs/reference.md -Append
+			$tempDir2=$_.BaseName
+			Get-ChildItem $_ | ForEach-Object {
+				if (!(Test-Path -Path "$mypath/docs/function-documentation/$tempDir/$tempDir2/" -PathType Container)) {
+						New-Item -Path "$mypath/docs/function-documentation/$tempDir/$tempDir2/" -ItemType Directory -Force
+				}
+				Move-Item -Path "$mypath/docs/function-documentation/$($_.BaseName).md" -Destination "$mypath/docs/function-documentation/$tempDir/$tempDir2/" -Force
+				Write-Output "* [$($_.BaseName)](function-documentation/$tempDir/$tempDir2/$($_.BaseName).md)" | Out-File $mypath/docs/reference.md -Append
+			}
+		}
+	}
+}
 
 $manifest = Import-PowerShellDataFile "$mypath/$myMod/$myMod.psd1" 
 [version]$version = $Manifest.ModuleVersion
