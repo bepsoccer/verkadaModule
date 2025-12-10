@@ -26,7 +26,7 @@ function Read-VerkadaAccessUsers{
 		Read-VerkadaAccessUsers -version v1 -refresh
 		This will return all the active access users in an organization with the most recent data available from the Command v1 public API endpoint.  The token will be populated from the cache created by Connect-Verkada.
 	#>
-	[CmdletBinding(PositionalBinding = $true)]
+	[CmdletBinding(PositionalBinding = $true, DefaultParameterSetName = 'v1')]
 	param (
 		#This is the graphql query to be submitted (do not use unless you know what you are doing)
 		[Parameter(Position = 1, ParameterSetName = 'legacy')]
