@@ -6,11 +6,11 @@ If you need to retrieve an API key and submit it as plain text.
 
 ```powershell
 $vrkdApiKey = Get-Secret -Name VrkdApiKey -AsPlainText
-Connect-Verkada -org_id [your_orgId] -x_api_key $vrkdApiKey
+Connect-Verkada -x_api_key $vrkdApiKey
 
 #or
 
-Connect-Verkada -org_id [your_orgId] -x_api_key (Get-Secret -Name VrkdApiKey -AsPlainText)
+Connect-Verkada -x_api_key (Get-Secret -Name VrkdApiKey -AsPlainText)
 ```
 
 If you need to retrieve a user password and submit it as a SecureString.
