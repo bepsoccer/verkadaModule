@@ -12,17 +12,17 @@ Gathers all Access Users in an organization via the legacy private API or using 
 
 ## SYNTAX
 
+### v1 (Default)
+```
+Read-VerkadaAccessUsers [-x_verkada_auth_api <String>] [-region <String>] [-refresh] [-version <String>]
+ [-errorsToFile] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
 ### legacy
 ```
 Read-VerkadaAccessUsers [[-query] <Object>] [[-variables] <Object>] [-region <String>]
  [-x_verkada_token <String>] [-x_verkada_auth <String>] [-usr <String>] [-refresh] [-minimal]
  [-version <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
-```
-
-### v1
-```
-Read-VerkadaAccessUsers [-x_verkada_auth_api <String>] [-region <String>] [-refresh] [-version <String>]
- [-errorsToFile] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
