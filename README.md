@@ -30,6 +30,6 @@ To connect via both for unattentended use you can now submit your password witho
 
 ## The Docs
 
-All available functions can be found in [Public](verkadaModule/Public) and can also be enumerated using `Get-Command -Module verkadaModule`
+All available functions can be found in [Public](docs/reference.md) and can also be enumerated using `Get-Command -Module verkadaModule`
 
 Common uses and reference documentation can be found [here](docs/README.md)
