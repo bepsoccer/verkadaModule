@@ -38,6 +38,15 @@ Get-ChildItem $mypath/$myMod/Public/ | ForEach-Object {
 	}
 }
 
+Get-ChildItem $mypath/$myMod/Private/ | ForEach-Object {
+	Get-ChildItem $_ | ForEach-Object {
+		if (!(Test-Path -Path "$mypath/docs/function-documentation/private/" -PathType Container)) {
+				New-Item -Path "$mypath/docs/function-documentation/private/" -ItemType Directory -Force
+		}
+		Move-Item -Path "$mypath/docs/function-documentation/$($_.BaseName).md" -Destination "$mypath/docs/function-documentation/private/" -Force
+	}
+}
+
 $manifest = Import-PowerShellDataFile "$mypath/$myMod/$myMod.psd1" 
 [version]$version = $Manifest.ModuleVersion
 switch ($Args[0]) {
