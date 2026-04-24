@@ -15,7 +15,7 @@ function Get-VerkadaAccessUserProfilePicture{
 		This downloads the Access user's, with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3, picture to ./MyProfilePics/801c9551-b04c-4293-84ad-b0a6aa0588b3.jpg.  The token will be populated from the cache created by Connect-Verkada.
 
 		.EXAMPLE
-		Export-VerkadaAccessUserProfilePicture -externalId 'newUserUPN@contoso.com' -outPath './MyProfilePics' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+		Export-VerkadaAccessUserProfilePicture -externalId 'newUserUPN@contoso.com' -outPath './MyProfilePics' -x_verkada_auth_api 'v2_sd78d9verkada-token'
 		This downloads the Access user's, with externalId newUserUPN@contoso.com picture to ./MyProfilePics/newUserUPN.jpg.  The token is submitted as parameter in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]

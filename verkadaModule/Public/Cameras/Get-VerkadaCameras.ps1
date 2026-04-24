@@ -15,7 +15,7 @@ function Get-VerkadaCameras{
 		This will return all the cameras in the org.  The token will be populated from the cache created by Connect-Verkada.
 		
 		.EXAMPLE
-		Get-VerkadaCameras -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+		Get-VerkadaCameras -x_verkada_auth_api 'v2_sd78d9verkada-token'
 		This will return all the cameras in the org.  The token is submitted as a parameter in the call.
 		
 		.EXAMPLE
