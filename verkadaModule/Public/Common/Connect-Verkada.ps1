@@ -27,7 +27,7 @@ function Connect-Verkada
 		This will authenticate user admin.user@contoso.com with a otp token and a secure string variable stored password([secureString]$yourPwd) and upon success store the org_id 7cd47706-f51b-4419-8675-3b9f0ce7c12d and the returned tokens.  This will no longer work for OrgAdmins due to the MFA requirement.
 		
 		.EXAMPLE
-		Connect-Verkada -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'myapiKey-dcwdskjnlnlkj' -userName "admin.user@contoso.com" -Password
+		Connect-Verkada -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_api_key 'myapiKey-dcwdskjnlnlkj' -userName "admin.user@contoso.com" -Password
 		This will store the org_id 7cd47706-f51b-4419-8675-3b9f0ce7c12d with the public API key myapiKey-dcwdskjnlnlkj and will authenticate user admin.user@contoso.com by prompting for the password(stored as a secure string) and storing the returned tokens.  This will no longer work for OrgAdmins due to the MFA requirement.
 	#>
 

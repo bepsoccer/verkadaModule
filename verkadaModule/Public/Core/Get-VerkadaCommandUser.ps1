@@ -15,7 +15,7 @@ function Get-VerkadaCommandUser{
 		This will attempt to get the user details of a user with the userId of '3651fbcb-f8ba-4248-ad70-3f6512fd7b6c'.  The token will be populated from the cache created by Connect-Verkada.
 
 		.EXAMPLE
-		Get-VerkadaCommandUser -externalId 'UserUPN@contoso.com' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+		Get-VerkadaCommandUser -externalId 'UserUPN@contoso.com' -x_verkada_auth_api 'v2_sd78d9verkada-token'
 		This will attempt to get the user details of a user with the externalId UserUPN@contoso.com.  The token is submitted as a parameter in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]

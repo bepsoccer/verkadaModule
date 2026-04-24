@@ -15,7 +15,7 @@ function Remove-VerkadaAccessUserFromGroup{
 		This will remove the Access user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 from the group with groupId 2d64e7de-fd95-48be-8b5c-7a23bde94f52.  The token will be populated from the cache created by Connect-Verkada.
 		
 		.EXAMPLE
-		Remove-VerkadaAccessUserFromGroup -externalId 'newUserUPN@contoso.com' -groupId '2d64e7de-fd95-48be-8b5c-7a23bde94f52' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+		Remove-VerkadaAccessUserFromGroup -externalId 'newUserUPN@contoso.com' -groupId '2d64e7de-fd95-48be-8b5c-7a23bde94f52' -x_verkada_auth_api 'v2_sd78d9verkada-token'
 		This will remove the Access user with externalId newUserUPN@contoso.com from the group with groupId 2d64e7de-fd95-48be-8b5c-7a23bde94f52.  The token is submitted as a parameter in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]

@@ -15,7 +15,7 @@ function Read-VerkadaAccessGroups{
 		This will return aa the Access Groups.  The token will be populated from the cache created by Connect-Verkada.
 
 		.EXAMPLE
-		Read-VerkadaAccessGroups -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+		Read-VerkadaAccessGroups -x_verkada_auth_api 'v2_sd78d9verkada-token'
 		This will return aa the Access Groups.  The token is submitted as a parameter in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]

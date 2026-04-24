@@ -15,7 +15,7 @@ function Get-VerkadaHelixEvent{
 		This will get the helix event for Jan 1, 2025 at 8:35 AM CST for the sepcified camera, and event ID. The token will be populated from the cache created by Connect-Verkada.
 
 		.EXAMPLE
-		Get-VerkadaHelixEvent -camera_id 6b8731d7-d991-4206-ba71-b5446fa617fc -event_type_uid cf918b16-26cd-4c01-a672-5a91b79311e1 -timeStamp '1/1/2025 08:35:00 -06' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+		Get-VerkadaHelixEvent -camera_id 6b8731d7-d991-4206-ba71-b5446fa617fc -event_type_uid cf918b16-26cd-4c01-a672-5a91b79311e1 -timeStamp '1/1/2025 08:35:00 -06' -x_verkada_auth_api 'v2_sd78d9verkada-token'
 		This will get the helix event for Jan 1, 2025 at 8:35 AM CST for the sepcified camera, and event ID. The token is submitted as a parameter in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
