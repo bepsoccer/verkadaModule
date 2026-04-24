@@ -23,7 +23,7 @@ function Get-VerkadaCameraConfig{
 		This will retieve the config information for all of the cameraId's present in the given CSV.  The org_id and tokens will be populated from the cached created by Connect-Verkada.
 
 		.EXAMPLE
-		Get-VerkadaCameraConfig -cameraId '6fbdcd72-a2ec-4016-9c6f-21553a42c998' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc'
+		Get-VerkadaCameraConfig -cameraId '6fbdcd72-a2ec-4016-9c6f-21553a42c998' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_auth_api 'v2_sd78d9verkada-token' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc'
 		This will retieve the config information for the camera with Id 6fbdcd72-a2ec-4016-9c6f-21553a42c998.  The org_id and tokens are submitted as parameters in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]

@@ -15,7 +15,7 @@ function Remove-VerkadaAccessUserMfaCode{
 		This deletes the MFA code 9567 from the Access user's profile with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3. The token will be populated from the cache created by Connect-Verkada.
 
 		.EXAMPLE
-		Remove-VerkadaAccessUserMfaCode -mfaCode '9567' -externalId 'newUserUPN@contoso.com' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+		Remove-VerkadaAccessUserMfaCode -mfaCode '9567' -externalId 'newUserUPN@contoso.com' -x_verkada_auth_api 'v2_sd78d9verkada-token'
 		This deletes the MFA code 9567 from the Access user's profile with externalId newUserUPN@contoso.com. The token is submitted as a parameter in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
