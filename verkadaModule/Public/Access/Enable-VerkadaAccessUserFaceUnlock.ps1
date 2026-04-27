@@ -59,6 +59,11 @@ function Enable-VerkadaAccessUserFaceUnlock{
 		[Parameter()]
 		[ValidateSet('api','api.eu','api.au')]
 		[String]$region='api',
+		#Version designation for which version of the function to use
+		[Parameter()]
+		[ValidateNotNullOrEmpty()]
+		[ValidateSet('v2')]
+		[string]$version='v2',
 		#Switch to write errors to file
 		[Parameter()]
 		[switch]$errorsToFile
@@ -73,7 +78,7 @@ function Enable-VerkadaAccessUserFaceUnlock{
 	process {
 		switch ($PSCmdlet.ParameterSetName) {
 			'external_profilePhoto' {
-				$url = "https://$($region).verkada.com/v2/access/external_users/$($externalId)/face_unlock/copy_user_photo"
+				$url = "https://$($region).verkada.com/$($version)/access/external_users/$($externalId)/face_unlock/copy_user_photo"
 				if ([string]::IsNullOrEmpty($externalId)) {throw "externalId is missing but is required!"}
 
 				#check to see if an AC profile photo exists
@@ -84,7 +89,7 @@ function Enable-VerkadaAccessUserFaceUnlock{
 				}
 			}
 			'external_upload' {
-				$url = "https://$($region).verkada.com/v2/access/external_users/$($externalId)/face_unlock/upload_photo"
+				$url = "https://$($region).verkada.com/$($version)/access/external_users/$($externalId)/face_unlock/upload_photo"
 				if ([string]::IsNullOrEmpty($externalId)) {throw "externalId is missing but is required!"}
 				if ([string]::IsNullOrEmpty($imagePath)) {throw "imagePath is missing but is required!"}
 				$upload = $true
@@ -95,7 +100,7 @@ function Enable-VerkadaAccessUserFaceUnlock{
 				}
 			}
 			'user_profilePhoto' {
-				$url = "https://$($region).verkada.com/v2/access/users/$($userId)/face_unlock/copy_user_photo"
+				$url = "https://$($region).verkada.com/$($version)/access/users/$($userId)/face_unlock/copy_user_photo"
 				if ([string]::IsNullOrEmpty($userId)) {throw "userId is missing but is required!"}
 
 				#check to see if an AC profile photo exists
@@ -106,7 +111,7 @@ function Enable-VerkadaAccessUserFaceUnlock{
 				}
 			}
 			'user_upload' {
-				$url = "https://$($region).verkada.com/v2/access/users/$($userId)/face_unlock/upload_photo"
+				$url = "https://$($region).verkada.com/$($version)/access/users/$($userId)/face_unlock/upload_photo"
 				if ([string]::IsNullOrEmpty($userId)) {throw "userId is missing but is required!"}
 				if ([string]::IsNullOrEmpty($imagePath)) {throw "imagePath is missing but is required!"}
 				$upload = $true

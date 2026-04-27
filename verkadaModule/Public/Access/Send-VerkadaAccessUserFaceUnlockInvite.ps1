@@ -51,6 +51,11 @@ function Send-VerkadaAccessUserFaceUnlockInvite{
 		[Parameter()]
 		[ValidateSet('api','api.eu','api.au')]
 		[String]$region='api',
+		#Version designation for which version of the function to use
+		[Parameter()]
+		[ValidateNotNullOrEmpty()]
+		[ValidateSet('v2')]
+		[string]$version='v2',
 		#Switch to write errors to file
 		[Parameter()]
 		[switch]$errorsToFile
@@ -65,11 +70,11 @@ function Send-VerkadaAccessUserFaceUnlockInvite{
 	process {
 		switch ($PSCmdlet.ParameterSetName) {
 			'external_id' {
-				$url = "https://$($region).verkada.com/v2/access/external_users/$($externalId)/face_unlock/invite"
+				$url = "https://$($region).verkada.com/$($version)/access/external_users/$($externalId)/face_unlock/invite"
 				if ([string]::IsNullOrEmpty($externalId)) {throw "externalId is missing but is required!"}
 			}
 			'user_id' {
-				$url = "https://$($region).verkada.com/v2/access/users/$($userId)/face_unlock/invite"
+				$url = "https://$($region).verkada.com/$($version)/access/users/$($userId)/face_unlock/invite"
 				if ([string]::IsNullOrEmpty($userId)) {throw "userId is missing but is required!"}
 			}
 		}
