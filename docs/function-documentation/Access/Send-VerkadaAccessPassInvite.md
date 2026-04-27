@@ -38,7 +38,7 @@ This will send an email invite to an Access user with userId 801c9551-b04c-4293-
 
 ### EXAMPLE 3
 ```
-Send-VerkadaAccessPassInvite -externalId 'newUserUPN@contoso.com' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+Send-VerkadaAccessPassInvite -externalId 'newUserUPN@contoso.com' -x_verkada_auth_api 'v2_sd78d9verkada-token'
 This will send an email invite to an Access user with -externalId 'newUserUPN@contoso.com'.  The token is submitted as a parameter in the call.
 ```
 

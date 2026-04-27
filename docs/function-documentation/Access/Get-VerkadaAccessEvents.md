@@ -33,7 +33,7 @@ This will return all the access events from 1 hour in the past until present.  T
 
 ### EXAMPLE 2
 ```
-Get-VerkadaAccessEvents -start_time 'January 1, 2025 9:00:00AM' -end_time 'February 8, 2025 10:30:00PM' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+Get-VerkadaAccessEvents -start_time 'January 1, 2025 9:00:00AM' -end_time 'February 8, 2025 10:30:00PM' -x_verkada_auth_api 'v2_sd78d9verkada-token'
 This will return all the access events from Jan 1 at 9am to Feb 8 at 10:30pm.  The token is submitted as parameter in the call.
 ```
 

@@ -31,7 +31,7 @@ This will delete the Command user with userId 801c9551-b04c-4293-84ad-b0a6aa0588
 
 ### EXAMPLE 2
 ```
-Remove-VerkadaCommandUser -externalId 'newUserUPN@contoso.com' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+Remove-VerkadaCommandUser -externalId 'newUserUPN@contoso.com' -x_verkada_auth_api 'v2_sd78d9verkada-token'
 This will delete the Command user with externalId newUserUPN@contoso.com.  The token is submitted as a parameter in the call.
 ```
 

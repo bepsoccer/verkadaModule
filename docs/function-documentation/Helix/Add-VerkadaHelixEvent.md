@@ -34,7 +34,7 @@ This will add a new helix event for the current time for the sepcified camera, e
 
 ### EXAMPLE 2
 ```
-Add-VerkadaHelixEvent -camera_id 6b8731d7-d991-4206-ba71-b5446fa617fc -event_type_uid cf918b16-26cd-4c01-a672-5a91b79311e1 -timeStamp '1/1/2025 08:35:00 -06' -attributes $attributes -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+Add-VerkadaHelixEvent -camera_id 6b8731d7-d991-4206-ba71-b5446fa617fc -event_type_uid cf918b16-26cd-4c01-a672-5a91b79311e1 -timeStamp '1/1/2025 08:35:00 -06' -attributes $attributes -x_verkada_auth_api 'v2_sd78d9verkada-token'
 This will add a new helix event for Jan 1, 2025 at 8:35 AM CST for the sepcified camera, event ID, and submitted attributes. The token is submitted as a parameter in the call.
 ```
 

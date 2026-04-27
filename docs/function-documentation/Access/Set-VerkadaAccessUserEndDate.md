@@ -35,7 +35,7 @@ This sets the Access user's access to end at 8am on Nov 28, 2025 with userId 801
 
 ### EXAMPLE 2
 ```
-Set-VerkadaAccessUserEndDate -externalId 'newUserUPN@contoso.com' -endDate (Get-Date) -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+Set-VerkadaAccessUserEndDate -externalId 'newUserUPN@contoso.com' -endDate (Get-Date) -x_verkada_auth_api 'v2_sd78d9verkada-token'
 This sets the Access user's access to end immediately since you are specifiying the current date and time with externalId newUserUPN@contoso.com.  The token is submitted as a parameter in the call.
 ```
 

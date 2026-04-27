@@ -33,7 +33,7 @@ This will deactivate the credential with cardId 10110010000000000000001011 for t
 
 ### EXAMPLE 2
 ```
-Disable-VerkadaAccessUserCard -externalId 'newUserUPN@contoso.com' -cardId '10110010000000000000001011' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+Disable-VerkadaAccessUserCard -externalId 'newUserUPN@contoso.com' -cardId '10110010000000000000001011' -x_verkada_auth_api 'v2_sd78d9verkada-token'
 This will deactivate the credential with cardId 10110010000000000000001011 for the Access user with externalId newUserUPN@contoso.com as a credential.  The token is submitted as a parameter in the call.
 ```
 

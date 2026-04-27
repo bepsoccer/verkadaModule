@@ -32,7 +32,7 @@ This downloads the Access user's, with userId 801c9551-b04c-4293-84ad-b0a6aa0588
 
 ### EXAMPLE 2
 ```
-Export-VerkadaAccessUserProfilePicture -externalId 'newUserUPN@contoso.com' -outPath './MyProfilePics' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+Export-VerkadaAccessUserProfilePicture -externalId 'newUserUPN@contoso.com' -outPath './MyProfilePics' -x_verkada_auth_api 'v2_sd78d9verkada-token'
 This downloads the Access user's, with externalId newUserUPN@contoso.com picture to ./MyProfilePics/newUserUPN.jpg.  The token is submitted as parameter in the call.
 ```
 
