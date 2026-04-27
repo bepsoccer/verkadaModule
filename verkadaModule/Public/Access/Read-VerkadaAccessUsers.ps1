@@ -19,7 +19,7 @@ function Read-VerkadaAccessUsers{
 		This will return all the active access users in an organization.  The token is submitted as a parameter in the call.
 		
 		.EXAMPLE
-		Read-VerkadaAccessUsers -version v1 -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+		Read-VerkadaAccessUsers -version v1 -x_verkada_auth_api 'v2_sd78d9verkada-token'
 		This will return all the active access users in an organization using the Command v1 public API endpoint.  The token is submitted as a parameter in the call.
 
 		.EXAMPLE

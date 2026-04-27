@@ -19,7 +19,7 @@ function Get-VerkadaLicensePlatesOfInterest{
 		The token will be populated from the cache created by Connect-Verkada.
 
 		.EXAMPLE
-		Get-VerkadaLicensePlatesOfInterest -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+		Get-VerkadaLicensePlatesOfInterest -x_verkada_auth_api 'v2_sd78d9verkada-token'
 		The token is submitted as a parameter in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]

@@ -16,7 +16,7 @@ function Add-VerkadaAccessUserLicensePlate{
 		This will add the license plate ABC123 to the Access user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 as a credential.  The token will be populated from the cache created by Connect-Verkada.
 		
 		.EXAMPLE
-		Add-VerkadaAccessUserLicensePlate -externalId 'newUserUPN@contoso.com' -licensePlateNumber 'ABC123' -name 'Users License Plate' -active $true -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a'
+		Add-VerkadaAccessUserLicensePlate -externalId 'newUserUPN@contoso.com' -licensePlateNumber 'ABC123' -name 'Users License Plate' -active $true -x_verkada_auth_api 'v2_sd78d9verkada-token'
 		This will add the license plate ABC123 to the Access user with externalId newUserUPN@contoso.com as a credential and mark it active.  The token is submitted as a parameter in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]

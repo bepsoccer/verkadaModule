@@ -15,7 +15,7 @@ function Set-VerkadaAccessUserEntryCode{
 		This will set an entry code of 12345 to the user specified.  The token will be populated from the cache created by Connect-Verkada.
 		
 		.EXAMPLE
-		Set-VerkadaAccessUserEntryCode -externalId 'newUserUPN@contoso.com' -entryCode '12345' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+		Set-VerkadaAccessUserEntryCode -externalId 'newUserUPN@contoso.com' -entryCode '12345' -x_verkada_auth_api 'v2_sd78d9verkada-token'
 		This will set an entry code of 12345 to the user specified.  The token is submitted as a parameter in the call.
 	#>
 	[CmdletBinding(PositionalBinding = $true)]
