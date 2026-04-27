@@ -33,7 +33,7 @@ This will activate the license plate ABC123 for the Access user with userId 801c
 
 ### EXAMPLE 2
 ```
-Enable-VerkadaAccessUserLicensePlate -externalId 'newUserUPN@contoso.com' -licensePlateNumber 'ABC123' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+Enable-VerkadaAccessUserLicensePlate -externalId 'newUserUPN@contoso.com' -licensePlateNumber 'ABC123' -x_verkada_auth_api 'v2_sd78d9verkada-token'
 This will activate the license plate ABC123 for the Access user with externalId newUserUPN@contoso.com as a credential.  The token is submitted as a parameter in the call.
 ```
 

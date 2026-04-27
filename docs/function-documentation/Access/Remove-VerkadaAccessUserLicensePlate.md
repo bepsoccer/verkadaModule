@@ -32,7 +32,7 @@ This will remove license plate ABC123 as a credential from the Access user with 
 
 ### EXAMPLE 2
 ```
-Remove-VerkadaAccessUserLicensePlate -externalId 'newUserUPN@contoso.com' -licensePlateNumber 'ABC123' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+Remove-VerkadaAccessUserLicensePlate -externalId 'newUserUPN@contoso.com' -licensePlateNumber 'ABC123' -x_verkada_auth_api 'v2_sd78d9verkada-token'
 This will remove license plate ABC123 as a credential from the Access user with externalId newUserUPN@contoso.com.  The token is submitted as a parameter in the call.
 ```
 

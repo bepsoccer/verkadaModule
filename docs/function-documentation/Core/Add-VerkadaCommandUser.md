@@ -36,7 +36,7 @@ This will add the Command user with the name "New User".  The token will be popu
 
 ### EXAMPLE 2
 ```
-Add-VerkadaCommandUser -firstName 'New' -lastName 'User' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+Add-VerkadaCommandUser -firstName 'New' -lastName 'User' -x_verkada_auth_api 'v2_sd78d9verkada-token'
 This will add the Command user with the name "New User".  The token is submitted as a parameter in the call.
 ```
 

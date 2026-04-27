@@ -15,7 +15,7 @@ function Get-VerkadaCameraCloudBackupSettings{
 		This will get the cloud backup settings of camera cwdfwfw-3f3-cwdf2-cameraId.  The token will be populated from the cache created by Connect-Verkada.
 		
 		.EXAMPLE
-		Get-VerkadaCameraCloudBackupSettings -camera_id "cwdfwfw-3f3-cwdf2-cameraId" -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+		Get-VerkadaCameraCloudBackupSettings -camera_id "cwdfwfw-3f3-cwdf2-cameraId" -x_verkada_auth_api 'v2_sd78d9verkada-token'
 		This will get the cloud backup settings of camera cwdfwfw-3f3-cwdf2-cameraId.  The token is submitted as a parameter in the call.
 		
 		.EXAMPLE

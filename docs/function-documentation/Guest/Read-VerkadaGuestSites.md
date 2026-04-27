@@ -31,7 +31,7 @@ This will return all the Guest in an organization.  The token will be populated 
 
 ### EXAMPLE 2
 ```
-Read-VerkadaGuestSites -userId 'aefrfefb-3429-39ec-b042-userAC' -org_id '7cd47706-f51b-4419-8675-3b9f0ce7c12d' -x_verkada_token 'a366ef47-2c20-4d35-a90a-10fd2aee113a' -x_verkada_auth 'auth-token-uuid-dscsdc' -usr 'a099bfe6-34ff-4976-9d53-ac68342d2b60'
+Read-VerkadaGuestSites -x_verkada_auth_api 'v2_sd78d9verkada-token'
 This will return all the Guest sites in an organization.  The token will be populated from the cache created by Connect-Verkada.
 ```
 

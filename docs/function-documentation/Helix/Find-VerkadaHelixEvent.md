@@ -44,7 +44,7 @@ This will get the helix events for camera_id 6b8731d7-d991-4206-ba71-b5446fa617f
 
 ### EXAMPLE 2
 ```
-Find-VerkadaHelixEvent -event_type_uid cf918b16-26cd-4c01-a672-5a91b79311e1 -startTimeStamp '1/1/2025 08:35:00 -06' -endTimeStamp '1/7/2025 17:00:00 -06' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+Find-VerkadaHelixEvent -event_type_uid cf918b16-26cd-4c01-a672-5a91b79311e1 -startTimeStamp '1/1/2025 08:35:00 -06' -endTimeStamp '1/7/2025 17:00:00 -06' -x_verkada_auth_api 'v2_sd78d9verkada-token'
 This will find the helix events for from Jan 1, 2025 at 8:35 AM CST to Jan 7, 2025 at 5:00 APM CST for the sepcified event ID. The token is submitted as parameter in the call.
 ```
 

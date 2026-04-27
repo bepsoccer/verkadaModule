@@ -34,7 +34,7 @@ This will update the Command user with userId 801c9551-b04c-4293-84ad-b0a6aa0588
 
 ### EXAMPLE 2
 ```
-Set-VerkadaCommandUser -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -firstName 'New' -lastName 'User' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+Set-VerkadaCommandUser -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -firstName 'New' -lastName 'User' -x_verkada_auth_api 'v2_sd78d9verkada-token'
 This will update the Command user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 with the name "New User".  The token is submitted as a parameter in the call.
 ```
 

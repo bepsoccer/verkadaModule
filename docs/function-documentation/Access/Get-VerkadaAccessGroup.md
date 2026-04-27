@@ -32,7 +32,7 @@ This will return the Access Group with userId "7858d17a-3f72-4506-8532-a4b6ba233
 
 ### EXAMPLE 2
 ```
-Get-VerkadaAccessGroup -groupId '7858d17a-3f72-4506-8532-a4b6ba233c5e' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+Get-VerkadaAccessGroup -groupId '7858d17a-3f72-4506-8532-a4b6ba233c5e' -x_verkada_auth_api 'v2_sd78d9verkada-token'
 This will return the Access Group with userId "7858d17a-3f72-4506-8532-a4b6ba233c5e".  The token is submitted as a parameter in the call.
 ```
 

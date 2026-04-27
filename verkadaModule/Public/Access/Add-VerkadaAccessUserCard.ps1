@@ -16,7 +16,7 @@ function Add-VerkadaAccessUserCard{
 		This will add a badge in the HID format with facility code 111 and card number 55555 to the user specified.  The token will be populated from the cache created by Connect-Verkada.
 		
 		.EXAMPLE
-		Add-VerkadaAccessUserCard -externalId 'newUserUPN@contoso.com' -type 'HID' -facilityCode 111 -cardNumber 55555 -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+		Add-VerkadaAccessUserCard -externalId 'newUserUPN@contoso.com' -type 'HID' -facilityCode 111 -cardNumber 55555 -x_verkada_auth_api 'v2_sd78d9verkada-token'
 		This will add an Access credential in the HID format with facility code 111 and card number 55555 to the user specified.  The token is submitted as a parameter in the call.
 
 		.EXAMPLE

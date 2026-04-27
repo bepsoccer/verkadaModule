@@ -44,7 +44,7 @@ The token will be populated from the cache created by Connect-Verkada.
 
 ### EXAMPLE 4
 ```
-Add-VerkadaCameraLicensePlateOfInterest -license_plate 'ABC123' -description 'New License Plate' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+Add-VerkadaCameraLicensePlateOfInterest -license_plate 'ABC123' -description 'New License Plate' -x_verkada_auth_api 'v2_sd78d9verkada-token'
 The token is submitted as a parameter in the call.
 ```
 

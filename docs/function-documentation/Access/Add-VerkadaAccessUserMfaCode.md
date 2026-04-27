@@ -33,7 +33,7 @@ This adds the MFA code 9567 to the Access user's profile with userId 801c9551-b0
 
 ### EXAMPLE 2
 ```
-Add-VerkadaAccessUserMfaCode -mfaCode '9567' -externalId 'newUserUPN@contoso.com' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+Add-VerkadaAccessUserMfaCode -mfaCode '9567' -externalId 'newUserUPN@contoso.com' -x_verkada_auth_api 'v2_sd78d9verkada-token'
 This adds the MFA code 9567 to the Access user's profile with externalId newUserUPN@contoso.com. The token is submitted as a parameter in the call.
 ```
 

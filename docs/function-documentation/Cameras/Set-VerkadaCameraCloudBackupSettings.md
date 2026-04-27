@@ -33,7 +33,7 @@ This will set the camera cwdfwfw-3f3-cwdf2-cameraId to use cloud backup with the
 
 ### EXAMPLE 2
 ```
-Set-VerkadaCameraCloudBackupSettings -enabled 1 -upload_timeslot '0,86400' -time_to_preserve '25200,68400' -days_to_preserve '1,1,1,1,1,1,1'  -video_to_upload 'ALL' -video_quality 'STANDARD_QUALITY' -camera_id 'cwdfwfw-3f3-cwdf2-cameraId' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+Set-VerkadaCameraCloudBackupSettings -enabled 1 -upload_timeslot '0,86400' -time_to_preserve '25200,68400' -days_to_preserve '1,1,1,1,1,1,1'  -video_to_upload 'ALL' -video_quality 'STANDARD_QUALITY' -camera_id 'cwdfwfw-3f3-cwdf2-cameraId' -x_verkada_auth_api 'v2_sd78d9verkada-token'
 This will set the camera cwdfwfw-3f3-cwdf2-cameraId to use cloud backup with the submitted settings.  The token is submitted as a parameter in the call.
 ```
 

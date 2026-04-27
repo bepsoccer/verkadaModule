@@ -33,7 +33,7 @@ This will activate the credential with cardId 10110010000000000000001011 for the
 
 ### EXAMPLE 2
 ```
-Enable-VerkadaAccessUserCard -externalId 'newUserUPN@contoso.com' -cardId '3f3b3e4d-1a67-4b88-a321-43c5e502991c' -x_verkada_auth_api 'sd78ds-uuid-of-verkada-token'
+Enable-VerkadaAccessUserCard -externalId 'newUserUPN@contoso.com' -cardId '3f3b3e4d-1a67-4b88-a321-43c5e502991c' -x_verkada_auth_api 'v2_sd78d9verkada-token'
 This will activate the credential with cardId 10110010000000000000001011 for the Access user with externalId newUserUPN@contoso.com as a credential.  The token is submitted as a parameter in the call.
 ```
 
