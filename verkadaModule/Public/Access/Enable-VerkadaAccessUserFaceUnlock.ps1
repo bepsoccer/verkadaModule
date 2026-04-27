@@ -20,7 +20,7 @@ function Enable-VerkadaAccessUserFaceUnlock{
 
 		.EXAMPLE
 		Enable-VerkadaAccessUserLicensePlate -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3'
-		This will enable Face Unlock for the user with externalId newUserUPN@contoso.com using their existing AC profile photo.  The token will be populated from the cache created by Connect-Verkada.
+		This will enable Face Unlock for the user with userId 801c9551-b04c-4293-84ad-b0a6aa0588b3 using their existing AC profile photo.  The token will be populated from the cache created by Connect-Verkada.
 
 		.EXAMPLE
 		Enable-VerkadaAccessUserLicensePlate -userId '801c9551-b04c-4293-84ad-b0a6aa0588b3' -imagePath './801c9551-b04c-4293-84ad-b0a6aa0588b3.png' -overwrite $true -x_verkada_auth_api 'v2_sd78d9verkada-token'
